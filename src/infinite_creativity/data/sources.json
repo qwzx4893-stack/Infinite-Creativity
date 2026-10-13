@@ -1,0 +1,2032 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "polyhaven",
+      "name": "Poly Haven",
+      "url": "https://polyhaven.com/ar",
+      "adapter": "polyhaven",
+      "license": "CC0-1.0",
+      "tags": [
+        "model-3d",
+        "texture",
+        "hdri"
+      ]
+    },
+    {
+      "id": "ambientcg",
+      "name": "ambientCG",
+      "url": "https://ambientcg.com/",
+      "adapter": "ambientcg",
+      "license": "CC0-1.0",
+      "tags": [
+        "material",
+        "texture",
+        "hdri"
+      ]
+    },
+    {
+      "id": "iconify",
+      "name": "Iconify",
+      "url": "https://iconify.design/",
+      "adapter": "iconify",
+      "license": "per-collection",
+      "tags": [
+        "icon",
+        "vector"
+      ]
+    },
+    {
+      "id": "mockupbro",
+      "name": "MockupBro",
+      "url": "https://mockupbro.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mockup"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "blendkit",
+      "name": "Blendkit (supplied URL; verification pending)",
+      "url": "https://www.blendkit.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "blenderkit",
+      "name": "BlenderKit",
+      "url": "https://www.blenderkit.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "cgtrader",
+      "name": "CGTrader",
+      "url": "https://www.cgtrader.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "string-tune",
+      "name": "String Tune",
+      "url": "https://string-tune.fiddle.digital/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "motion",
+        "web"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "namethatui",
+      "name": "Name That UI",
+      "url": "https://namethatui.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "ui-pattern"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "codrops",
+      "name": "Codrops Hub",
+      "url": "https://tympanus.net/codrops/hub/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "motion",
+        "shader",
+        "web"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "refero",
+      "name": "Refero Styles",
+      "url": "https://styles.refero.design/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "art-direction"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "motionsites",
+      "name": "MotionSites",
+      "url": "https://motionsites.ai/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "prompt",
+        "motion"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "aceternity",
+      "name": "Aceternity UI",
+      "url": "https://ui.aceternity.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "ui-component",
+        "motion"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "21st",
+      "name": "21st.dev",
+      "url": "https://21st.dev/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "mapcn",
+      "name": "MapCN",
+      "url": "https://www.mapcn.dev/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "map",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "magnific",
+      "name": "Magnific",
+      "url": "https://www.magnific.com/app",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "tool"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "dribbble",
+      "name": "Dribbble",
+      "url": "https://dribbble.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "awwwards",
+      "name": "Awwwards",
+      "url": "https://www.awwwards.com/websites/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "inspiration",
+        "web"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "sitereel",
+      "name": "SiteReel",
+      "url": "https://sitereel.ai/#library",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "inspiration",
+        "web"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "jiro",
+      "name": "Jiro",
+      "url": "https://jiro.build/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "oron",
+      "name": "Oron Assets",
+      "url": "https://assets.oron.studio/library",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "creative-assets"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "prompt-motion",
+      "name": "Prompt Motion",
+      "url": "https://prompt-motion.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "prompt",
+        "motion"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "jitter",
+      "name": "Jitter",
+      "url": "https://jitter.video/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "motion",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "screenrove",
+      "name": "Screenrove",
+      "url": "https://screenrove.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mobile",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "kenney",
+      "name": "Kenney",
+      "url": "https://kenney.nl/assets",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "game",
+        "sprite",
+        "model-3d",
+        "audio"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "quaternius",
+      "name": "Quaternius",
+      "url": "https://quaternius.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "low-poly"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "kaykit",
+      "name": "KayKit",
+      "url": "https://kaylousberg.com/game-assets",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "game"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "opengameart",
+      "name": "OpenGameArt",
+      "url": "https://opengameart.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "game",
+        "sprite",
+        "texture",
+        "audio"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "itch-assets",
+      "name": "itch.io Assets",
+      "url": "https://itch.io/game-assets/free",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "game",
+        "sprite",
+        "audio"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "sketchfab",
+      "name": "Sketchfab",
+      "url": "https://sketchfab.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "smithsonian",
+      "name": "Smithsonian Open Access",
+      "url": "https://www.si.edu/openaccess",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "nasa-3d",
+      "name": "NASA 3D Resources",
+      "url": "https://nasa3d.arc.nasa.gov/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "space"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "wikimedia",
+      "name": "Wikimedia Commons",
+      "url": "https://commons.wikimedia.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "audio",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "openverse",
+      "name": "Openverse",
+      "url": "https://openverse.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "audio"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "freesound",
+      "name": "Freesound",
+      "url": "https://freesound.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "audio",
+        "sfx"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "incompetech",
+      "name": "Incompetech",
+      "url": "https://incompetech.com/music/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "audio",
+        "music"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "freemusicarchive",
+      "name": "Free Music Archive",
+      "url": "https://freemusicarchive.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "audio",
+        "music"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "pixabay",
+      "name": "Pixabay",
+      "url": "https://pixabay.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "video",
+        "audio"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "pexels",
+      "name": "Pexels",
+      "url": "https://www.pexels.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "video"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "unsplash",
+      "name": "Unsplash",
+      "url": "https://unsplash.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "rawpixel-publicdomain",
+      "name": "Rawpixel Public Domain",
+      "url": "https://www.rawpixel.com/public-domain",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "publicdomainreview",
+      "name": "Public Domain Review",
+      "url": "https://publicdomainreview.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "met-openaccess",
+      "name": "The Met Open Access",
+      "url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "art"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "rijksmuseum",
+      "name": "Rijksmuseum",
+      "url": "https://www.rijksmuseum.nl/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "image",
+        "art"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "ccmixter",
+      "name": "ccMixter",
+      "url": "https://ccmixter.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "audio",
+        "music"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "cgbookcase",
+      "name": "CGBookcase",
+      "url": "https://www.cgbookcase.com/textures/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "texture",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "sharetextures",
+      "name": "ShareTextures",
+      "url": "https://www.sharetextures.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "texture",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "3dtextures",
+      "name": "3DTextures",
+      "url": "https://3dtextures.me/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "texture",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "textures",
+      "name": "Textures.com",
+      "url": "https://www.textures.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "texture",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "texturecan",
+      "name": "TextureCan",
+      "url": "https://www.texturecan.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "texture",
+        "material"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "3dassetsone",
+      "name": "3DAssets.one",
+      "url": "https://3dassets.one/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "texture"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "poly-pizza",
+      "name": "Poly Pizza",
+      "url": "https://poly.pizza/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "model-3d",
+        "low-poly"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "mesh2motion",
+      "name": "Mesh2Motion",
+      "url": "https://mesh2motion.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "rig",
+        "animation",
+        "model-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "mixamo",
+      "name": "Mixamo",
+      "url": "https://www.mixamo.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "rig",
+        "animation",
+        "model-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "lottiefiles",
+      "name": "LottieFiles",
+      "url": "https://lottiefiles.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "animation",
+        "lottie"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "rive",
+      "name": "Rive Community",
+      "url": "https://rive.app/community/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "animation",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "svgrepo",
+      "name": "SVG Repo",
+      "url": "https://www.svgrepo.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "icon",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "undraw",
+      "name": "unDraw",
+      "url": "https://undraw.co/illustrations",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "manypixels",
+      "name": "ManyPixels",
+      "url": "https://www.manypixels.co/gallery",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "drawkit",
+      "name": "DrawKit",
+      "url": "https://www.drawkit.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "storyset",
+      "name": "Storyset",
+      "url": "https://storyset.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration",
+        "motion"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "blush",
+      "name": "Blush",
+      "url": "https://blush.design/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "humaaans",
+      "name": "Humaaans",
+      "url": "https://www.humaaans.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "openpeeps",
+      "name": "Open Peeps",
+      "url": "https://www.openpeeps.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "illustration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "fontsquirrel",
+      "name": "Font Squirrel",
+      "url": "https://www.fontsquirrel.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "font"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "fontshare",
+      "name": "Fontshare",
+      "url": "https://www.fontshare.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "font"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "velvetyne",
+      "name": "Velvetyne",
+      "url": "https://velvetyne.fr/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "font",
+        "experimental"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "fontlibrary",
+      "name": "Font Library",
+      "url": "https://fontlibrary.org/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "font"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "google-material",
+      "name": "Material Design",
+      "url": "https://m3.material.io/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mobile",
+        "ui-pattern"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "fluent-design",
+      "name": "Fluent Design",
+      "url": "https://fluent2.microsoft.design/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "desktop",
+        "ui-pattern"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "apple-hig",
+      "name": "Apple HIG",
+      "url": "https://developer.apple.com/design/human-interface-guidelines",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mobile",
+        "desktop",
+        "ui-pattern"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "carbon-design",
+      "name": "Carbon Design",
+      "url": "https://carbondesignsystem.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "ui-pattern"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "mobbin",
+      "name": "Mobbin",
+      "url": "https://mobbin.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mobile",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "landbook",
+      "name": "Land-book",
+      "url": "https://land-book.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "lapa",
+      "name": "Lapa Ninja",
+      "url": "https://www.lapa.ninja/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "godly",
+      "name": "Godly",
+      "url": "https://godly.website/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "onepagelove",
+      "name": "One Page Love",
+      "url": "https://onepagelove.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "siteinspire",
+      "name": "SiteInspire",
+      "url": "https://www.siteinspire.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "saaslandingpage",
+      "name": "SaaS Landing Page",
+      "url": "https://saaslandingpage.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "pageflows",
+      "name": "Page Flows",
+      "url": "https://pageflows.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "flow",
+        "mobile",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "screenlane",
+      "name": "Screenlane",
+      "url": "https://screenlane.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "mobile",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "collectui",
+      "name": "Collect UI",
+      "url": "https://collectui.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "ui-pattern",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "codepen",
+      "name": "CodePen",
+      "url": "https://codepen.io/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "shader",
+        "motion",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "shadertoy",
+      "name": "Shadertoy",
+      "url": "https://www.shadertoy.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "shader"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "glslsandbox",
+      "name": "GLSL Sandbox",
+      "url": "https://glslsandbox.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "shader"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "threejs",
+      "name": "Three.js Examples",
+      "url": "https://threejs.org/examples/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "shader",
+        "scene-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "babylonjs",
+      "name": "Babylon.js Playground",
+      "url": "https://playground.babylonjs.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "scene-3d"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "godot-library",
+      "name": "Godot Asset Library",
+      "url": "https://godotengine.org/asset-library/asset",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "game",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "figma-community",
+      "name": "Figma Community",
+      "url": "https://www.figma.com/community",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "design-system",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "penpot-hub",
+      "name": "Penpot Hub",
+      "url": "https://penpot.app/penpothub",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "design-system",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "html5up",
+      "name": "HTML5 UP",
+      "url": "https://html5up.net/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "startbootstrap",
+      "name": "Start Bootstrap",
+      "url": "https://startbootstrap.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "bootstrapmade",
+      "name": "BootstrapMade",
+      "url": "https://bootstrapmade.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "templated",
+      "name": "Templated",
+      "url": "https://templated.co/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "cruip",
+      "name": "Cruip",
+      "url": "https://cruip.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "tailwindplus",
+      "name": "Tailwind Plus",
+      "url": "https://tailwindcss.com/plus",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "template",
+        "inspiration"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "hyperui",
+      "name": "HyperUI",
+      "url": "https://www.hyperui.dev/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "flowbite",
+      "name": "Flowbite",
+      "url": "https://flowbite.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "daisyui",
+      "name": "daisyUI",
+      "url": "https://daisyui.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "floatui",
+      "name": "Float UI",
+      "url": "https://floatui.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "web",
+        "ui-component"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "css-loaders",
+      "name": "CSS Loaders",
+      "url": "https://css-loaders.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "loader",
+        "motion"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "animista",
+      "name": "Animista",
+      "url": "https://animista.net/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "motion",
+        "css"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "easings",
+      "name": "Easings.net",
+      "url": "https://easings.net/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "motion",
+        "easing"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "haikei",
+      "name": "Haikei",
+      "url": "https://haikei.app/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "background",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "heropatterns",
+      "name": "Hero Patterns",
+      "url": "https://heropatterns.com/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "pattern",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "coolbackgrounds",
+      "name": "Cool Backgrounds",
+      "url": "https://coolbackgrounds.io/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "background"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "meshgradients",
+      "name": "Mesh Gradients",
+      "url": "https://meshgradient.in/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "gradient"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "patternmonster",
+      "name": "Pattern Monster",
+      "url": "https://pattern.monster/",
+      "adapter": "reference",
+      "access": "mixed-or-unverified",
+      "status": "manual-license-and-content-review-required",
+      "tags": [
+        "pattern",
+        "vector"
+      ],
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+    },
+    {
+      "id": "uiverse",
+      "name": "uiverse-io/galaxy",
+      "url": "https://github.com/uiverse-io/galaxy",
+      "repo": "uiverse-io/galaxy",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "\\.html$",
+      "tags": [
+        "css",
+        "tailwind",
+        "button",
+        "card",
+        "loader"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": true,
+      "status": "scoped-code-collection"
+    },
+    {
+      "id": "motion-primitives",
+      "name": "ibelick/motion-primitives",
+      "url": "https://github.com/ibelick/motion-primitives",
+      "repo": "ibelick/motion-primitives",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^components/(core|ui)/.*\\.tsx$",
+      "tags": [
+        "react",
+        "motion",
+        "minimal"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": true,
+      "status": "scoped-code-collection"
+    },
+    {
+      "id": "shadcn",
+      "name": "shadcn-ui/ui",
+      "url": "https://github.com/shadcn-ui/ui",
+      "repo": "shadcn-ui/ui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^apps/v4/registry/new-york-v4/ui/.*\\.tsx$",
+      "tags": [
+        "react",
+        "minimal",
+        "accessible"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": true,
+      "status": "scoped-code-collection"
+    },
+    {
+      "id": "magicui",
+      "name": "magicuidesign/magicui",
+      "url": "https://github.com/magicuidesign/magicui",
+      "repo": "magicuidesign/magicui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^registry/.*\\.tsx$",
+      "tags": [
+        "react",
+        "motion"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "reactbits",
+      "name": "DavidHDev/react-bits",
+      "url": "https://github.com/DavidHDev/react-bits",
+      "repo": "DavidHDev/react-bits",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^src/content/.*\\.jsx$",
+      "tags": [
+        "react",
+        "motion",
+        "shader"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "hoverdev",
+      "name": "Hover-Dev/Hover.dev",
+      "url": "https://github.com/Hover-Dev/Hover.dev",
+      "repo": "Hover-Dev/Hover.dev",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "\\.tsx$",
+      "tags": [
+        "react",
+        "motion"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "google-fonts",
+      "name": "google/fonts",
+      "url": "https://github.com/google/fonts",
+      "repo": "google/fonts",
+      "adapter": "github-tree",
+      "kind": "font",
+      "path_pattern": "/METADATA\\.pb$",
+      "tags": [
+        "typography",
+        "font"
+      ],
+      "platforms": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "license_scope_reviewed": true,
+      "status": "scoped-code-collection"
+    },
+    {
+      "id": "hyperui-repo",
+      "name": "markmead/hyperui",
+      "url": "https://github.com/markmead/hyperui",
+      "repo": "markmead/hyperui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^public/components/.*\\.html$",
+      "tags": [
+        "tailwind",
+        "minimal"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "flowbite-repo",
+      "name": "themesberg/flowbite",
+      "url": "https://github.com/themesberg/flowbite",
+      "repo": "themesberg/flowbite",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^src/components/.*\\.(ts|js)$",
+      "tags": [
+        "tailwind"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "mantine",
+      "name": "mantinedev/mantine",
+      "url": "https://github.com/mantinedev/mantine",
+      "repo": "mantinedev/mantine",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/@mantine/core/src/components/[^/]+/[^/]+\\.tsx$",
+      "tags": [
+        "react",
+        "accessible"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "chakra",
+      "name": "chakra-ui/chakra-ui",
+      "url": "https://github.com/chakra-ui/chakra-ui",
+      "repo": "chakra-ui/chakra-ui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/react/src/components/.*\\.tsx$",
+      "tags": [
+        "react",
+        "accessible"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "radix",
+      "name": "radix-ui/primitives",
+      "url": "https://github.com/radix-ui/primitives",
+      "repo": "radix-ui/primitives",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/react/[^/]+/src/[^/]+\\.tsx$",
+      "tags": [
+        "react",
+        "accessible"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "mui",
+      "name": "mui/material-ui",
+      "url": "https://github.com/mui/material-ui",
+      "repo": "mui/material-ui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/mui-material/[^/]+/[^/]+\\.js$",
+      "tags": [
+        "react",
+        "material"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "fluent",
+      "name": "microsoft/fluentui",
+      "url": "https://github.com/microsoft/fluentui",
+      "repo": "microsoft/fluentui",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/react-components/.*\\.tsx$",
+      "tags": [
+        "react",
+        "desktop",
+        "fluent"
+      ],
+      "platforms": [
+        "web",
+        "desktop"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "carbon",
+      "name": "carbon-design-system/carbon",
+      "url": "https://github.com/carbon-design-system/carbon",
+      "repo": "carbon-design-system/carbon",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/react/src/components/.*\\.tsx$",
+      "tags": [
+        "react",
+        "enterprise"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "ant-design",
+      "name": "ant-design/ant-design",
+      "url": "https://github.com/ant-design/ant-design",
+      "repo": "ant-design/ant-design",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^components/[^/]+/index\\.tsx$",
+      "tags": [
+        "react",
+        "enterprise"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "primevue",
+      "name": "primefaces/primevue",
+      "url": "https://github.com/primefaces/primevue",
+      "repo": "primefaces/primevue",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/primevue/src/.*\\.vue$",
+      "tags": [
+        "vue"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "vuetify",
+      "name": "vuetifyjs/vuetify",
+      "url": "https://github.com/vuetifyjs/vuetify",
+      "repo": "vuetifyjs/vuetify",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/vuetify/src/components/.*\\.tsx$",
+      "tags": [
+        "vue",
+        "material"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "skeleton",
+      "name": "skeletonlabs/skeleton",
+      "url": "https://github.com/skeletonlabs/skeleton",
+      "repo": "skeletonlabs/skeleton",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "\\.svelte$",
+      "tags": [
+        "svelte"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "react-native-paper",
+      "name": "callstack/react-native-paper",
+      "url": "https://github.com/callstack/react-native-paper",
+      "repo": "callstack/react-native-paper",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^src/components/.*\\.tsx$",
+      "tags": [
+        "react-native",
+        "material"
+      ],
+      "platforms": [
+        "mobile"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "react-native-elements",
+      "name": "react-native-elements/react-native-elements",
+      "url": "https://github.com/react-native-elements/react-native-elements",
+      "repo": "react-native-elements/react-native-elements",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/base/src/.*\\.tsx$",
+      "tags": [
+        "react-native"
+      ],
+      "platforms": [
+        "mobile"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "flutter",
+      "name": "flutter/flutter",
+      "url": "https://github.com/flutter/flutter",
+      "repo": "flutter/flutter",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^packages/flutter/lib/src/(material|cupertino)/.*\\.dart$",
+      "tags": [
+        "flutter",
+        "material",
+        "cupertino"
+      ],
+      "platforms": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "avalonia",
+      "name": "AvaloniaUI/Avalonia",
+      "url": "https://github.com/AvaloniaUI/Avalonia",
+      "repo": "AvaloniaUI/Avalonia",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^src/Avalonia.Controls/[^/]+\\.cs$",
+      "tags": [
+        "dotnet",
+        "desktop"
+      ],
+      "platforms": [
+        "desktop"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "winui-gallery",
+      "name": "microsoft/WinUI-Gallery",
+      "url": "https://github.com/microsoft/WinUI-Gallery",
+      "repo": "microsoft/WinUI-Gallery",
+      "adapter": "github-tree",
+      "kind": "template",
+      "path_pattern": "\\.xaml$",
+      "tags": [
+        "winui",
+        "desktop"
+      ],
+      "platforms": [
+        "desktop"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "godot-demos",
+      "name": "godotengine/godot-demo-projects",
+      "url": "https://github.com/godotengine/godot-demo-projects",
+      "repo": "godotengine/godot-demo-projects",
+      "adapter": "github-tree",
+      "kind": "template",
+      "path_pattern": "project\\.godot$",
+      "tags": [
+        "godot",
+        "game",
+        "2d",
+        "3d"
+      ],
+      "platforms": [
+        "web",
+        "desktop",
+        "mobile",
+        "game"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "threejs-repo",
+      "name": "mrdoob/three.js",
+      "url": "https://github.com/mrdoob/three.js",
+      "repo": "mrdoob/three.js",
+      "adapter": "github-tree",
+      "kind": "scene-3d",
+      "path_pattern": "^examples/.*\\.html$",
+      "tags": [
+        "threejs",
+        "webgl",
+        "shader",
+        "3d"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "r3f",
+      "name": "pmndrs/drei",
+      "url": "https://github.com/pmndrs/drei",
+      "repo": "pmndrs/drei",
+      "adapter": "github-tree",
+      "kind": "scene-3d",
+      "path_pattern": "^src/.*\\.tsx$",
+      "tags": [
+        "react",
+        "threejs",
+        "3d"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "khronos-samples",
+      "name": "KhronosGroup/glTF-Sample-Assets",
+      "url": "https://github.com/KhronosGroup/glTF-Sample-Assets",
+      "repo": "KhronosGroup/glTF-Sample-Assets",
+      "adapter": "github-tree",
+      "kind": "model-3d",
+      "path_pattern": "^Models/[^/]+/README\\.md$",
+      "tags": [
+        "gltf",
+        "3d"
+      ],
+      "platforms": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "animate-css",
+      "name": "animate-css/animate.css",
+      "url": "https://github.com/animate-css/animate.css",
+      "repo": "animate-css/animate.css",
+      "adapter": "github-tree",
+      "kind": "motion",
+      "path_pattern": "^source/.*\\.css$",
+      "tags": [
+        "css",
+        "animation",
+        "transition"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": true,
+      "status": "scoped-code-collection"
+    },
+    {
+      "id": "css-loaders-repo",
+      "name": "lukehaas/css-loaders",
+      "url": "https://github.com/lukehaas/css-loaders",
+      "repo": "lukehaas/css-loaders",
+      "adapter": "github-tree",
+      "kind": "motion",
+      "path_pattern": "\\.css$",
+      "tags": [
+        "css",
+        "loader",
+        "animation"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "tabler",
+      "name": "tabler/tabler",
+      "url": "https://github.com/tabler/tabler",
+      "repo": "tabler/tabler",
+      "adapter": "github-tree",
+      "kind": "template",
+      "path_pattern": "^core/pages/.*\\.html$",
+      "tags": [
+        "dashboard",
+        "bootstrap"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    },
+    {
+      "id": "bootstrap",
+      "name": "twbs/bootstrap",
+      "url": "https://github.com/twbs/bootstrap",
+      "repo": "twbs/bootstrap",
+      "adapter": "github-tree",
+      "kind": "ui-component",
+      "path_pattern": "^js/src/[^/]+\\.js$",
+      "tags": [
+        "bootstrap",
+        "navigation"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": false,
+      "status": "reference-until-reviewed"
+    }
+  ],
+  "discovery_queries": [
+    "topic:ui-components license:mit",
+    "topic:design-system license:mit",
+    "topic:react-components license:mit",
+    "topic:vue-components license:mit",
+    "topic:svelte license:mit",
+    "topic:flutter-ui license:mit",
+    "topic:react-native license:mit",
+    "topic:swiftui license:mit",
+    "topic:jetpack-compose license:mit",
+    "topic:wpf license:mit",
+    "topic:avalonia license:mit",
+    "topic:tauri license:mit",
+    "topic:electron license:mit",
+    "topic:website-template license:mit",
+    "topic:landing-page license:mit",
+    "topic:dashboard-template license:mit",
+    "topic:css-animation license:mit",
+    "topic:threejs license:mit",
+    "topic:webgl license:mit",
+    "topic:shaders license:mit",
+    "topic:game-assets license:mit",
+    "topic:pixel-art license:mit",
+    "topic:icons license:mit",
+    "topic:illustrations license:mit",
+    "topic:gltf license:mit",
+    "topic:blender license:mit",
+    "topic:typography license:mit",
+    "topic:lottie license:mit",
+    "topic:godot license:mit",
+    "topic:tailwindcss license:mit",
+    "topic:3d-models license:cc0-1.0",
+    "topic:textures license:cc0-1.0",
+    "topic:fonts license:ofl-1.1",
+    "topic:creative-coding license:apache-2.0",
+    "topic:templates license:apache-2.0"
+  ]
+}

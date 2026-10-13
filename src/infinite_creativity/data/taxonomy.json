@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "indexed_kinds": [
+    "icon",
+    "font",
+    "ui-component",
+    "motion",
+    "model-3d",
+    "texture",
+    "material",
+    "hdri",
+    "decal",
+    "atlas",
+    "terrain",
+    "brush",
+    "scene-3d",
+    "template",
+    "repository",
+    "source-reference"
+  ],
+  "hierarchy": {
+    "interface": {
+      "controls": [
+        "button",
+        "checkbox",
+        "radio",
+        "switch",
+        "slider",
+        "input",
+        "select",
+        "combobox",
+        "date-picker",
+        "color-picker",
+        "file-upload"
+      ],
+      "navigation": [
+        "navbar",
+        "sidebar",
+        "breadcrumbs",
+        "tabs",
+        "menu",
+        "pagination",
+        "stepper",
+        "command-palette",
+        "dock"
+      ],
+      "overlays": [
+        "dialog",
+        "drawer",
+        "popover",
+        "tooltip",
+        "toast",
+        "context-menu"
+      ],
+      "data": [
+        "table",
+        "tree",
+        "list",
+        "grid",
+        "calendar",
+        "timeline",
+        "chart",
+        "map"
+      ],
+      "feedback": [
+        "loader",
+        "progress",
+        "skeleton",
+        "empty-state",
+        "error-state"
+      ],
+      "layout": [
+        "card",
+        "accordion",
+        "panel",
+        "split-view",
+        "hero",
+        "footer",
+        "pricing",
+        "gallery"
+      ]
+    },
+    "motion": [
+      "transition",
+      "hover",
+      "scroll",
+      "parallax",
+      "reveal",
+      "gesture",
+      "spring",
+      "easing",
+      "lottie",
+      "rive",
+      "rig",
+      "skeletal-animation"
+    ],
+    "template": [
+      "landing",
+      "portfolio",
+      "dashboard",
+      "commerce",
+      "blog",
+      "documentation",
+      "mobile-app",
+      "desktop-app",
+      "game"
+    ],
+    "graphics-2d": [
+      "icon",
+      "vector",
+      "illustration",
+      "sprite",
+      "tileset",
+      "pattern",
+      "gradient",
+      "background",
+      "mockup",
+      "font",
+      "photo"
+    ],
+    "graphics-3d": [
+      "model-3d",
+      "scene-3d",
+      "character",
+      "prop",
+      "architecture",
+      "environment",
+      "low-poly",
+      "scan",
+      "rig"
+    ],
+    "surface": [
+      "texture",
+      "material",
+      "pbr",
+      "decal",
+      "atlas",
+      "brush",
+      "terrain",
+      "substance",
+      "hdri"
+    ],
+    "other-media": [
+      "audio",
+      "music",
+      "sfx",
+      "video",
+      "shader",
+      "design-token",
+      "prompt-reference"
+    ]
+  },
+  "styles": [
+    "minimal",
+    "glassmorphism",
+    "neumorphism",
+    "brutalism",
+    "retro",
+    "organic",
+    "industrial",
+    "cinematic",
+    "outline",
+    "solid",
+    "playful",
+    "luxury",
+    "low-poly",
+    "realistic",
+    "motion",
+    "dark",
+    "geometric"
+  ],
+  "platforms": [
+    "web",
+    "desktop",
+    "mobile",
+    "game"
+  ],
+  "facets_for_future_enrichment": [
+    "palette",
+    "contrast",
+    "typographic-style",
+    "density",
+    "material",
+    "lighting",
+    "motion-energy",
+    "dimensionality",
+    "accessibility",
+    "polygon-budget",
+    "file-size",
+    "framework-version"
+  ],
+  "semantics": "Taxonomy is broader than current connector coverage. Styles are inferred from metadata, never claimed as visually verified. Source references and repository records are distinct from individual assets."
+}

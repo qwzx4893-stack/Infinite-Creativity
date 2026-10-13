@@ -1,0 +1,60 @@
+name: Refresh creative catalog
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - run: python -m unittest discover -s tests -v
+      - uses: actions/cache@v4
+        with:
+          path: state/http
+          key: metadata-${{ github.run_id }}
+          restore-keys: metadata-
+      - name: Restore latest complete snapshot
+        shell: bash
+        run: |
+          mkdir -p snapshots
+          if gh release view catalog-latest >/dev/null 2>&1; then
+            gh release download catalog-latest --pattern 'catalog.sqlite.gz' --pattern 'manifest.json' --dir snapshots
+            python scripts/verify_snapshot.py snapshots
+          fi
+      - name: Refresh approved metadata adapters
+        id: sync
+        continue-on-error: true
+        run: python -m infinite_creativity.cli sync --adapters references polyhaven ambientcg iconify github-tree discovery refresh-discovered --discovery-pages 2
+      - name: Export and preserve diagnostic snapshot
+        run: python -m infinite_creativity.cli export --out snapshots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: catalog-${{ github.run_id }}
+          path: snapshots/
+          retention-days: 14
+      - name: Publish only a complete refresh
+        if: steps.sync.outcome == 'success'
+        shell: bash
+        run: |
+          if ! gh release view catalog-latest >/dev/null 2>&1; then
+            gh release create catalog-latest --title 'Latest verified catalog snapshot' --notes 'Metadata only. Original asset licenses apply. Inspect manifest.json for exact counts, sync health and checksums.'
+          fi
+          gh release upload catalog-latest snapshots/catalog.sqlite.gz snapshots/catalog.jsonl.gz snapshots/manifest.json --clobber
+      - name: Report incomplete refresh
+        if: steps.sync.outcome != 'success'
+        run: exit 1

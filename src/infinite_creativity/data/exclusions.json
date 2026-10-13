@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "blocked_urls": [],
+  "blocked_sources": [],
+  "notes": "Maintainer-reviewed durable exclusions. Add canonical URLs or source IDs here for takedowns, license conflicts, or prohibited content; do not embed offensive media."
+}
