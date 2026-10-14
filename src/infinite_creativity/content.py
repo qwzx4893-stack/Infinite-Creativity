@@ -14,8 +14,9 @@ from urllib.parse import urlsplit,urljoin
 from urllib.request import Request,build_opener
 from .network import NoRedirect
 
-CONTENT_HOSTS={'raw.githubusercontent.com','api.iconify.design','cdn.polyhaven.com','dl.polyhaven.org','polyhaven.com','ambientcg.com','downloads.ambientcg.com','api.github.com','fuel.gazebosim.org','storage.googleapis.com','codeload.github.com','kenney.nl'}
-HOST_SUFFIXES=('.polyhaven.com','.polyhaven.org','.ambientcg.com','.backblazeb2.com','.githubusercontent.com')
+CONTENT_HOSTS={'raw.githubusercontent.com','api.iconify.design','cdn.polyhaven.com','dl.polyhaven.org','polyhaven.com','ambientcg.com','downloads.ambientcg.com','api.github.com','fuel.gazebosim.org','storage.googleapis.com','codeload.github.com','kenney.nl','quaternius.com','drive.google.com','drive.usercontent.google.com','zenodo.org','download.blender.org','www.blender.org','studio.blender.org','huggingface.co'}
+HOST_SUFFIXES=('.polyhaven.com','.polyhaven.org','.ambientcg.com','.backblazeb2.com','.githubusercontent.com','.blender.org')
+CONTENT_HOSTS.add('freshluts.com')
 
 def validate_url(url,resolve_dns=True):
     p=urlsplit(url)
@@ -57,6 +58,10 @@ class ContentCache:
 
     def remote_zip(self,url):
         return zipfile.ZipFile(RangeZip(self,url))
+
+    def multipart_zip(self,parts):
+        from .multipart import MultipartZip
+        return MultipartZip(self,parts)
 
     def store(self,body,filename,mime='application/octet-stream'):
         digest=hashlib.sha256(body).hexdigest()

@@ -9,24 +9,43 @@ from .policy import LICENSES,acceptable
 
 MEDIA={'glb':'model-3d','gltf':'model-3d','blend':'model-3d','fbx':'model-3d','obj':'model-3d','usd':'scene-3d','usdz':'scene-3d','vdb':'volume-3d','abc':'animation-3d','png':'texture','jpg':'texture','jpeg':'texture','webp':'texture','svg':'illustration','exr':'texture','hdr':'hdri','wav':'audio','ogg':'audio','mp3':'audio','flac':'audio','ttf':'font','otf':'font'}
 MEDIA.update({'woff':'font','woff2':'font','capx':'template','c3p':'template','unitypackage':'template','aseprite':'sprite','ase':'sprite'})
+MEDIA.update({'cube':'lut','3dl':'lut','look':'lut','glsl':'shader','frag':'shader','vert':'shader','riv':'vector-animation','sif':'animation-2d','kra':'illustration','ora':'illustration','kdenlive':'editing-template','mlt':'editing-template','aep':'editing-template','drp':'editing-template','prproj':'editing-template','mp4':'video','webm':'video','mov':'video','gif':'animation-2d'})
 FORMAT_DIRS={'glb','gltf','fbx','obj','blend','models','meshes','formats','gltf format','glb format','fbx format','obj format','blend format'}
+
+def complete_tree(fetch,repo,commit,max_requests=2500):
+    result=[];queue=[(commit,'')];requests=0
+    while queue:
+        sha,prefix=queue.pop();requests+=1
+        if requests>max_requests:raise ValueError('Complete tree request budget exceeded')
+        tree=fetch.json(f'https://api.github.com/repos/{repo}/git/trees/{sha}?recursive=1')
+        if not tree.get('truncated'):
+            result.extend({**e,'path':prefix+e['path']} for e in tree.get('tree',[]))
+            if len(result)>350000:raise ValueError('Tree entry budget exceeded')
+            continue
+        direct=fetch.json(f'https://api.github.com/repos/{repo}/git/trees/{sha}')
+        if direct.get('truncated'):raise ValueError('Even the direct tree is incomplete')
+        for e in direct.get('tree',[]):
+            if e['type']=='tree':queue.append((e['sha'],prefix+e['path']+'/'))
+            else:result.append({**e,'path':prefix+e['path']})
+        if len(result)>350000:raise ValueError('Tree entry budget exceeded')
+    return result
 
 def github_assets(c,fetch,source,run):
     repo=source['repo']; sid=source['id']
     meta=fetch.json('https://api.github.com/repos/'+repo)
     branch=meta['default_branch']
     commit=fetch.json('https://api.github.com/repos/'+repo+'/commits/'+quote(branch,safe=''))['sha']
-    tree=fetch.json(f'https://api.github.com/repos/{repo}/git/trees/{commit}?recursive=1')
-    if tree.get('truncated'): raise RuntimeError('Asset tree truncated; refusing partial source reconciliation')
-    files=[e for e in tree.get('tree',[]) if e['type']=='blob']
+    files=[e for e in complete_tree(fetch,repo,commit) if e['type']=='blob']
     cache=ContentCache(c.path.parent/'content')
-    licenses={}
+    licenses={};license_texts={}
     for e in files:
         if PurePosixPath(e['path']).name.lower() not in {'license','license.txt','license.md','licence.txt','copying','cc0.txt'}: continue
         if not re.search(source.get('license_pattern','.*'),e['path']): continue
         url=f'https://raw.githubusercontent.com/{repo}/{commit}/'+quote(e['path'],safe='/')
-        r=cache.fetch(url,'license.txt',256*1024)
-        text=__import__('pathlib').Path(r['path']).read_text(encoding='utf-8-sig',errors='replace').lower()
+        if e['sha'] not in license_texts:
+            r=cache.fetch(url,'license.txt',256*1024)
+            license_texts[e['sha']]=__import__('pathlib').Path(r['path']).read_text(encoding='utf-8-sig',errors='replace').lower()
+        text=license_texts[e['sha']]
         if 'creativecommons.org/publicdomain/zero/1.0' in text or 'cc0 1.0 universal' in text or 'creative commons zero v1.0' in text:
             licenses[str(PurePosixPath(e['path']).parent)]={'spdx':'CC0-1.0','url':f'https://github.com/{repo}/blob/{commit}/'+quote(e['path'],safe='/'),'entry':e}
     if not licenses and repo.startswith('KenneyNL/'):
@@ -37,11 +56,15 @@ def github_assets(c,fetch,source,run):
             if re.search(r'Assets included in this package[^\n]+CC0 licensed',text,re.I):
                 licenses['.']={'spdx':'CC0-1.0','url':f'https://github.com/{repo}/blob/{commit}/README.md','entry':readme}
     if not licenses: raise RuntimeError('No verified scoped CC0 license found; no media promoted from the software license')
-    groups=defaultdict(list)
+    groups=defaultdict(list);by_parent=defaultdict(list);shared_by_root=defaultdict(list)
     def scope(path):
         matches=[root for root in licenses if root=='.' or path.startswith(root+'/')]
         return max(matches,key=len) if matches else None
     for e in files:
+        root=scope(e['path'])
+        if root is not None:
+            by_parent[(root,str(PurePosixPath(e['path']).parent))].append(e)
+            if '/textures/' in ('/'+e['path'].lower()) and PurePosixPath(e['path']).suffix.lower() in {'.png','.jpg','.jpeg','.webp'}:shared_by_root[root].append(e)
         path=e['path']; ext=PurePosixPath(path).suffix.lower().lstrip('.')
         if ext not in MEDIA or not re.search(source.get('path_pattern','.*'),path) or not acceptable(path): continue
         root=scope(path)
@@ -49,7 +72,8 @@ def github_assets(c,fetch,source,run):
         kind=MEDIA[ext]
         lower=path.lower()
         if kind=='model-3d' and ('/animations/' in lower or '/animation/' in lower): kind='animation-3d'
-        if kind=='texture' and source.get('image_kind'): kind=source['image_kind']
+        if kind=='texture' and source.get('image_kind') and not re.search(r'(?:^|/)(?:3d|textures?|materials?)(?:/|$)',lower): kind=source['image_kind']
+        if kind=='sprite' and re.search(r'(?:^|/)(?:ui|interfaces?)(?:/|$)',lower):kind='ui-asset'
         stem=PurePosixPath(path).stem
         logical='/'.join(p for p in PurePosixPath(path).parent.parts if p.lower() not in FORMAT_DIRS)
         groups[(root,kind,logical,stem)].append(e)
@@ -60,22 +84,26 @@ def github_assets(c,fetch,source,run):
         primary=entries[0]; lp=licenses[root]
         group_key=hashlib.sha256((kind+'|'+logical+'|'+stem).encode()).hexdigest()[:24]
         url=f'https://github.com/{repo}#asset-'+group_key
-        tags=source.get('tags',[])+[kind]+list(PurePosixPath(logical).parts)+[stem.replace('_',' ')]
+        tags=source.get('asset_tags',source.get('tags',[]))+[kind]+list(PurePosixPath(logical).parts)+[stem.replace('_',' ')]
         if not c.upsert(sid,primary['path'],stem.replace('_',' ').replace('-',' '),kind,url,license=lp['spdx'],license_url=lp['url'],author=source.get('author',repo.split('/')[0]),tags=tags,platforms=['web','desktop','mobile','game','film'],formats=sorted({PurePosixPath(e['path']).suffix.lstrip('.').lower() for e in entries}),access_url=f'https://raw.githubusercontent.com/{repo}/{commit}/'+quote(primary['path'],safe='/'),revision=hashlib.sha256(''.join(e['sha'] for e in entries).encode()).hexdigest(),run=run): continue
         aid=hashlib.sha256(url.encode()).hexdigest()[:24]
         bundle=[]
         parents={str(PurePosixPath(e['path']).parent) for e in entries}
-        dependencies=[e for e in files if scope(e['path'])==root and (str(PurePosixPath(e['path']).parent) in parents and PurePosixPath(e['path']).suffix.lower() in {'.bin','.mtl','.png','.jpg','.jpeg','.webp'})]
+        dependencies=[e for parent in parents for e in by_parent[(root,parent)] if PurePosixPath(e['path']).suffix.lower() in {'.bin','.mtl','.png','.jpg','.jpeg','.webp'}] if kind in {'model-3d','animation-3d','scene-3d'} else []
         # Shared atlas textures shipped under the same pack license are real dependencies.
-        shared=[e for e in files if scope(e['path'])==root and '/textures/' in ('/'+e['path'].lower()) and PurePosixPath(e['path']).suffix.lower() in {'.png','.jpg','.jpeg','.webp'}]
-        if len(shared)<=16: dependencies+=shared
+        shared=shared_by_root[root]
+        if kind in {'model-3d','animation-3d','scene-3d'} and len(shared)<=16: dependencies+=shared
         unique={e['path']:e for e in entries+dependencies+[lp['entry']]}
+        for e in by_parent[(root,root)]:
+            if PurePosixPath(e['path']).name.lower()=='source.md':unique[e['path']]=e
         for path,e in unique.items():
-            role='main' if e==primary else 'variant' if e in entries else 'license' if e==lp['entry'] else 'dependency'
+            role='main' if e==primary else 'variant' if e in entries else 'license' if e==lp['entry'] else 'provenance' if PurePosixPath(path).name.lower()=='source.md' else 'dependency'
             bundle.append({'url':f'https://raw.githubusercontent.com/{repo}/{commit}/'+quote(path,safe='/'),'filename':PurePosixPath(path).name,'relative_path':path,'bytes':e.get('size'),'sha':e['sha'],'role':role})
-        previews=[{'url':b['url']} for b in bundle if b['role']=='dependency' and b['filename'].lower().endswith(('.png','.jpg','.webp'))]
-        c.set_details(aid,{'description':source.get('description',meta.get('description') or ''),'files':bundle,'previews':previews[:1] if kind not in {'model-3d','animation-3d','scene-3d'} else [],'features':{'pack':repo,'style':source.get('style',''),'license_scope':root,'format_variants':len(entries),'animation_inspection':'inspect_3d_asset checks actual glTF skin/clip data'},'commit':commit})
+        previews=[{'url':b['url']} for b in bundle if b['role']=='main' and b['filename'].lower().endswith(('.png','.jpg','.webp'))]
+        c.set_details(aid,{'pack_name':repo+' / '+root,'pack_scope':root,'description':source.get('description',meta.get('description') or ''),'files':bundle,'previews':previews[:1],'features':{'pack':repo,'style':source.get('style',''),'license_scope':root,'format_variants':len(entries),'creator_provenance':'Repository maintainer identity is not assumed to be the original artist. Read pack SOURCE.md and original license notices where provided.','animation_inspection':'inspect_3d_asset checks actual glTF skin/clip data'},'commit':commit})
         count+=1
+        if count%1000==0:
+            c.db.commit();print(__import__('json').dumps({'progress':'github-assets','source':sid,'items':count}),flush=True)
     if not count: raise RuntimeError('No licensed media matched this source; update its scope')
     c.reconcile(sid,run)
     return count

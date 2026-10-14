@@ -28,4 +28,14 @@ MCP uses the official Python SDK v1 maintenance line with a <2 bound; the tested
 
 File manifests preserve relative paths and main/variant/dependency/license roles. Poly Haven included textures remain associated with their selected format/resolution bundle. GitHub blobs are checked against their indexed SHA; LFS pointers resolve to the public original with its declared SHA256. Native MCP images are limited to supported raster MIME types; SVG is original text. Chunk delivery works when the client cannot read the server's local cache.
 
-Topical discovery now covers 272 configured queries. A separate 24-query oldest-first search sweep and the persistent 20-request partition queue refresh slices every six hours. Repository-level discoveries remain references and do not inflate usable media counts. Single-host SQLite is the current index; distributed search, authenticated HTTP hosting, visual embeddings and visual moderation are future work.
+Topical discovery covers 272 configured queries. A separate 24-query oldest-first search sweep and the persistent 20-request partition queue refresh slices every six hours. Repository-level discoveries remain references and do not inflate usable media counts. Single-host SQLite is the current index; distributed search, authenticated HTTP hosting and visual embeddings are future work.
+
+## v0.3 navigation and curation
+
+`asset_sections` gives each record one primary leaf and pack membership. `packs` contains actual thematic member inventories and separately labelled provider collections. Browse tools use exact section IDs and preserve independent artistic facets. `curation` stores revision-bound evidence, technical quality, image-review scope and exact duplicate aliases. All browse/search/facet paths use the same visibility rule. Original media cannot be retrieved for quarantined or reference-only records.
+
+`containers` normalizes multi-volume archive URLs, sizes and upstream checksums. The FSD50K adapter stores per-clip rights and ZIP member offsets/inventories; `MultipartZip` reads bounded ranges across volumes and verifies member size/CRC without whole-dataset downloads. Container and pack metadata are included once in separate JSONL exports as well as the SQLite snapshot.
+
+Public Drive HTML is decoded without JavaScript execution. Only creator-linked CC0 distributions qualify; potentially paginated listings are not reconciled. Truncated Git trees are expanded recursively through direct subtrees, with explicit request/size bounds. Per-pack license hashes avoid duplicate license downloads; dependency lookups are indexed by parent and scoped pack.
+
+Optional local ONNX inference verifies pinned model/preprocessing hashes and records actual image hashes, class probabilities, crop coverage and scope. Ambiguous results require contextual review. Model weights and original media stay outside public snapshots. Six-hour jobs process additional bounded image batches; this does not certify all unseen geometry, frames or speech. Public creator presentation thumbnails are native MCP visual studies with attribution and blocked original-file tools. There is no human frontend or MCP App.

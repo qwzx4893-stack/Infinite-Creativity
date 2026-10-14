@@ -4,6 +4,7 @@ import os
 import sys
 import hashlib
 import base64
+import io,wave
 import tempfile
 import unittest
 from pathlib import Path
@@ -21,9 +22,25 @@ class MCPTests(unittest.TestCase):
             c.upsert("fixture","button","minimal button","ui-component","https://example.com/button",license="MIT",license_url="https://example.com/LICENSE",access_url=url)
             aid=hashlib.sha256(b'https://example.com/button').hexdigest()[:24]
             c.set_details(aid,{'files':[{'url':url,'filename':'button.tsx','role':'main'}]})
+            from infinite_creativity.organization import organize
+            organize(c)
             cache=ContentCache(Path(td)/'content'); body=b'export function Button() { return <button>Save</button> }'
             cached=cache.store(body,'button.tsx','text/plain')
             (cache.root/(hashlib.sha256(url.encode()).hexdigest()+'.receipt.json')).write_text(json.dumps(cached))
+            audio_url='https://raw.githubusercontent.com/fixture/pack/pinned/click.wav';audio_id=hashlib.sha256(b'https://example.com/click').hexdigest()[:24]
+            c.upsert('fixture','click','interface click','audio','https://example.com/click',license='CC0-1.0',license_url='https://example.com/LICENSE',access_url=audio_url)
+            c.set_details(audio_id,{'files':[{'url':audio_url,'filename':'click.wav','role':'main'}]})
+            stream=io.BytesIO()
+            with wave.open(stream,'wb') as w:w.setnchannels(1);w.setsampwidth(2);w.setframerate(16000);w.writeframes(b'\x00\x00'*800)
+            audio=cache.store(stream.getvalue(),'click.wav','audio/wav')
+            (cache.root/(hashlib.sha256(audio_url.encode()).hexdigest()+'.receipt.json')).write_text(json.dumps(audio))
+            image_url='https://raw.githubusercontent.com/fixture/pack/pinned/preview.png';study_id=hashlib.sha256(b'https://example.com/study').hexdigest()[:24]
+            c.upsert('fixture','study','visual study','visual-reference','https://example.com/study',mode='reference')
+            c.set_details(study_id,{'reference_category':'three-d','reference_preview':{'notice':'Presentation study only; no original reuse'},'previews':[{'url':image_url}],'files':[]})
+            png=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==')
+            preview=cache.store(png,'preview.png','image/png')
+            (cache.root/(hashlib.sha256(image_url.encode()).hexdigest()+'.receipt.json')).write_text(json.dumps(preview))
+            organize(c)
             c.db.commit(); c.close()
             async def run():
                 params=StdioServerParameters(command=sys.executable,args=["-m","infinite_creativity.server"],env={**os.environ,"IC_CATALOG_DB":str(path)})
@@ -33,6 +50,12 @@ class MCPTests(unittest.TestCase):
                         names={t.name for t in (await session.list_tools()).tools}
                         self.assertIn("recommend_assets",names)
                         self.assertIn("browse_assets",names)
+                        self.assertTrue({'library_sections','library_packs','get_library_pack','preview_audio_asset'}<=names)
+                        tree=await session.call_tool('library_sections',{'parent':'interface/components'})
+                        leaf=tree.structuredContent['sections'][0]
+                        self.assertEqual(leaf['id'],'interface/components/controls')
+                        resource=await session.read_resource(leaf['resource_uri'])
+                        self.assertEqual(json.loads(resource.contents[0].text)['parent'],leaf['id'])
                         result=await session.call_tool("search_assets",{"query":"button"})
                         self.assertFalse(result.isError)
                         data=result.structuredContent or json.loads(result.content[0].text)
@@ -61,6 +84,12 @@ class MCPTests(unittest.TestCase):
                         self.assertEqual(base64.b64decode(chunk['data']),body[:7])
                         original=await session.read_resource('creativity://asset/'+aid+'/file/'+file_id)
                         self.assertEqual(base64.b64decode(original.contents[0].blob),body)
+                        audio=await session.call_tool('preview_audio_asset',{'asset_id':audio_id})
+                        self.assertFalse(audio.isError);self.assertTrue(any(x.type=='audio' for x in audio.content))
+                        preview=await session.call_tool('preview_asset',{'asset_id':study_id})
+                        self.assertFalse(preview.isError);self.assertTrue(any(x.type=='image' for x in preview.content));self.assertNotIn('path',preview.structuredContent)
+                        denied=await session.call_tool('fetch_asset',{'asset_id':study_id})
+                        self.assertTrue(denied.isError)
             asyncio.run(asyncio.wait_for(run(),timeout=45))
 
 if __name__ == "__main__": unittest.main()

@@ -7,6 +7,14 @@ from .policy import BLOCKED_URLS,BLOCKED_SOURCES
 from .locking import SyncLock
 from .asset_adapters import github_assets,fuel,khronos
 from .kenney import kenney
+from .audio_adapters import fsd50k
+from .organization import organize
+from .drive import quaternius
+from .curation import curate
+from .blender_demos import demos
+from .inspiration import quaternius_studies
+from .color_adapters import luts
+from .codrops import codrops
 
 def registry():
     return json.loads(files("infinite_creativity").joinpath("data/sources.json").read_text(encoding="utf-8"))
@@ -26,7 +34,7 @@ def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state
     fetch = Fetcher(cache)
     report = []
     run = now()
-    selected = set(adapters or ["polyhaven","ambientcg","iconify","github-tree","github-assets","fuel","kenney-packs","khronos","references"])
+    selected = set(adapters or ["polyhaven","ambientcg","iconify","github-tree","github-assets","fuel","kenney-packs","khronos","references","fsd50k","quaternius","blender-demos","inspiration","luts","codrops"])
     for s in config["sources"]:
         c.source(s)
         previous=c.db.execute('SELECT status FROM sync_runs WHERE source=? ORDER BY id DESC LIMIT 1',(s['id'],)).fetchone()
@@ -58,6 +66,12 @@ def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state
         jobs.append(('kenney-packs',lambda:kenney(c,fetch,run)))
     if 'khronos' in selected:
         jobs.append(('khronos-assets',lambda:khronos(c,fetch,run)))
+    if 'fsd50k' in selected:jobs.append(('fsd50k',lambda:fsd50k(c,fetch,run)))
+    if 'quaternius' in selected:jobs.append(('quaternius',lambda:quaternius(c,fetch,run)))
+    if 'blender-demos' in selected:jobs.append(('blender-demos',lambda:demos(c,fetch,run)))
+    if 'inspiration' in selected:jobs.append(('inspiration-quaternius',lambda:quaternius_studies(c,fetch,run)))
+    if 'luts' in selected:jobs.append(('color-luts',lambda:luts(c,fetch,run)))
+    if 'codrops' in selected:jobs.append(('codrops-inventory',lambda:codrops(c,fetch,run)))
     if "discovery" in selected:
         jobs.append(("github-discovery",lambda:discover(c,fetch,run,config["discovery_queries"],discovery_pages)))
     if 'discovery-rotate' in selected:
@@ -76,9 +90,14 @@ def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state
             entry = {"source":sid,"status":"ok","count":count,"error":""}
         except Exception as e:
             # Preserve prior snapshots and partial valid updates. No stale reconciliation on failure.
-            entry = {"source":sid,"status":"failed","count":0,"error":str(e)[:2000]}
+            import re
+            error=str(e).replace(str(c.path.parent.resolve()),'[private-state]')
+            error=re.sub(r'(?i)gh[pousr]_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+','[redacted]',error)
+            entry = {"source":sid,"status":"failed","count":0,"error":error[:2000]}
         c.db.execute("UPDATE sync_runs SET completed=?,status=?,count=?,error=? WHERE id=?",(now(),entry["status"],entry["count"],entry["error"],rid))
         c.db.commit()
         report.append(entry)
         print(json.dumps(entry,ensure_ascii=False), flush=True)
+    organize(c)
+    curate(c)
     return report

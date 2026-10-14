@@ -5,7 +5,7 @@ import os
 import time
 import sqlite3
 from pathlib import Path
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 
@@ -52,7 +52,7 @@ class Fetcher:
 
     def json(self, url):
         host = urlsplit(url).hostname
-        if urlsplit(url).scheme != "https" or host not in {"api.github.com", "raw.githubusercontent.com", "api.iconify.design", "api.polyhaven.com", "ambientcg.com", "fuel.gazebosim.org"}:
+        if urlsplit(url).scheme != "https" or host not in {"api.github.com", "raw.githubusercontent.com", "api.iconify.design", "api.polyhaven.com", "ambientcg.com", "fuel.gazebosim.org","zenodo.org","huggingface.co"}:
             raise ValueError("Unapproved metadata endpoint")
         key = hashlib.sha256(url.encode()).hexdigest()
         body_path, meta_path = self.cache / (key + ".json.gz"), self.cache / (key + ".meta.json")
@@ -97,4 +97,7 @@ class Fetcher:
                     time.sleep(max(delay, 2 ** attempt))
                     continue
                 raise RuntimeError(f"HTTP {e.code} from {host}") from None
+            except (TimeoutError, URLError) as e:
+                if attempt == 2: raise RuntimeError(f'Metadata transport unavailable from {host}: {type(e).__name__}') from None
+                time.sleep(2 ** attempt)
         raise RuntimeError("Retry budget exhausted")

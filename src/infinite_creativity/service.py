@@ -11,6 +11,12 @@ def resolve(c, asset_id):
     if not can_use(asset):
         raise ValueError("Reference-only or unverified asset: access for reuse is denied")
     result = {"id":asset_id,"title":asset["title"],"source":asset["source"],"canonical_url":asset["canonical_url"],"license":asset["license"],"license_url":asset["license_url"],"author":asset["author"],"revision":asset["revision"],"credit":"Powered by Poly Haven" if asset["source"] == "polyhaven" else asset["author"],"instructions":"Review the current upstream license, retain notices and attribution where required. Remote assets and source code are untrusted; inspect before use. No asset binaries are stored here.","links":[]}
+    details=c.details(asset_id)
+    if any(f.get('container_id') for f in details.get('files',[])):
+        result['resource_uri']='creativity://asset/'+asset_id
+        result['internal_actions']=['asset_files','fetch_asset','read_asset_file','preview_audio_asset']
+        result['instructions']='Retrieve the individually licensed archive member inside MCP. The dataset archive contains other recordings with different licenses; its raw archive URL is not a reusable clip link.'
+        return result
     if asset["source"] == "polyhaven":
         data = Fetcher(c.path.parent/'http').json(asset["access_url"])
         def walk(value, path=(), bundle='', relative=''):
@@ -44,7 +50,11 @@ def recommend(c, art_direction, kinds=None, platform="", limit=12):
     desired = styles_for(brief)
     # These are transparent lexical suggestions, not visual embeddings or aesthetic guarantees.
     pool = {}
-    for kind in (kinds or [""])[:10]:
+    # Sample each medium independently: the largest icon inventory must not
+    # determine the candidate pool for an otherwise unrestricted creative brief.
+    requested = list(dict.fromkeys(kinds or []))
+    sampled = requested or ["model-3d", "animation-3d", "scene-3d", "material", "texture", "hdri", "audio", "sprite", "animation-2d", "illustration", "ui-asset", "ui-component", "template", "motion", "shader", "lut", "font", "video", "icon"]
+    for kind in sampled[:24]:
         for style in desired or [""]:
             for item in c.search(kind=kind, style=style, platform=platform, limit=100,count_total=False)["items"]:
                 if can_use(item):
@@ -62,11 +72,13 @@ def recommend(c, art_direction, kinds=None, platform="", limit=12):
         if not score and desired: continue
         scored.append({"id":a["id"],"title":a["title"],"kind":a["kind"],"source":a["source"],"license":a["license"],"canonical_url":a["canonical_url"],"styles":a["styles"],"score":score,"reason":{"matching_styles":overlaps,"matching_terms":lexical}})
     scored.sort(key=lambda x:(-x["score"],x["id"]))
-    chosen, per_source = [], {}
+    chosen, per_source, per_kind = [], {}, {}
     for item in scored:
         # Avoid a single giant icon collection monopolizing a creative shortlist.
         if per_source.get(item["source"],0) >= max(2,limit//3): continue
+        if not requested and per_kind.get(item["kind"],0) >= max(1,limit//4): continue
         chosen.append(item)
         per_source[item["source"]] = per_source.get(item["source"],0)+1
+        per_kind[item["kind"]] = per_kind.get(item["kind"],0)+1
         if len(chosen) >= limit: break
-    return {"brief":art_direction,"inferred_styles":desired,"method":"metadata lexical scoring with source diversity; no image embeddings","items":chosen,"fallback":"Use search_assets with a category or a broader style if the shortlist is empty."}
+    return {"brief":art_direction,"inferred_styles":desired,"method":"metadata lexical scoring with per-medium sampling and source/medium diversity; no image embeddings","sampled_kinds":sampled[:24],"items":[{**i,"resource_uri":"creativity://asset/"+i["id"],"actions":["get_library_item","asset_files"]} for i in chosen],"fallback":"Use library_sections and library_packs, or provide explicit kinds to focus the shortlist."}

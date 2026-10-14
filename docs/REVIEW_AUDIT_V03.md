@@ -1,0 +1,9 @@
+# First review batch and practical limits
+
+The initial bounded batch attempted 1,000 original raster files: 996 were decoded and assessed, and four failed or were unsupported. The classifier's 49 uncertain/suggestive outputs were inspected as complete static images on a labelled audit sheet. Forty-eight were nonsexual game/UI graphics, tiles, effects, objects, backgrounds, animals or clothed cartoons; one small humanoid base-character frame remained uncertain and was withheld. Related frames of that exact base character require original-frame review. This does not label an entire mixed pack as sexual.
+
+The first preprocessing pass revealed an alpha-compositing regression: white transparent graphics disappeared on white backgrounds. The corrected pass uses a contrasting background and preserves small pixel-art edges with nearest-neighbour scaling. Both preprocessing and context-review scope are recorded. Successful decode does not imply aesthetic approval.
+
+This audit demonstrates that the five-class classifier is poorly calibrated for some stylized game art: it can produce confident false positives for harmless graphics. Its outputs are review triage, not evidence sufficient for permanent removal. Context decisions are bound to the item revision and exact media hash, retain the model probabilities, and never certify unseen 3D surfaces, animation frames or speech. CLI `apply-reviews` accepts explicit operator review records; runtime MCP agents cannot silently rewrite public safety verdicts.
+
+Actual current active-item coverage, transfers after section refinements, exclusions and further presentation-thumbnail reviews are reported in the release manifest. The full library has not received complete visual, audio-semantic or aesthetic review. Future batches continue every six hours with explicit evidence and uncertainty.

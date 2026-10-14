@@ -6,6 +6,8 @@ Unified creative library for AI agents. The database holds indexed records and f
 
 **Exact coverage:** see `manifest.json` in the [latest catalog release](https://github.com/qwzx4893-stack/Infinite-Creativity/releases/tag/catalog-latest). Records can include variants and references; they are not estimated provider totals or unique artworks. This is an expanding library, not a completed million-item index of the entire Internet.
 
+[Coverage of the originally requested sites](docs/REQUESTED_SOURCE_COVERAGE.md) distinguishes actual indexed items from source registration and unavailable integrations. `library_overview` reports usable counts by medium and a separate total excluding icons. Unrestricted recommendations sample each medium independently and cap both source and medium concentration.
+
 ## Install and restore
 
 Python 3.11+ and SQLite FTS5 are required.
@@ -54,22 +56,50 @@ Windows: use `.venv\\Scripts\\python.exe` with JSON-escaped backslashes. No GitH
 | Tools | In-library behavior |
 | --- | --- |
 | `library_overview`, `library_facets`, `browse_taxonomy` | Discover sections, real counts, styles, platforms and formats |
+| `library_sections`, `library_packs`, `get_library_pack` | Precise section tree and actual thematic packs with indexed members |
 | `open_library`, `library_page` | Browse the full matching inventory with private sessions and signed keyset cursors |
 | `get_library_item` | Full record, features, provenance, license and permitted actions |
 | `recommend_assets` | Diverse art-direction shortlist with explicit matching reasons |
 | `preview_asset` | Native MCP raster image for eligible previews; SVG returned as original text |
+| `preview_audio_asset` | Native MCP audio for licensed recordings up to 2 MiB |
 | `asset_files` | Actual variants, file IDs, dependencies, formats and sizes |
 | `read_asset_code`, `read_asset_dependency` | Original source text and verified declared relative dependencies |
 | `inspect_3d_asset` | glTF/GLB meshes, materials, skins, animation names, triangles and external resources; ZIP inventory |
+| `inspect_asset_media` | Original audio duration/channels, raster dimensions, Aseprite frame counts and LUT grid/color metadata |
 | `fetch_asset`, `fetch_asset_bundle` | Originals, dependencies, preserved relative paths, checksums and attribution |
 | `read_asset_file`, `read_archive_entry` | Bounded base64 chunks for clients without the server filesystem |
 | `create_collection`, `add_to_collection`, `get_collection` | Private project shortlists excluded from public exports |
 | `search_assets`, `browse_assets`, `get_asset`, `resolve_asset` | Compatibility metadata/search/link interface |
 | `list_sources`, `catalog_stats` | Sources, review status, coverage and sync health |
 
-Resources: `creativity://library`, `creativity://taxonomy`, `creativity://stats`, `creativity://asset/{id}`, `creativity://asset/{id}/file/{file_id}`. Prompt: `creative_brief`.
+Resources: `creativity://library`, `creativity://taxonomy`, `creativity://stats`, `creativity://section/{encoded_id}`, `creativity://pack/{id}`, `creativity://asset/{id}`, `creativity://asset/{id}/file/{file_id}`. Prompt: `creative_brief`.
 
 Start with `library_overview`. Open, for example, `kind="model-3d", style="low-poly"`; continue using the returned session/cursor, inspect an item, preview where available, select variants with `asset_files`, then retrieve or inspect those file IDs. Component users can read source and declared imports before assembling a bundle. See [agent usage](docs/AGENT_USAGE.md).
+
+## Agent navigation in v0.3
+
+This is an MCP library, with no human frontend. The controlled hierarchy has 62 primary leaves for interfaces, animation, editing, 3D, 2D, surfaces, lighting, audio, typography, visual studies and discovery. An item occupies one primary leaf. Parent counts roll up descendants; artistic styles, platforms, formats, licenses and pack membership remain independent filters. Empty sections are hidden by default and can be inspected explicitly.
+
+`library_sections(parent="three-d")` expands the tree. `library_packs(section="three-d", style="cartoon")` lists real themed packs. `get_library_pack` opens actual members; `open_library(section="three-d/characters", pack="...")` combines precise placement and pack membership. Source directories and unreviewed repositories are excluded from pack browsing. Inspiration is a separate reference view with native public presentation thumbnails, attribution and no original-file actions.
+
+New ingestion covers individually licensed FSD50K audio, creator-linked public Quaternius Drive distributions, large scoped CC0 2D/game pack archives, Duelyst pixel animation/effects/audio, and per-card official Blender demos. Public Drive listings that may be paginated are withheld; paid Pro/source files are never taken. Truncated Git trees are walked through their subtrees before reconciliation. Read `list_sources` coverage and the release manifest for actual records and supported subsets.
+
+Codrops public MIT repositories contribute actual code packs with original files, shaders, relative paths and license notices. Vendor libraries, fonts and demo media are excluded from that software-license scope; records expose remaining setup requirements. Mapcn contributes selected original map/analytics components; default CARTO tiles have separate service rights and are not included.
+
+## Curation and image review
+
+Exact duplicates require compatible rights and matching upstream cryptographic hashes for the entire indexed original/dependency bundle. Names, CRC32, visual similarity and a matching main mesh alone are insufficient. Duplicate aliases and quarantined items are omitted from all browse/search/facet paths. Small icons, pixel art, low-poly models and minimal design are retained. Technical quality and aesthetic quality are distinct; no invented quality score is assigned.
+
+```bash
+python -m pip install -e '.[vision]'
+infinite-creativity prepare-vision
+infinite-creativity curate
+infinite-creativity screen-vision --limit 500
+```
+
+The optional pinned ONNX classifier runs locally, verifies its hashes, screens raster images and multiple crops, and quarantines both suggestive and uncertain results. Evidence records image/model hashes, class probabilities, threshold and whether the image was an original raster or a preview. New upstream revisions invalidate old verdicts. Six-hour updates continue image-review batches; the manifest reports actual coverage and pending items. This is probabilistic screening: it does not certify unseen 3D surfaces, unsampled animation frames, speech or contextual innuendo. Aesthetic filtering of the full collection is not complete.
+
+Editing inventories also include licensed creative grading, camera/display transforms and color-accessibility LUT packs. Their records preserve input/output gamut, transfer functions, inference confidence, conversion warnings and upstream notices. Only audited collections with confirmed current licenses qualify; third-party caveat collections and unclear calibration images are excluded.
 
 Cards expose internal resource URIs and actions. External URLs remain provenance; browsing and file retrieval do not require visiting them. Individual Kenney originals are read from verified free ZIPs with HTTP ranges, avoiding a whole-pack download for one mesh, sprite or sound. SHA256 deduplicates fetched bytes. Downloaded files remain untrusted and are never executed.
 

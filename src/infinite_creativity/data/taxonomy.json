@@ -1,21 +1,25 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "indexed_kinds": [
+    "animation-2d",
     "animation-3d",
     "atlas",
     "audio",
     "brush",
     "decal",
+    "editing-template",
     "font",
     "hdri",
     "icon",
     "illustration",
     "image",
+    "lut",
     "material",
     "model-3d",
     "motion",
     "repository",
     "scene-3d",
+    "shader",
     "source-reference",
     "sprite",
     "template",
@@ -23,140 +27,11 @@
     "texture",
     "ui-asset",
     "ui-component",
+    "vector-animation",
+    "video",
+    "visual-reference",
     "volume-3d"
   ],
-  "hierarchy": {
-    "interface": {
-      "controls": [
-        "button",
-        "checkbox",
-        "radio",
-        "switch",
-        "slider",
-        "input",
-        "select",
-        "combobox",
-        "date-picker",
-        "color-picker",
-        "file-upload"
-      ],
-      "navigation": [
-        "navbar",
-        "sidebar",
-        "breadcrumbs",
-        "tabs",
-        "menu",
-        "pagination",
-        "stepper",
-        "command-palette",
-        "dock"
-      ],
-      "overlays": [
-        "dialog",
-        "drawer",
-        "popover",
-        "tooltip",
-        "toast",
-        "context-menu"
-      ],
-      "data": [
-        "table",
-        "tree",
-        "list",
-        "grid",
-        "calendar",
-        "timeline",
-        "chart",
-        "map"
-      ],
-      "feedback": [
-        "loader",
-        "progress",
-        "skeleton",
-        "empty-state",
-        "error-state"
-      ],
-      "layout": [
-        "card",
-        "accordion",
-        "panel",
-        "split-view",
-        "hero",
-        "footer",
-        "pricing",
-        "gallery"
-      ]
-    },
-    "motion": [
-      "transition",
-      "hover",
-      "scroll",
-      "parallax",
-      "reveal",
-      "gesture",
-      "spring",
-      "easing",
-      "lottie",
-      "rive",
-      "rig",
-      "skeletal-animation"
-    ],
-    "template": [
-      "landing",
-      "portfolio",
-      "dashboard",
-      "commerce",
-      "blog",
-      "documentation",
-      "mobile-app",
-      "desktop-app",
-      "game"
-    ],
-    "graphics-2d": [
-      "icon",
-      "vector",
-      "illustration",
-      "sprite",
-      "tileset",
-      "pattern",
-      "gradient",
-      "background",
-      "mockup",
-      "font",
-      "photo"
-    ],
-    "graphics-3d": [
-      "model-3d",
-      "scene-3d",
-      "character",
-      "prop",
-      "architecture",
-      "environment",
-      "low-poly",
-      "scan",
-      "rig"
-    ],
-    "surface": [
-      "texture",
-      "material",
-      "pbr",
-      "decal",
-      "atlas",
-      "brush",
-      "terrain",
-      "substance",
-      "hdri"
-    ],
-    "other-media": [
-      "audio",
-      "music",
-      "sfx",
-      "video",
-      "shader",
-      "design-token",
-      "prompt-reference"
-    ]
-  },
   "styles": [
     "minimal",
     "glassmorphism",
@@ -174,7 +49,15 @@
     "realistic",
     "motion",
     "dark",
-    "geometric"
+    "geometric",
+    "anime",
+    "cartoon",
+    "ghibli",
+    "fantasy",
+    "sci-fi",
+    "watercolor",
+    "hand-drawn",
+    "isometric"
   ],
   "platforms": [
     "web",
@@ -196,5 +79,380 @@
     "file-size",
     "framework-version"
   ],
-  "semantics": "Taxonomy is broader than current connector coverage. Styles are inferred from metadata, never claimed as visually verified. Source references and repository records are distinct from individual assets."
+  "semantics": "Taxonomy is broader than current connector coverage. Styles are inferred from metadata, never claimed as visually verified. Source references and repository records are distinct from individual assets.",
+  "primary_sections": [
+    {
+      "id": "interface/components/controls",
+      "title": "Controls",
+      "title_ar": "أدوات التحكم"
+    },
+    {
+      "id": "interface/components/navigation",
+      "title": "Navigation",
+      "title_ar": "التنقل"
+    },
+    {
+      "id": "interface/components/forms",
+      "title": "Forms",
+      "title_ar": "النماذج"
+    },
+    {
+      "id": "interface/components/data-display",
+      "title": "Data display",
+      "title_ar": "عرض البيانات"
+    },
+    {
+      "id": "interface/components/feedback",
+      "title": "Feedback",
+      "title_ar": "التنبيهات والحالات"
+    },
+    {
+      "id": "interface/components/layout",
+      "title": "Layouts",
+      "title_ar": "التخطيطات"
+    },
+    {
+      "id": "interface/components/other",
+      "title": "Other components",
+      "title_ar": "عناصر واجهة أخرى"
+    },
+    {
+      "id": "interface/visual-kits",
+      "title": "Visual UI kits",
+      "title_ar": "حزم الواجهات البصرية"
+    },
+    {
+      "id": "interface/icons",
+      "title": "Icons",
+      "title_ar": "الأيقونات"
+    },
+    {
+      "id": "interface/templates",
+      "title": "Web and app templates",
+      "title_ar": "قوالب المواقع والتطبيقات"
+    },
+    {
+      "id": "motion/interface",
+      "title": "Interface motion",
+      "title_ar": "حركة الواجهات"
+    },
+    {
+      "id": "motion/graphics",
+      "title": "Motion graphics",
+      "title_ar": "الموشن جرافيكس"
+    },
+    {
+      "id": "motion/vector-animation",
+      "title": "Vector animation",
+      "title_ar": "التحريك المتجهي"
+    },
+    {
+      "id": "motion/particles",
+      "title": "Particles and effects",
+      "title_ar": "الجزيئات والمؤثرات"
+    },
+    {
+      "id": "motion/shaders",
+      "title": "Shaders",
+      "title_ar": "المظللات"
+    },
+    {
+      "id": "editing/transitions",
+      "title": "Video transitions",
+      "title_ar": "انتقالات المونتاج"
+    },
+    {
+      "id": "editing/color-luts",
+      "title": "Color LUTs",
+      "title_ar": "معالجة الألوان"
+    },
+    {
+      "id": "editing/project-templates",
+      "title": "Editing projects",
+      "title_ar": "مشاريع المونتاج"
+    },
+    {
+      "id": "editing/footage",
+      "title": "Footage",
+      "title_ar": "لقطات الفيديو"
+    },
+    {
+      "id": "editing/overlays",
+      "title": "Overlays",
+      "title_ar": "طبقات المونتاج"
+    },
+    {
+      "id": "three-d/characters/humanoid",
+      "title": "Humanoid characters",
+      "title_ar": "شخصيات بشرية"
+    },
+    {
+      "id": "three-d/characters/creatures",
+      "title": "Animals and creatures",
+      "title_ar": "الحيوانات والمخلوقات"
+    },
+    {
+      "id": "three-d/characters/robots",
+      "title": "Robots and machines",
+      "title_ar": "الروبوتات والآلات"
+    },
+    {
+      "id": "three-d/environments/nature",
+      "title": "Nature environments",
+      "title_ar": "البيئات الطبيعية"
+    },
+    {
+      "id": "three-d/environments/architecture",
+      "title": "Architecture",
+      "title_ar": "العمارة والمباني"
+    },
+    {
+      "id": "three-d/props/vehicles",
+      "title": "Vehicles",
+      "title_ar": "المركبات"
+    },
+    {
+      "id": "three-d/props/furniture",
+      "title": "Furniture",
+      "title_ar": "الأثاث"
+    },
+    {
+      "id": "three-d/props/equipment",
+      "title": "Equipment",
+      "title_ar": "المعدات"
+    },
+    {
+      "id": "three-d/props/other",
+      "title": "Other props",
+      "title_ar": "مجسمات أخرى"
+    },
+    {
+      "id": "three-d/animation/rigs",
+      "title": "Rigs",
+      "title_ar": "هياكل التحريك"
+    },
+    {
+      "id": "three-d/animation/clips",
+      "title": "Animation clips",
+      "title_ar": "مقاطع التحريك"
+    },
+    {
+      "id": "three-d/scenes",
+      "title": "Complete scenes",
+      "title_ar": "المشاهد الكاملة"
+    },
+    {
+      "id": "three-d/volumes",
+      "title": "Volumes and simulation",
+      "title_ar": "الحجوم والمحاكاة"
+    },
+    {
+      "id": "two-d/characters",
+      "title": "2D characters",
+      "title_ar": "شخصيات ثنائية الأبعاد"
+    },
+    {
+      "id": "two-d/tilesets",
+      "title": "Tilesets",
+      "title_ar": "خرائط البلاطات"
+    },
+    {
+      "id": "two-d/backgrounds",
+      "title": "Backgrounds",
+      "title_ar": "الخلفيات"
+    },
+    {
+      "id": "two-d/effects",
+      "title": "2D effects",
+      "title_ar": "المؤثرات ثنائية الأبعاد"
+    },
+    {
+      "id": "two-d/sprites",
+      "title": "Other sprites",
+      "title_ar": "رسومات الألعاب"
+    },
+    {
+      "id": "two-d/illustrations",
+      "title": "Illustrations",
+      "title_ar": "الرسوم التوضيحية"
+    },
+    {
+      "id": "two-d/animation",
+      "title": "2D animation projects",
+      "title_ar": "مشاريع التحريك ثنائي الأبعاد"
+    },
+    {
+      "id": "surfaces/materials",
+      "title": "PBR materials",
+      "title_ar": "مواد PBR"
+    },
+    {
+      "id": "surfaces/textures",
+      "title": "Textures",
+      "title_ar": "الخامات"
+    },
+    {
+      "id": "surfaces/decals",
+      "title": "Decals",
+      "title_ar": "الملصقات"
+    },
+    {
+      "id": "surfaces/atlases",
+      "title": "Texture atlases",
+      "title_ar": "أطالس الخامات"
+    },
+    {
+      "id": "surfaces/terrain",
+      "title": "Terrain",
+      "title_ar": "التضاريس"
+    },
+    {
+      "id": "surfaces/brushes",
+      "title": "Brushes",
+      "title_ar": "الفُرَش"
+    },
+    {
+      "id": "lighting/hdri",
+      "title": "HDRI lighting",
+      "title_ar": "إضاءة HDRI"
+    },
+    {
+      "id": "audio/effects/environment",
+      "title": "Environmental sounds",
+      "title_ar": "أصوات البيئة"
+    },
+    {
+      "id": "audio/effects/foley",
+      "title": "Foley",
+      "title_ar": "المؤثرات الحركية"
+    },
+    {
+      "id": "audio/effects/interface",
+      "title": "UI sounds",
+      "title_ar": "أصوات الواجهات"
+    },
+    {
+      "id": "audio/effects/other",
+      "title": "Sound effects",
+      "title_ar": "المؤثرات الصوتية"
+    },
+    {
+      "id": "audio/music",
+      "title": "Music",
+      "title_ar": "الموسيقى"
+    },
+    {
+      "id": "audio/voice",
+      "title": "Voice",
+      "title_ar": "الصوت البشري"
+    },
+    {
+      "id": "typography/fonts",
+      "title": "Fonts",
+      "title_ar": "الخطوط"
+    },
+    {
+      "id": "inspiration/animation",
+      "title": "Animation inspiration",
+      "title_ar": "تنمية بصرية: الأنيميشن"
+    },
+    {
+      "id": "inspiration/interface",
+      "title": "Interface inspiration",
+      "title_ar": "تنمية بصرية: الواجهات"
+    },
+    {
+      "id": "inspiration/three-d",
+      "title": "3D inspiration",
+      "title_ar": "تنمية بصرية: ثلاثي الأبعاد"
+    },
+    {
+      "id": "inspiration/motion",
+      "title": "Motion inspiration",
+      "title_ar": "تنمية بصرية: الحركة"
+    },
+    {
+      "id": "inspiration/illustration",
+      "title": "Illustration inspiration",
+      "title_ar": "تنمية بصرية: الرسوم"
+    },
+    {
+      "id": "discovery/repositories",
+      "title": "Unreviewed repositories",
+      "title_ar": "مستودعات تحتاج مراجعة"
+    },
+    {
+      "id": "discovery/providers",
+      "title": "Provider discovery",
+      "title_ar": "اكتشاف المصادر"
+    },
+    {
+      "id": "other/assets",
+      "title": "Other assets",
+      "title_ar": "أصول أخرى"
+    }
+  ],
+  "roots": [
+    {
+      "id": "interface",
+      "title": "Interfaces",
+      "title_ar": "الواجهات"
+    },
+    {
+      "id": "motion",
+      "title": "Motion",
+      "title_ar": "الحركة"
+    },
+    {
+      "id": "editing",
+      "title": "Video editing",
+      "title_ar": "المونتاج"
+    },
+    {
+      "id": "three-d",
+      "title": "3D",
+      "title_ar": "ثلاثي الأبعاد"
+    },
+    {
+      "id": "two-d",
+      "title": "2D",
+      "title_ar": "ثنائي الأبعاد"
+    },
+    {
+      "id": "surfaces",
+      "title": "Materials and textures",
+      "title_ar": "المواد والخامات"
+    },
+    {
+      "id": "lighting",
+      "title": "Lighting",
+      "title_ar": "الإضاءة"
+    },
+    {
+      "id": "audio",
+      "title": "Audio",
+      "title_ar": "الصوت"
+    },
+    {
+      "id": "typography",
+      "title": "Typography",
+      "title_ar": "الخطوط"
+    },
+    {
+      "id": "inspiration",
+      "title": "Visual inspiration",
+      "title_ar": "التنمية البصرية"
+    },
+    {
+      "id": "discovery",
+      "title": "Discovery",
+      "title_ar": "الاكتشاف"
+    },
+    {
+      "id": "other",
+      "title": "Other",
+      "title_ar": "أخرى"
+    }
+  ],
+  "navigation": "Exact section IDs through library_sections; artistic facets and pack membership are independent filters."
 }

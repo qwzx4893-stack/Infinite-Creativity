@@ -77,6 +77,16 @@ class CatalogTests(unittest.TestCase):
         r=recommend(self.c,"بسيط outline",["ui-component"],"web")
         self.assertTrue(r["items"])
         self.assertIn("minimal",r["inferred_styles"])
+    def test_unrestricted_shortlist_samples_media_despite_icon_volume(self):
+        for i in range(120):
+            self.c.upsert("icon-source-"+str(i),str(i),"minimal outline icon", "icon", "https://example.com/icon/"+str(i),license="MIT",license_url="https://example.com/LICENSE")
+        self.c.upsert("models","chair","minimal outline chair","model-3d","https://example.com/chair",license="CC0-1.0",license_url="https://example.com/CC0")
+        self.put()
+        result=recommend(self.c,"minimal outline",limit=8)
+        self.assertIn("model-3d",{a['kind'] for a in result['items']})
+        self.assertIn("ui-component",{a['kind'] for a in result['items']})
+        self.assertLessEqual(sum(a['kind']=='icon' for a in result['items']),2)
+        self.assertTrue(all(a['resource_uri'].startswith('creativity://asset/') for a in result['items']))
     def test_partial_source_failure_preserves_previous(self):
         self.put(run="old")
         class Broken:

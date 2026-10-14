@@ -114,15 +114,15 @@
       "id": "codrops",
       "name": "Codrops Hub",
       "url": "https://tympanus.net/codrops/hub/",
-      "adapter": "reference",
+      "adapter": "codrops",
       "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
+      "status": "rotating-first-party-code-packs",
       "tags": [
         "motion",
         "shader",
         "web"
       ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+      "policy": "Actual public MIT original code packs. Third-party media/fonts/vendor libraries excluded; not whole-site coverage."
     },
     {
       "id": "refero",
@@ -155,12 +155,13 @@
       "url": "https://ui.aceternity.com/",
       "adapter": "reference",
       "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
+      "status": "free-registry-license-scope-unresolved",
       "tags": [
         "ui-component",
         "motion"
       ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+      "policy": "Official public free registry found; the Pro licence page restricts stock/source redistribution. Do not assume MIT or mirror source without explicit applicable rights.",
+      "terms_url": "https://ui.aceternity.com/licence"
     },
     {
       "id": "21st",
@@ -168,24 +169,35 @@
       "url": "https://21st.dev/",
       "adapter": "reference",
       "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
+      "status": "permission-required-for-automated-marketplace-collection",
       "tags": [
         "ui-component"
       ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+      "policy": "Current July 20, 2026 terms prohibit automated marketplace collection and republication of structured metadata/media without written consent.",
+      "terms_url": "https://21st.dev/terms"
     },
     {
       "id": "mapcn",
       "name": "MapCN",
       "url": "https://www.mapcn.dev/",
-      "adapter": "reference",
+      "adapter": "github-tree",
       "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
+      "status": "scoped-first-party-code",
       "tags": [
         "map",
-        "ui-component"
+        "geospatial",
+        "React",
+        "MapLibre"
       ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
+      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored.",
+      "repo": "AnmolSaini16/mapcn",
+      "kind": "ui-component",
+      "path_pattern": "^src/registry/(?:map\\.tsx|blocks/(?!__index__).*\\.tsx)$",
+      "platforms": [
+        "web"
+      ],
+      "license_scope_reviewed": true,
+      "review_note": "MIT source code only. CARTO default basemaps are a separate service with commercial restrictions; choose a tile provider whose license fits the end product. No map tiles or third-party images are indexed."
     },
     {
       "id": "magnific",
@@ -2257,6 +2269,108 @@
       "media": [
         "model-3d",
         "animation-3d"
+      ]
+    },
+    {
+      "id": "media:Tiddybub/2d-assets",
+      "name": "2D themed CC0 pack archive",
+      "url": "https://github.com/Tiddybub/2d-assets",
+      "repo": "Tiddybub/2d-assets",
+      "adapter": "github-assets",
+      "status": "scoped-media-license-review",
+      "image_kind": "sprite",
+      "tags": [
+        "pixel",
+        "cartoon",
+        "game",
+        "2D",
+        "themed-packs"
+      ],
+      "license_pattern": "^[^/]+/[^/]+/(?:License\\.txt|LICENSE|license\\.txt)$",
+      "path_pattern": "^(?:characters|effects|fantasy|misc|modern-urban|nature|sci-fi|tiles-terrain|ui)/",
+      "asset_tags": [
+        "game",
+        "2D"
+      ]
+    },
+    {
+      "id": "media:series-ai/jam-ready-assets",
+      "name": "Jam Ready / individually licensed themed packs",
+      "url": "https://github.com/series-ai/jam-ready-assets",
+      "repo": "series-ai/jam-ready-assets",
+      "adapter": "github-assets",
+      "status": "scoped-media-license-review",
+      "image_kind": "sprite",
+      "tags": [
+        "pixel",
+        "cartoon",
+        "low-poly",
+        "game",
+        "themed-packs"
+      ],
+      "license_pattern": "^(?!LICENSE-kaykit\\.txt$).+/(?:License\\.txt|LICENSE|license\\.txt|license\\.md|public-license\\.txt)$",
+      "asset_tags": [
+        "game",
+        "themed-packs"
+      ]
+    },
+    {
+      "id": "media:open-duelyst/duelyst",
+      "name": "Duelyst / CC0 animated pixel art, effects and audio",
+      "url": "https://github.com/open-duelyst/duelyst",
+      "repo": "open-duelyst/duelyst",
+      "adapter": "github-assets",
+      "status": "scoped-media-license-review",
+      "image_kind": "sprite",
+      "tags": [
+        "pixel",
+        "fantasy",
+        "animation",
+        "game"
+      ],
+      "license_pattern": "^LICENSE$",
+      "path_pattern": "^app/(?:original_resources|resources)/"
+    },
+    {
+      "id": "fsd50k",
+      "name": "FSD50K individually licensed recordings",
+      "url": "https://zenodo.org/records/4060432",
+      "adapter": "fsd50k",
+      "status": "per-recording-license",
+      "tags": [
+        "foley",
+        "audio",
+        "sound-effects"
+      ]
+    },
+    {
+      "id": "blender-demos",
+      "name": "Blender official demo projects",
+      "url": "https://www.blender.org/download/demo-files/",
+      "adapter": "blender-demos",
+      "status": "per-demo-license",
+      "tags": [
+        "animation",
+        "grease-pencil",
+        "film",
+        "motion",
+        "3D"
+      ]
+    },
+    {
+      "id": "color-luts",
+      "name": "Licensed grading and technical LUT packs",
+      "url": "https://github.com/cyberhirsch/LUTr",
+      "adapter": "lut-manifest",
+      "status": "per-collection-verified-license",
+      "media": [
+        "lut"
+      ],
+      "tags": [
+        "editing",
+        "color-grading",
+        "cinematic",
+        "ACES"
       ]
     }
   ],

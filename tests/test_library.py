@@ -57,6 +57,13 @@ class LibraryTests(unittest.TestCase):
             with self.assertRaises(ValueError): self.l.file(aid)
             with self.assertRaises(ValueError): self.l.preview(aid)
             fetch.assert_not_called()
+    def test_compressed_transport_checks_original_blob_then_expands_bounded_text(self):
+        import gzip
+        text=b'LUT_3D_SIZE 2\n'+b'0 0 0\n'*8;body=gzip.compress(text);url='https://raw.githubusercontent.com/fixture/pack/pinned/look.cube.gz'
+        self.cached(url,'look.cube',body);sha=hashlib.sha1(b'blob '+str(len(body)).encode()+b'\0'+body).hexdigest()
+        aid=self.asset(kind='lut',files=[{'url':url,'filename':'look.cube','sha':sha,'transport':'gzip','role':'main'}])
+        self.assertEqual(self.l.code(aid)['text'],text.decode().rstrip())
+        self.assertEqual(self.l.inspect_media(aid)['lut']['numeric_rows'],8)
     def test_private_sessions_expire_and_collections_are_outside_export(self):
         aid=self.asset(); view=self.l.open()
         cid=self.l.runtime.collection('private project'); self.l.runtime.add(cid,[aid,aid])
