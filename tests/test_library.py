@@ -160,6 +160,23 @@ class TransportTests(unittest.TestCase):
                 result=inventory(cache,'https://kenney.nl/media/legacy.zip',Path(td),license_page_cc0=True)
             self.assertEqual(result['license_evidence'],'official-pack-page-cc0')
             self.assertEqual(result['license_files'],[])
+    def test_ui_pack_groups_original_vector_and_raster_variants(self):
+        buf=io.BytesIO()
+        with zipfile.ZipFile(buf,'w') as z:
+            z.writestr('License.txt','CC0 1.0 Universal')
+            z.writestr('PNG/button.png',b'original png')
+            z.writestr('SVG/button.svg','<svg/>')
+            z.writestr('Preview.png',b'package preview')
+        archive=buf.getvalue()
+        with tempfile.TemporaryDirectory() as td:
+            c=Catalog(Path(td)/'catalog.sqlite'); cache=ContentCache(Path(td)/'content')
+            text='<a href="https://kenney.nl/assets/category:2D">2D</a><a href="https://kenney.nl/media/pages/assets/ui-pack/fixture.zip">Free download</a>'
+            with patch('infinite_creativity.kenney.page',return_value=text),patch('infinite_creativity.kenney.validate_url'),patch.object(cache,'range',side_effect=lambda url,start,length:(archive[start:start+length],len(archive))):
+                self.assertEqual(index_pack(c,cache,'https://kenney.nl/assets/ui-pack',Path(td),'run'),1)
+            a=c.search(kind='ui-asset')['items'][0]
+            self.assertEqual(a['formats'],['png','svg'])
+            self.assertEqual(len(c.details(a['id'])['files']),3)
+            c.close()
     def test_fetch_stream_budget_cleans_partial_file(self):
         class Response(io.BytesIO):
             def __init__(self):

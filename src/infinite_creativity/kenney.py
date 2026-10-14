@@ -6,7 +6,7 @@ import re
 import time
 from collections import defaultdict
 from pathlib import PurePosixPath
-from urllib.parse import urljoin,urlsplit
+from urllib.parse import urljoin,urlsplit,unquote
 from urllib.request import Request
 from .content import ContentCache,validate_url
 from .asset_adapters import MEDIA,FORMAT_DIRS
@@ -67,8 +67,10 @@ def index_pack(c,cache,pack_url,metadata,run):
     data=inventory(cache,archive,metadata,license_page_cc0=explicit_cc0)
     slug=pack_url.rsplit('/',1)[-1]; sid='kenney-pack:'+slug
     title=slug.replace('-',' ')
-    match=re.search(r'/assets/category:([A-Za-z0-9]+)',text)
-    category=match[1].lower() if match else '2d'
+    match=re.search(r'/assets/category:([^\"\'<>]+)',text)
+    category=unquote(match[1]).lower() if match else '2d'
+    category={'user interface':'ui','textures':'texture'}.get(category,category)
+    if slug.startswith('ui-') or slug in {'input-prompts','input-prompts-pixel','mobile-controls','cursor-pack','cursor-pixel-pack','crosshair-pack'}: category='ui'
     c.source({'id':sid,'name':'Kenney / '+title,'url':pack_url,'adapter':'kenney-packs','status':data.get('license_evidence','archive-cc0'),'license':'CC0-1.0','media':[category],'distribution':archive})
     groups=defaultdict(list)
     entries=data['entries']
@@ -83,7 +85,8 @@ def index_pack(c,cache,pack_url,metadata,run):
         if ext not in MEDIA or not acceptable(path) or '..' in p.parts or p.is_absolute(): continue
         if p.name.lower().startswith(('preview','sample','license')) or '/previews/' in ('/'+path.lower()): continue
         kind=MEDIA[ext]
-        if kind=='texture': kind='ui-asset' if category=='ui' else 'texture' if 'texture' in slug or '/textures/' in ('/'+path.lower()) else 'sprite'
+        if kind=='illustration' and category=='ui': kind='ui-asset'
+        if kind=='texture': kind='ui-asset' if category=='ui' else 'texture' if category=='texture' or 'texture' in slug or '/textures/' in ('/'+path.lower()) else 'sprite'
         if kind=='model-3d' and '/animations/' in ('/'+path.lower()): kind='animation-3d'
         logical='/'.join(v for v in p.parent.parts if v.lower() not in FORMAT_DIRS|{'png','svg','vector','vectors','3d assets','2d assets','audio','sprites'})
         groups[(kind,logical,p.stem)].append(e)
