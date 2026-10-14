@@ -244,6 +244,12 @@ def catalog_stats()->dict[str,Any]:
 def library_resource()->str:return json.dumps(library_overview(),ensure_ascii=False)
 @mcp.resource('creativity://taxonomy')
 def taxonomy_resource()->str:return json.dumps(browse_taxonomy(),ensure_ascii=False)
+@mcp.resource('creativity://source/{source_id}')
+def source_resource(source_id:str)->str:
+    from urllib.parse import unquote
+    sid=unquote(source_id);library=LiveLibrary();library.select({'source':sid})
+    card=next(s for s in library.source_cards() if s['id']==sid)
+    return json.dumps({'source':card,'actions':['open_library'],'filters':{'source':sid},'scope':'Source connection capabilities; query current admitted items with open_library'},ensure_ascii=False)
 @mcp.resource('creativity://section/{section_id}')
 def section_resource(section_id:str)->str:
     from urllib.parse import unquote

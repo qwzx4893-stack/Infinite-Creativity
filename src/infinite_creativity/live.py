@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from importlib.resources import files
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit,quote
 from .catalog import Catalog,now
 from .library import Library
 from .live_http import LiveHTTP
@@ -87,7 +87,7 @@ class LiveLibrary:
     def source_cards(self):
         import os
         accounts={'21st':['API_KEY_21ST'],'cgtrader':['CGTRADER_TOKEN'],'dribbble':['DRIBBBLE_TOKEN'],'motionsites':['IC_MOTIONSITES_TOKEN'],'freesound':['FREESOUND_TOKEN','FREESOUND_OAUTH_TOKEN']}
-        return [{'id':s['id'],'name':s.get('name',s['id']),'connector_implemented':self.supported(s),'inventory_availability':'not-probed','adapter':s.get('live_adapter',s.get('adapter')),'status':s.get('live_status','live-on-demand' if self.supported(s) else 'not-integrated'),'reason':s.get('live_reason','Metadata fetched directly for each request; no retained index' if self.supported(s) else 'Provider item connector is not implemented'),'required_account_env_any':accounts.get(s['id'],[]),'account_configured':any(os.environ.get(k) for k in accounts.get(s['id'],[])) if s['id'] in accounts else None,'alias_of':s.get('live_alias_of'),'source_uri':'creativity://source/'+s['id']} for s in self.sources.values()]
+        return [{'id':s['id'],'name':s.get('name',s['id']),'connector_implemented':self.supported(s),'inventory_availability':'not-probed','adapter':s.get('live_adapter',s.get('adapter')),'status':s.get('live_status','live-on-demand' if self.supported(s) else 'not-integrated'),'reason':s.get('live_reason','Metadata fetched directly for each request; no retained index' if self.supported(s) else 'Provider item connector is not implemented'),'required_account_env_any':accounts.get(s['id'],[]),'account_configured':any(os.environ.get(k) for k in accounts.get(s['id'],[])) if s['id'] in accounts else None,'alias_of':s.get('live_alias_of'),'source_uri':'creativity://source/'+quote(s['id'],safe='')} for s in self.sources.values()]
     def sections(self,parent=''):
         if parent and parent not in LEAVES and not any(k.startswith(parent+'/') for k in LEAVES):raise ValueError('Unknown section ID')
         ids=sorted({k.split('/')[0] if not parent else parent+'/'+k[len(parent)+1:].split('/')[0] for k in LEAVES if not parent or k.startswith(parent+'/')})

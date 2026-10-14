@@ -100,6 +100,8 @@ class LiveTests(unittest.TestCase):
                     await session.initialize();response=await session.call_tool('library_overview',{})
                     self.assertFalse(response.isError);self.assertEqual(response.structuredContent['mode'],'live-federated')
                     tools=await session.list_tools();self.assertIn('read_asset_file',{t.name for t in tools.tools})
+                    resource=await session.read_resource('creativity://source/polyhaven')
+                    self.assertEqual(json.loads(resource.contents[0].text)['filters']['source'],'polyhaven')
             self.assertFalse((Path(td)/'state').exists());self.assertFalse((Path(td)/'does-not-exist.sqlite').exists())
         with tempfile.TemporaryDirectory() as td:asyncio.run(check(td))
     def test_native_mcp_preview_reads_bytes_before_request_cleanup(self):
