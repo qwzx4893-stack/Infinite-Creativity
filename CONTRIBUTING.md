@@ -1,13 +1,9 @@
-# Adding sources and adapters
+# Contributing
 
-Add provider metadata to `src/infinite_creativity/data/sources.json`. A mixed/paid/unknown provider starts with `adapter: reference`. Include canonical URL, media tags, access conditions and review status. Do not commit secrets or copyrighted premium material.
+The default library is a local live MCP federation. Never add a persisted asset index, metadata response cache, snapshot restore fallback or automatically mirrored originals to that mode.
 
-Reusable adapters require an approved API/export, complete pagination, bounded retries, rate limits, provider credit, per-item license evidence, source identity, canonical URLs and revisions. Never assume the repository's top-level software license automatically covers demo images, third-party fonts or models.
+Add source connection configuration separately from fetched item metadata. A connection address is not proof of asset coverage. Implement fresh item windows, current rights checks, bounded pagination and selected original/preview access. Report unsupported or authenticated sources explicitly; do not manufacture empty complete inventories or guess public APIs.
 
-A GitHub tree adapter uses an explicit path pattern and rejects truncated trees. `license_scope_reviewed: true` is a maintainer assertion that the scoped content is covered by the item license; it is not an automatic guess. Keep this false for general discoveries.
+Parse upstream data declaratively, preserve attribution and original notices, separate software and media rights, and never execute retrieved content. Test cursor boundaries, provider errors, changed licenses/revisions, request cleanup and native MCP output where applicable.
 
-Adapters must preserve previous snapshots on failure, reconcile removals only on complete success, and never import/execute upstream code. Add fixture tests for pagination, errors, permission rejection, unsafe content and license changes. Add end-to-end MCP coverage when changing tools.
-
-Original content manifests belong in `asset_details`: include immutable file URLs when available, file roles, original relative paths, sizes and upstream hashes. Respect every component license, not only the main model. ZIP member access must remain bounded, traversal-safe and CRC-checked, without filesystem extraction. Source pages without download permission remain references. Do not export private runtime/cache paths, user collections or session briefs.
-
-Run `python -m unittest discover -s tests -v`. State actual indexed counts and all limits in changes; no invented million-item claims or blanket safety guarantees.
+Run `python -m unittest discover -s tests -v`. State actual sampled scope and limitations. There are no invented global million-item totals or blanket visual/aesthetic guarantees. Historical offline maintenance remains explicit and is not a live fallback.

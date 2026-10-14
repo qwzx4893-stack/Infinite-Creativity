@@ -1,0 +1,23 @@
+{
+  "kenney": {"live_adapter":"kenney-packs","live_alias_of":"kenney-packs"},
+  "quaternius": {"live_adapter":"quaternius-live","live_status":"creator-linked-public-drive-packs"},
+  "blendkit": {"live_adapter":"blendkit","name":"Blendkit (formerly BlenderKit)","url":"https://www.blendkit.com/"},
+  "blenderkit": {"live_adapter":"blendkit","name":"BlenderKit / Blendkit alias","url":"https://www.blendkit.com/","live_alias_of":"blendkit"},
+  "aceternity": {"live_adapter":"aceternity","live_status":"public-registry-reference","live_reason":"Free registry metadata is public; original source copying remains withheld until the applicable item licence is verified."},
+  "mockupbro": {"live_adapter":"public-web","live_item_pattern":"^/mockup/[^/]+/?$","live_kind":"visual-reference","content_hosts":["mockupbro-thumbnails.imgix.net"]},
+  "namethatui": {"live_adapter":"public-web","live_item_pattern":"^/(web|ios|android|macos|windows)/[^/]+/?$","live_kind":"visual-reference"},
+  "refero": {"live_adapter":"public-web","live_item_pattern":"^/style/[A-Za-z0-9-]+/?$","live_kind":"visual-reference"},
+  "awwwards": {"live_adapter":"public-web","live_item_pattern":"^/sites/[^/]+/?$","live_kind":"visual-reference"},
+  "jiro": {"live_adapter":"public-web","live_item_pattern":"^/(templates|components)/[^/]+/[^/]+/?$","live_kind":"visual-reference"},
+  "oron": {"live_adapter":"public-web","live_item_pattern":"^/library/[^/]+/?$","live_kind":"visual-reference"},
+  "prompt-motion": {"live_adapter":"public-web","live_item_pattern":"^/[a-z0-9-]+-[a-f0-9]{6}/?$","live_kind":"visual-reference"},
+  "jitter": {"live_adapter":"public-web","live_index":"https://jitter.video/templates/","live_item_pattern":"^/template/[^/]+/?$","live_kind":"visual-reference"},
+  "screenrove": {"live_adapter":"public-web","live_item_pattern":"^/(linear|cursor|vercel|airbnb|stripe|duolingo|notion|raycast|calcom|framer|supabase|slack|perplexity|coda|airtable|figma|canva|webflow|pitch|typeform|loom|resend|clerk|mercury|railway|miro|ramp|todoist|zapier|attio)/?$","live_kind":"visual-reference"},
+  "21st": {"live_status":"permission-required","live_reason":"Official terms prohibit automated marketplace collection/republication without written permission; no scraping or preview mirror is performed."},
+  "cgtrader": {"live_status":"source-access-unavailable","live_reason":"Public free-item listing returned an empty response in the live probe. No authenticated or protected inventory is bypassed."},
+  "dribbble": {"live_status":"source-access-unavailable","live_reason":"Public listing returned an empty response in the live probe. An authorized API connection is required for dependable item access."},
+  "magnific": {"live_status":"authentication-or-access-required","live_reason":"The supplied app endpoint returned HTTP 403; it is not an accessible public original-asset inventory."},
+  "string-tune": {"live_status":"dynamic-library-not-integrated","live_reason":"Public page exposes a tool/documentation surface; a supported original-item API/inventory has not been verified."},
+  "motionsites": {"live_adapter":"motionsites-mcp","live_status":"official-oauth-required","live_reason":"Official OAuth account connection required. Only source metadata and previews are exposed; paid prompt originals are excluded.","content_hosts":["pub-86dc5b5484314368ac5436a674b0d919.r2.dev"]},
+  "sitereel": {"live_status":"dynamic-library-not-integrated","live_reason":"The public page exposes no supported item permalinks in its HTML. Dynamic/authenticated content is not guessed."}
+}

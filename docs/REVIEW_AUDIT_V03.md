@@ -1,3 +1,5 @@
+> Historical v0.3 indexed implementation. The default v0.4 library is live, with no asset index. See [live source coverage](LIVE_SOURCE_COVERAGE.md).
+
 # First review batch and practical limits
 
 The initial bounded batch attempted 1,000 original raster files: 996 were decoded and assessed, and four failed or were unsupported. The classifier's 49 uncertain/suggestive outputs were inspected as complete static images on a labelled audit sheet. Forty-eight were nonsexual game/UI graphics, tiles, effects, objects, backgrounds, animals or clothed cartoons; one small humanoid base-character frame remained uncertain and was withheld. Related frames of that exact base character require original-frame review. This does not label an entire mixed pack as sexual.

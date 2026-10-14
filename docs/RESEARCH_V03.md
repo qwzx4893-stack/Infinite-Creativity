@@ -1,3 +1,5 @@
+> Historical v0.3 indexed implementation. The default v0.4 library is live, with no asset index. See [live source coverage](LIVE_SOURCE_COVERAGE.md).
+
 # Technical choices and source findings
 
 This release uses agent tools and resources; it does not build a human frontend or MCP App. [MCP resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) support text/binary data and custom URI schemes for content fetched by the server. [MCP tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) support structured results and native image/audio content. Internal `creativity://` IDs, controlled section expansion and bounded signed seek pages keep navigation precise without external provider pages or a million-record context response.

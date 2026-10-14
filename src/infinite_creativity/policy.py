@@ -59,6 +59,6 @@ def public_https(url):
     return p.scheme == "https" and bool(p.hostname) and not p.username and not p.password
 
 def can_use(asset):
-    return (not asset.get('duplicate_of') and asset.get('quality_state')!='rejected' and asset.get('safety_review') not in {'blocked','review-required'} and asset["source"] not in BLOCKED_SOURCES and asset["canonical_url"] not in BLOCKED_URLS and asset["mode"] == "usable" and asset["license"] in LICENSES
+    return (not asset.get('duplicate_of') and asset.get('quality_state')!='rejected' and asset.get('safety_review') not in {'blocked','review-required'} and asset["source"] not in BLOCKED_SOURCES and asset["canonical_url"] not in BLOCKED_URLS and asset["mode"] == "usable" and (asset["license"] in LICENSES or (asset.get('end_product_only_verified') is True and asset['source'] in {'blendkit','blenderkit'} and asset['license']=='LicenseRef-Blendkit-RoyaltyFree'))
             and bool(asset.get("license_url")) and asset["safety"] == "metadata-screened"
             and asset["active"] == 1 and acceptable(asset["title"] + " " + " ".join(asset.get("tags", []))))

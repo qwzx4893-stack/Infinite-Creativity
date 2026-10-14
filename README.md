@@ -1,131 +1,83 @@
 # Infinite Creativity
 
-مكتبة إبداعية موحدة للوكلاء مع خادم MCP يقدمه المشروع. يتصفح الوكيل الأقسام والعناصر، يعرض المعاينات، يقرأ الكود وتبعياته، يفحص المجسمات والتحريك، ويحصل على الملفات الأصلية داخل MCP دون فتح صفحات الموردين. تشمل الويب والهاتف وسطح المكتب والألعاب والبيئات والشخصيات والخامات والأصوات والخطوط.
+مكتبة إبداعية موحدة عبر MCP محلي يتصل بالمصادر مباشرة. تُجلب بيانات العناصر عند كل طلب، وتبقى الأصول عند مصادرها. لا يحتاج النموذج الافتراضي إلى قاعدة بيانات أو فهرس عناصر أو نسخة catalog أو كاش بيانات محلي.
 
-Unified creative library for AI agents. The database holds indexed records and file manifests; original content is retrieved on demand into a private, bounded cache. GitHub stores the software and release snapshots, avoiding asset binaries in Git history. The MCP server is provided by this project, without implying endorsement by GitHub or source providers.
+Local, live federated MCP for creative assets. Every item operation requests current upstream metadata. Source connection addresses and the controlled taxonomy are configuration; asset records, file manifests and search results are not retained between calls. Original bytes are fetched only when requested. Parser/preview temporary files are deleted before the response completes.
 
-**Exact coverage:** see `manifest.json` in the [latest catalog release](https://github.com/qwzx4893-stack/Infinite-Creativity/releases/tag/catalog-latest). Records can include variants and references; they are not estimated provider totals or unique artworks. This is an expanding library, not a completed million-item index of the entire Internet.
+## Install
 
-[Coverage of the originally requested sites](docs/REQUESTED_SOURCE_COVERAGE.md) distinguishes actual indexed items from source registration and unavailable integrations. `library_overview` reports usable counts by medium and a separate total excluding icons. Unrestricted recommendations sample each medium independently and cap both source and medium concentration.
-
-## Install and restore
-
-Python 3.11+ and SQLite FTS5 are required.
+Python 3.11+:
 
 ```bash
 git clone https://github.com/qwzx4893-stack/Infinite-Creativity.git
 cd Infinite-Creativity
 python -m venv .venv
-# Linux/macOS: source .venv/bin/activate
 # PowerShell: .\.venv\Scripts\Activate.ps1
+# Unix: source .venv/bin/activate
 python -m pip install -e .
-```
-
-Download `catalog.sqlite.gz` and `manifest.json` from the same release into `snapshots/`, then:
-
-```bash
-python scripts/verify_snapshot.py snapshots
-infinite-creativity stats
 infinite-creativity-mcp
 ```
 
-SHA256 verification detects damaged or inconsistent snapshots; it does not independently authenticate their publisher. Close active servers before replacing their database. Alternatively, `infinite-creativity sync` builds the approved inventories directly. Public source APIs have their own availability and rate limits.
+No sync, catalog download, restore or export step is required.
 
-## Connect an MCP host
-
-Use absolute paths in your host's stdio configuration:
+## Connect a local MCP host
 
 ```json
 {
   "mcpServers": {
     "infinite-creativity": {
       "command": "/absolute/path/Infinite-Creativity/.venv/bin/python",
-      "args": ["-m", "infinite_creativity.server"],
-      "env": {
-        "IC_CATALOG_DB": "/absolute/path/Infinite-Creativity/state/catalog.sqlite"
-      }
+      "args": ["-m", "infinite_creativity.server"]
     }
   }
 }
 ```
 
-Windows: use `.venv\\Scripts\\python.exe` with JSON-escaped backslashes. No GitHub token is needed for local browsing. Some first-time GitHub requests benefit from an optional read-only `GITHUB_TOKEN` process environment variable. Never commit a token. This release provides local stdio, with no hosted public endpoint.
+Windows: use the absolute `.venv\Scripts\python.exe` path, escaping backslashes in JSON. Optional `GITHUB_TOKEN` in the process environment increases GitHub API capacity. The program is local stdio; upstream requests are HTTPS. No hosted endpoint or human frontend is provided.
 
-## Browse and use originals inside MCP
+## Agent workflow
 
-| Tools | In-library behavior |
-| --- | --- |
-| `library_overview`, `library_facets`, `browse_taxonomy` | Discover sections, real counts, styles, platforms and formats |
-| `library_sections`, `library_packs`, `get_library_pack` | Precise section tree and actual thematic packs with indexed members |
-| `open_library`, `library_page` | Browse the full matching inventory with private sessions and signed keyset cursors |
-| `get_library_item` | Full record, features, provenance, license and permitted actions |
-| `recommend_assets` | Diverse art-direction shortlist with explicit matching reasons |
-| `preview_asset` | Native MCP raster image for eligible previews; SVG returned as original text |
-| `preview_audio_asset` | Native MCP audio for licensed recordings up to 2 MiB |
-| `asset_files` | Actual variants, file IDs, dependencies, formats and sizes |
-| `read_asset_code`, `read_asset_dependency` | Original source text and verified declared relative dependencies |
-| `inspect_3d_asset` | glTF/GLB meshes, materials, skins, animation names, triangles and external resources; ZIP inventory |
-| `inspect_asset_media` | Original audio duration/channels, raster dimensions, Aseprite frame counts and LUT grid/color metadata |
-| `fetch_asset`, `fetch_asset_bundle` | Originals, dependencies, preserved relative paths, checksums and attribution |
-| `read_asset_file`, `read_archive_entry` | Bounded base64 chunks for clients without the server filesystem |
-| `create_collection`, `add_to_collection`, `get_collection` | Private project shortlists excluded from public exports |
-| `search_assets`, `browse_assets`, `get_asset`, `resolve_asset` | Compatibility metadata/search/link interface |
-| `list_sources`, `catalog_stats` | Sources, review status, coverage and sync health |
+1. `library_overview`, `library_sections`, `list_sources`: exact categories and actual connector capabilities. Counts are unknown without querying providers.
+2. `open_library(source="polyhaven", kind="model-3d", query="chair")`: current source data, normalized internal cards and live cursors.
+3. `library_page(cursor=next_cursor)`: refresh the next source window. Cursors contain filters and positions, never cached result sets.
+4. `get_library_item`, `asset_files`: revalidate current metadata, rights and original variants.
+5. `preview_asset`, `preview_audio_asset`, `read_asset_code`, `inspect_3d_asset`, `inspect_asset_media`: consume selected content inside MCP.
+6. `read_asset_file`, `fetch_asset`, `fetch_asset_bundle`, `read_archive_entry`: selected original bytes. Inline files/bundles are bounded to 2 MiB; larger originals use verified HTTP range windows where supported.
 
-Resources: `creativity://library`, `creativity://taxonomy`, `creativity://stats`, `creativity://section/{encoded_id}`, `creativity://pack/{id}`, `creativity://asset/{id}`, `creativity://asset/{id}/file/{file_id}`. Prompt: `creative_brief`.
+`library_packs` and `get_library_pack` navigate current themed pack membership. `discover_sources` and `open_repository` discover and inspect public repositories online without a saved search index. Known repository addresses remain configuration only; they are queried when selected, rather than issuing tens of thousands of requests for a single library page.
 
-Start with `library_overview`. Open, for example, `kind="model-3d", style="low-poly"`; continue using the returned session/cursor, inspect an item, preview where available, select variants with `asset_files`, then retrieve or inspect those file IDs. Component users can read source and declared imports before assembling a bundle. See [agent usage](docs/AGENT_USAGE.md).
+Reference views use `mode="reference"` or `mode="all"`: public presentations can have native previews, while paid or unverified original source files remain inaccessible. A free price is not a reuse license. Blendkit royalty-free records allow end-product use under their own restrictions; raw asset redistribution or asset-pack mirroring is not permitted.
 
-## Agent navigation in v0.3
+## Current source scope
 
-This is an MCP library, with no human frontend. The controlled hierarchy has 62 primary leaves for interfaces, animation, editing, 3D, 2D, surfaces, lighting, audio, typography, visual studies and discovery. An item occupies one primary leaf. Parent counts roll up descendants; artistic styles, platforms, formats, licenses and pack membership remain independent filters. Empty sections are hidden by default and can be inspected explicitly.
+Live adapters cover Poly Haven, ambientCG, scoped UI/software and CC0 media repositories, Uiverse, Motion Primitives, Mapcn, Codrops code packs, official Blendkit free-asset APIs, Kenney original ZIP members, supported creator-linked Quaternius public Drive folders, Fuel, per-clip FSD50K audio, official Blender demo subsets, licensed LUT collections and optional Iconify queries.
 
-`library_sections(parent="three-d")` expands the tree. `library_packs(section="three-d", style="cartoon")` lists real themed packs. `get_library_pack` opens actual members; `open_library(section="three-d/characters", pack="...")` combines precise placement and pack membership. Source directories and unreviewed repositories are excluded from pack browsing. Inspiration is a separate reference view with native public presentation thumbnails, attribution and no original-file actions.
+Public presentation item windows are available for MockupBro, NameThatUI, Refero, Awwwards, Jiro, Oron, Prompt Motion, Jitter and Screenrove. Aceternity's public free registry is browsable as reference metadata while its applicable free-item redistribution scope remains unresolved. These are not claims of reusable originals or complete whole-site coverage.
 
-New ingestion covers individually licensed FSD50K audio, creator-linked public Quaternius Drive distributions, large scoped CC0 2D/game pack archives, Duelyst pixel animation/effects/audio, and per-card official Blender demos. Public Drive listings that may be paginated are withheld; paid Pro/source files are never taken. Truncated Git trees are walked through their subtrees before reconciliation. Read `list_sources` coverage and the release manifest for actual records and supported subsets.
+MotionSites metadata can be federated through its [official account-authorized MCP](https://motionsites.ai/mcp), using an authorized `IC_MOTIONSITES_TOKEN` process environment variable. OAuth acquisition is not automated by this project. Full paid prompts are never copied. Provider notices and account access limits are preserved.
 
-Codrops public MIT repositories contribute actual code packs with original files, shaders, relative paths and license notices. Vendor libraries, fonts and demo media are excluded from that software-license scope; records expose remaining setup requirements. Mapcn contributes selected original map/analytics components; default CARTO tiles have separate service rights and are not included.
+Some sources need authorization, reject requests or expose no supported public inventory. They return explicit limitations, with no stored snapshot fallback or protection bypass. [Live coverage and limitations](docs/LIVE_SOURCE_COVERAGE.md) distinguish original access, reference previews, conditional connections and unavailable sources.
 
-## Curation and image review
+## Freshness and limits
 
-Exact duplicates require compatible rights and matching upstream cryptographic hashes for the entire indexed original/dependency bundle. Names, CRC32, visual similarity and a matching main mesh alone are insufficient. Duplicate aliases and quarantined items are omitted from all browse/search/facet paths. Small icons, pixel art, low-poly models and minimal design are retained. Technical quality and aesthetic quality are distinct; no invented quality score is assigned.
+Provider changes can alter results between pages. Item/file locators bind current source identities and revisions; stale file selections require a fresh manifest. Signed cursors expire after 24 hours and after server restart. Metadata, HTTP responses and decoded audio/model/image bytes are discarded after the request; software configuration and source addresses remain.
+
+There are no global million-item counts, saved global duplicate decisions, persisted collections or blanket quality/visual-safety verdicts. Current metadata is screened for explicit/suggestive terms. Unseen 3D surfaces, animation frames, speech and contextual innuendo are not certified. Intentional minimal, pixel and low-poly styles are not rejected as bad quality. Model formats can be grouped as one record inside a pack; this is not global aesthetic deduplication.
+
+Live access depends on provider latency, quotas and rights. Full metadata distributions such as FSD50K can take longer because this model deliberately retains no local copy. A provider may have its own CDN cache; this server makes fresh requests and does not silently substitute old records.
+
+## Development
 
 ```bash
-python -m pip install -e '.[vision]'
-infinite-creativity prepare-vision
-infinite-creativity curate
-infinite-creativity screen-vision --limit 500
-```
-
-The optional pinned ONNX classifier runs locally, verifies its hashes, screens raster images and multiple crops, and quarantines both suggestive and uncertain results. Evidence records image/model hashes, class probabilities, threshold and whether the image was an original raster or a preview. New upstream revisions invalidate old verdicts. Six-hour updates continue image-review batches; the manifest reports actual coverage and pending items. This is probabilistic screening: it does not certify unseen 3D surfaces, unsampled animation frames, speech or contextual innuendo. Aesthetic filtering of the full collection is not complete.
-
-Editing inventories also include licensed creative grading, camera/display transforms and color-accessibility LUT packs. Their records preserve input/output gamut, transfer functions, inference confidence, conversion warnings and upstream notices. Only audited collections with confirmed current licenses qualify; third-party caveat collections and unclear calibration images are excluded.
-
-Cards expose internal resource URIs and actions. External URLs remain provenance; browsing and file retrieval do not require visiting them. Individual Kenney originals are read from verified free ZIPs with HTTP ranges, avoiding a whole-pack download for one mesh, sprite or sound. SHA256 deduplicates fetched bytes. Downloaded files remain untrusted and are never executed.
-
-## Coverage and access rules
-
-Public inventories: Poly Haven, ambientCG, eligible Iconify collections and public Open Robotics Fuel models, including Google Research scanned household objects. Scoped software/font repositories provide web, mobile and desktop components. Explicit CC0-scoped KayKit/Kenney repositories provide characters, rigs, models and dependencies. Kenney's connector traverses the official free pack list and verifies CC0 archive dedications; legacy packs require an explicit CC0 declaration on the creator's official pack page. Package previews and paid All-in-1 downloads are excluded. Khronos glTF models use individual component legal metadata, with restrictive or unknown component rights kept reference-only.
-
-[The source registry](src/infinite_creativity/data/sources.json) includes supplied sites, additional providers, curated repositories and 272 specialized discovery queries. New GitHub discoveries remain repository-level references until their item inventories, rights and content are reviewed. Registration does not mean a source's entire content is indexed. The supplied `blendkit.com` address remains distinct from `blenderkit.com`.
-
-`usable` requires an allowlisted license, evidence and admitted metadata state. `reference` includes paid, unknown, restrictive or unreviewed content. Every content tool rejects reference-only downloads. Paid references provide public provenance and high-level design inspiration; paid images, templates and prompts are not mirrored or used as training data. A zero price is not license evidence. Attribution and upstream notices remain applicable.
-
-Sexual, pornographic and obscene material is excluded by admission policy and text screening. **Metadata screening is not visual certification.** No blanket visual-safety guarantee is claimed. General community discoveries remain reference-only. See [content policy](docs/CONTENT_POLICY.md).
-
-Art-direction matching uses metadata/style inference and limited Arabic synonyms, with no image embeddings. Not every model includes a preview, rig or animation; inspection reports actual glTF data. Blender/FBX/USD can be fetched but need separate native parsers for deeper inspection. Files above the configurable 512 MiB ceiling remain visible but cannot be retrieved by these tools. The server needs upstream connectivity for uncached files; cached originals and the local record index can be read offline.
-
-## Refresh and development
-
-GitHub Actions refreshes every six hours and publishes verified SQLite/JSONL snapshots with file manifests. Conditional metadata caches, rotating search budgets and persistent date-partitioned discovery avoid repeatedly scanning every query. Complete successful source inventories reconcile removals; failures preserve prior records and prevent publishing an incomplete refresh. Platform schedules may be delayed.
-
-```bash
-infinite-creativity sync --adapters github-assets fuel kenney-packs
-infinite-creativity sync --adapters discovery --discovery-pages 3
 python -m unittest discover -s tests -v
-infinite-creativity export --out snapshots
+infinite-creativity stats
+infinite-creativity search chair --source polyhaven --kind model-3d
 ```
 
-[Architecture](docs/ARCHITECTURE.md) · [Contributing](CONTRIBUTING.md) · [Expansion work](docs/ROADMAP.md)
+The historical indexed implementation requires explicit `IC_MODE=legacy-indexed` and an explicit maintenance database. It is retained only for compatibility and is not the default library. Old v0.3 catalog counts and review reports describe that archived approach, not live v0.4 inventories.
 
-Powered by [Poly Haven](https://polyhaven.com/). This software is MIT licensed; originals retain their own licenses. Credit creators and providers.
+The six-hour snapshot publisher has been retired. Every live query observes its source directly; no automated asset-index exports are produced.
+
+[Architecture](docs/ARCHITECTURE.md) · [Agent usage](docs/AGENT_USAGE.md) · [Content policy](docs/CONTENT_POLICY.md)
+
+Software is MIT licensed. Original assets retain their own licenses. The MCP is provided by this project; no endorsement by GitHub or source providers is implied. Powered by [Poly Haven](https://polyhaven.com/).

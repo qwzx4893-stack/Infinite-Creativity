@@ -1,3 +1,5 @@
+> Historical v0.3 indexed implementation. The default v0.4 library is live, with no asset index. See [live source coverage](LIVE_SOURCE_COVERAGE.md).
+
 # Requested source coverage
 
 Audited 2026-10-14. These are actual visible, reusable records after current duplicate/quarantine rules. Counts are not estimates, quality ratings, or claims that every free item on a site is indexed. Code files, sprite frames and format variants are not necessarily distinct artworks.

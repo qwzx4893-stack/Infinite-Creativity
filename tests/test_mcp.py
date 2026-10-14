@@ -13,6 +13,7 @@ from mcp.client.stdio import stdio_client
 from infinite_creativity.catalog import Catalog
 from infinite_creativity.content import ContentCache
 
+
 class MCPTests(unittest.TestCase):
     def test_protocol_search_and_resolve(self):
         with tempfile.TemporaryDirectory() as td:
@@ -43,7 +44,7 @@ class MCPTests(unittest.TestCase):
             organize(c)
             c.db.commit(); c.close()
             async def run():
-                params=StdioServerParameters(command=sys.executable,args=["-m","infinite_creativity.server"],env={**os.environ,"IC_CATALOG_DB":str(path)})
+                params=StdioServerParameters(command=sys.executable,args=["-m","infinite_creativity.server"],env={**os.environ,"IC_MODE":"legacy-indexed","IC_CATALOG_DB":str(path)})
                 async with stdio_client(params) as (read,write):
                     async with ClientSession(read,write) as session:
                         await session.initialize()

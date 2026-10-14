@@ -22,6 +22,7 @@ MIMES={'glb':'model/gltf-binary','gltf':'model/gltf+json','svg':'image/svg+xml',
 MIMES.update({'wav':'audio/wav','ogg':'audio/ogg','mp3':'audio/mpeg','flac':'audio/flac','cube':'text/plain','3dl':'text/plain','glsl':'text/plain','frag':'text/plain','vert':'text/plain'})
 TEXT_FORMATS={'txt','md','json','gltf','html','css','js','ts','jsx','tsx','vue','svelte','svg','xaml','dart','cs','glsl','gd','godot','mtl','obj','sdf','xml'}
 TEXT_FORMATS.update({'cube','3dl','look','clf','ocio','frag','vert'})
+TEXT_FORMATS.update({'py','swift','rs','yaml','yml'})
 
 class Library:
     def __init__(self,catalog):
@@ -114,7 +115,8 @@ class Library:
             if not url: continue
             filename=r.get('filename') or Path(urlsplit(url).path).name or 'asset.bin'
             ext=Path(filename).suffix.lower().lstrip('.')
-            fid=hashlib.sha256((url+'|'+filename+'|'+r.get('archive_entry','')).encode()).hexdigest()[:24]
+            identity=json.dumps([r.get('sha'),r.get('sha256'),r.get('md5'),r.get('crc32'),r.get('bytes')],separators=(',',':'))
+            fid=hashlib.sha256((url+'|'+filename+'|'+r.get('archive_entry','')+'|'+a['revision']+'|'+identity).encode()).hexdigest()[:24]
             normalized.append({**r,'id':fid,'filename':filename,'format':r.get('format') or ext,'mime':MIMES.get(ext) or mimetypes.guess_type(filename)[0] or 'application/octet-stream','resource_uri':f'creativity://asset/{aid}/file/{fid}'})
         result={'asset_id':aid,'license':a['license'],'license_url':a['license_url'],'author':a['author'],'files':normalized,'notice':'Files are fetched internally into a bounded content cache. Prices and unreviewed licenses are never bypassed.'}
         self.runtime.db.execute('INSERT OR REPLACE INTO manifests VALUES (?,?,?)',(aid,cache_revision,json.dumps(result))); self.runtime.db.commit()

@@ -9,7 +9,7 @@ from .catalog import Catalog
 
 def main():
     p=argparse.ArgumentParser(prog="infinite-creativity")
-    p.add_argument("--db",default=os.environ.get("IC_CATALOG_DB","state/catalog.sqlite"))
+    p.add_argument("--db",default=None)
     sub=p.add_subparsers(dest="command",required=True)
     s=sub.add_parser("sync")
     s.add_argument("--adapters",nargs="+")
@@ -20,6 +20,8 @@ def main():
     q.add_argument("query",nargs="?",default="")
     q.add_argument("--kind",default="")
     q.add_argument("--style",default="")
+    q.add_argument('--source',default='')
+    q.add_argument('--section',default='')
     q.add_argument("--mode",default="usable",choices=["usable","reference","all"])
     q.add_argument("--limit",type=int,default=20)
     e=sub.add_parser("export")
@@ -29,7 +31,12 @@ def main():
     v=sub.add_parser('screen-vision');v.add_argument('--limit',type=int,default=500);v.add_argument('--source',default='')
     v=sub.add_parser('apply-reviews');v.add_argument('file')
     a=p.parse_args()
-    c=Catalog(a.db)
+    if a.db is None and os.environ.get('IC_MODE')!='legacy-indexed':
+        from .live import LiveLibrary
+        if a.command=='stats':print(json.dumps(LiveLibrary().overview(),ensure_ascii=False,indent=2));return
+        if a.command=='search':print(json.dumps(LiveLibrary().open(query=a.query,kind=a.kind,style=a.style,mode=a.mode,source=a.source,section=a.section,limit=a.limit),ensure_ascii=False,indent=2));return
+        raise SystemExit('Snapshot/index commands are retired from the default live library. Explicit --db is required for historical offline maintenance.')
+    c=Catalog(a.db or os.environ.get('IC_CATALOG_DB','state/catalog.sqlite'))
     try:
         if a.command == "sync":
             from .sync import sync
