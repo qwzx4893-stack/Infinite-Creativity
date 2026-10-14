@@ -88,9 +88,16 @@ class Catalog:
         terms=normalize_query(query).split()[:16]
         where,args=['a.active=1',"coalesce(r.duplicate_of,'')=''","coalesce(r.safety_state,'') NOT IN ('blocked','review-required')","coalesce(r.quality_state,'')!='rejected'"],[]
         join=' LEFT JOIN curation r ON r.asset_id=a.id LEFT JOIN asset_sections s ON s.asset_id=a.id'; score='0.0'; order='a.id'
+        if terms or style:
+            match=['"'+t.replace('"','""')+'"' for t in terms]
+            if style:match.append('styles:"'+normalize_query(style).replace('"','""')+'"')
+            if terms:
+                join+=' JOIN assets_fts ON assets_fts.rowid=a.rowid'
+                where.append('assets_fts MATCH ?')
+            else:
+                where.append('a.rowid IN (SELECT rowid FROM assets_fts WHERE assets_fts MATCH ?)')
+            args.append(' AND '.join(match))
         if terms:
-            join+=' JOIN assets_fts ON assets_fts.rowid=a.rowid'
-            where.append('assets_fts MATCH ?'); args.append(' AND '.join('"'+t.replace('"','""')+'"' for t in terms))
             score='bm25(assets_fts)'; order=score+',a.id'
         for field,value in (('kind',kind),('mode','' if mode=='all' else mode),('source',source)):
             if value: where.append('a.'+field+'=?'); args.append(value)
@@ -156,13 +163,18 @@ class Catalog:
         where, args = ["a.active=1",VISIBLE], []
         terms = normalize_query(query).split()[:16]
         join, order = " LEFT JOIN curation r ON r.asset_id=a.id", "a.id"
-        if terms:
+        if terms or style:
             # Quote each FTS token so arbitrary caller text cannot inject FTS operators.
-            match = " AND ".join('"' + t.replace('"', '""') + '"' for t in terms)
-            join += " JOIN assets_fts ON a.rowid=assets_fts.rowid"
-            where.append("assets_fts MATCH ?")
+            matches = ['"' + t.replace('"', '""') + '"' for t in terms]
+            if style:matches.append('styles:"'+normalize_query(style).replace('"','""')+'"')
+            match = " AND ".join(matches)
+            if terms:
+                join += " JOIN assets_fts ON a.rowid=assets_fts.rowid"
+                where.append("assets_fts MATCH ?")
+            else:
+                where.append('a.rowid IN (SELECT rowid FROM assets_fts WHERE assets_fts MATCH ?)')
             args.append(match)
-            order = "bm25(assets_fts), a.id"
+            if terms:order = "bm25(assets_fts), a.id"
         for name, value in (("kind", kind), ("mode", "" if mode == "all" else mode), ("source", source), ("license", license)):
             if value:
                 where.append(f"a.{name}=?")

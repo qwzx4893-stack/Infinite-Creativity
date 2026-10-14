@@ -71,6 +71,14 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(set(pages)),8)
         self.assertEqual(self.c.search('" OR *')["total"],0)
         with self.assertRaises(ValueError): self.c.search(limit=101)
+    def test_style_postings_keep_exact_membership_and_signed_browse_order(self):
+        for i in range(5):self.put('minimal outline button '+str(i))
+        self.put('outline-like text',tags=['ordinary'])
+        first=self.c.seek(style='minimal',limit=2)
+        following=self.c.seek(style='minimal',after_id=first['next']['id'],limit=10)
+        self.assertEqual(len(first['items'])+len(following['items']),5)
+        self.assertEqual(self.c.search(style='minimal')['total'],5)
+        self.assertEqual(self.c.search(style='minimal" OR *')['total'],0)
     def test_recommendations_and_arabic(self):
         self.put()
         self.assertEqual(self.c.search("زر")["total"],1)

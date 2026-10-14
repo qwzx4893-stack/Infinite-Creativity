@@ -2,7 +2,7 @@ import re
 from pathlib import PurePosixPath
 from urllib.parse import urlsplit
 from .network import Fetcher
-from .policy import can_use, normalize_query, styles_for, public_https
+from .policy import can_use, normalize_query, styles_for, public_https, STYLE_RULES
 
 def resolve(c, asset_id):
     asset = c.get(asset_id)
@@ -54,12 +54,13 @@ def recommend(c, art_direction, kinds=None, platform="", limit=12):
     # determine the candidate pool for an otherwise unrestricted creative brief.
     requested = list(dict.fromkeys(kinds or []))
     sampled = requested or ["model-3d", "animation-3d", "scene-3d", "material", "texture", "hdri", "audio", "sprite", "animation-2d", "illustration", "ui-asset", "ui-component", "template", "motion", "shader", "lut", "font", "video", "icon"]
+    style_words={word for style in desired for word in [style,*STYLE_RULES[style]]}
+    words=[word for word in re.findall(r"\w+",brief) if word not in style_words][:6]
     for kind in sampled[:24]:
         for style in desired or [""]:
             for item in c.search(kind=kind, style=style, platform=platform, limit=100,count_total=False)["items"]:
                 if can_use(item):
                     pool[item["id"]] = item
-        words = re.findall(r"\w+",brief)[:12]
         for word in words:
             for item in c.search(word,kind=kind,platform=platform,limit=30,count_total=False)["items"]:
                 if can_use(item): pool[item["id"]] = item
