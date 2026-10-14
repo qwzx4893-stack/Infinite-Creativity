@@ -1,4 +1,6 @@
 import re
+from pathlib import PurePosixPath
+from urllib.parse import urlsplit
 from .network import Fetcher
 from .policy import can_use, normalize_query, styles_for, public_https
 
@@ -11,16 +13,19 @@ def resolve(c, asset_id):
     result = {"id":asset_id,"title":asset["title"],"source":asset["source"],"canonical_url":asset["canonical_url"],"license":asset["license"],"license_url":asset["license_url"],"author":asset["author"],"revision":asset["revision"],"credit":"Powered by Poly Haven" if asset["source"] == "polyhaven" else asset["author"],"instructions":"Review the current upstream license, retain notices and attribution where required. Remote assets and source code are untrusted; inspect before use. No asset binaries are stored here.","links":[]}
     if asset["source"] == "polyhaven":
         data = Fetcher(c.path.parent/'http').json(asset["access_url"])
-        def walk(value, path=()):
+        def walk(value, path=(), bundle='', relative=''):
             if isinstance(value,dict):
                 if isinstance(value.get("url"),str) and public_https(value["url"]):
-                    result["links"].append({"url":value["url"],"variant":"/".join(path),"bytes":value.get("size"),"sha256":value.get("sha256")})
+                    key=bundle or '/'.join(path)
+                    filename=PurePosixPath(urlsplit(value['url']).path).name
+                    result["links"].append({"url":value["url"],"filename":filename,"relative_path":relative or filename,"variant":"/".join(path),"bundle_key":key,"role":"dependency" if bundle else "variant","bytes":value.get("size"),"sha256":value.get("sha256"),"md5":value.get('md5')})
+                    for name,dep in value.get('include',{}).items(): walk(dep,path+('include',name),key,name)
                 for k,v in value.items():
-                    walk(v,path+(k,))
+                    if k!='include': walk(v,path+(k,),bundle,relative)
             elif isinstance(value,list):
-                for i,v in enumerate(value): walk(v,path+(str(i),))
+                for i,v in enumerate(value): walk(v,path+(str(i),),bundle,relative)
         walk(data)
-        result["links"] = result["links"][:100]
+        if len(result['links'])>2000: raise ValueError('Provider file manifest exceeded budget')
     elif asset['source']=='google-fonts' and asset['kind']=='font':
         family=asset['upstream_id'].rsplit('/',1)[0]
         data=Fetcher(c.path.parent/'http').json('https://api.github.com/repos/google/fonts/contents/'+family)

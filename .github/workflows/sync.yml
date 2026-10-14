@@ -38,7 +38,7 @@ jobs:
       - name: Refresh approved metadata adapters
         id: sync
         continue-on-error: true
-        run: python -m infinite_creativity.cli sync --adapters references polyhaven ambientcg iconify github-tree discovery refresh-discovered discovery-more --discovery-pages 2
+        run: python -m infinite_creativity.cli sync --adapters references polyhaven ambientcg iconify github-tree github-assets fuel kenney-packs khronos discovery-rotate refresh-discovered discovery-more --discovery-pages 2
       - name: Export and preserve diagnostic snapshot
         run: python -m infinite_creativity.cli export --out snapshots
       - uses: actions/upload-artifact@v4

@@ -118,10 +118,10 @@ def github_tree(c, fetch, source, run):
     c.reconcile(source["id"], run)
     return count
 
-def discover(c, fetch, run, queries, pages=2):
+def discover(c, fetch, run, queries, pages=2, start_page=1):
     count = 0
     for query in queries:
-        for page in range(1, min(pages,10)+1):
+        for page in range(start_page, min(pages,10)+1):
             result = fetch.json("https://api.github.com/search/repositories?q="+quote(query+" archived:false fork:false")+f"&per_page=100&page={page}&sort=stars")
             if result.get("incomplete_results"):
                 raise RuntimeError("GitHub search returned incomplete results; narrow the query")
@@ -161,6 +161,16 @@ def refresh_discovered(c, fetch, run, budget=100):
                 s.update(status="unavailable",checked_at=now()); c.source(s); c.db.commit()
             else: errors.append(s["id"]+": "+str(e))
     if errors: raise RuntimeError("; ".join(errors)[:2000])
+    return count
+
+def discover_rotating(c,fetch,run,queries,pages=2,budget=24):
+    """Refresh topical search slices without repeating every query in every run."""
+    c.db.execute('CREATE TABLE IF NOT EXISTS discovery_search_checks(query TEXT PRIMARY KEY,checked TEXT)')
+    seen=dict(c.db.execute('SELECT query,checked FROM discovery_search_checks'))
+    count=0
+    for query in sorted(queries,key=lambda q:seen.get(q,''))[:budget]:
+        count+=discover(c,fetch,run,[query],pages)
+        c.db.execute('INSERT OR REPLACE INTO discovery_search_checks VALUES (?,?)',(query,now())); c.db.commit()
     return count
 
 def discover_partitions(c,fetch,run,queries,budget=20):

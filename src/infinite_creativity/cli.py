@@ -41,9 +41,12 @@ def main():
             c.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
             with gzip.open(out/"catalog.sqlite.gz","wb") as z: z.write(c.path.read_bytes())
             with gzip.open(out/"catalog.jsonl.gz","wt",encoding="utf-8") as z:
-                for row in c.db.execute("SELECT * FROM assets WHERE active=1 ORDER BY id"):
-                    z.write(json.dumps(c.decode(row),ensure_ascii=False)+"\n")
-            manifest={"schema_version":1,"stats":c.stats(),"files":{f.name:{"bytes":f.stat().st_size,"sha256":hashlib.sha256(f.read_bytes()).hexdigest()} for f in out.glob("*.gz")}}
+                for row in c.db.execute("SELECT a.*,d.data AS details_json FROM assets a LEFT JOIN asset_details d ON a.id=d.asset_id WHERE a.active=1 ORDER BY a.id"):
+                    item=c.decode(row)
+                    item['details']=json.loads(item.pop('details_json')) if item.get('details_json') else {}
+                    item.pop('details_json',None)
+                    z.write(json.dumps(item,ensure_ascii=False)+"\n")
+            manifest={"schema_version":2,"server_version":"0.2.0","content":"Metadata and original file manifests only; private sessions, collections and content cache excluded.","stats":c.stats(),"files":{f.name:{"bytes":f.stat().st_size,"sha256":hashlib.sha256(f.read_bytes()).hexdigest()} for f in out.glob("*.gz")}}
             (out/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
             print(json.dumps(manifest,ensure_ascii=False))
     finally:

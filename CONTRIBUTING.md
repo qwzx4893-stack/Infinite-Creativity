@@ -8,4 +8,6 @@ A GitHub tree adapter uses an explicit path pattern and rejects truncated trees.
 
 Adapters must preserve previous snapshots on failure, reconcile removals only on complete success, and never import/execute upstream code. Add fixture tests for pagination, errors, permission rejection, unsafe content and license changes. Add end-to-end MCP coverage when changing tools.
 
+Original content manifests belong in `asset_details`: include immutable file URLs when available, file roles, original relative paths, sizes and upstream hashes. Respect every component license, not only the main model. ZIP member access must remain bounded, traversal-safe and CRC-checked, without filesystem extraction. Source pages without download permission remain references. Do not export private runtime/cache paths, user collections or session briefs.
+
 Run `python -m unittest discover -s tests -v`. State actual indexed counts and all limits in changes; no invented million-item claims or blanket safety guarantees.

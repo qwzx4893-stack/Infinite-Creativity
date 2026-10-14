@@ -1410,7 +1410,8 @@
         "web"
       ],
       "license_scope_reviewed": true,
-      "status": "scoped-code-collection"
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "motion-primitives",
@@ -1429,7 +1430,8 @@
         "web"
       ],
       "license_scope_reviewed": true,
-      "status": "scoped-code-collection"
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "shadcn",
@@ -1448,7 +1450,8 @@
         "web"
       ],
       "license_scope_reviewed": true,
-      "status": "scoped-code-collection"
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "magicui",
@@ -1465,8 +1468,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "reactbits",
@@ -1484,8 +1488,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "hoverdev",
@@ -1540,8 +1545,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "flowbite-repo",
@@ -1557,8 +1563,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "mantine",
@@ -1575,8 +1582,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "chakra",
@@ -1593,8 +1601,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "radix",
@@ -1611,8 +1620,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "mui",
@@ -1629,8 +1639,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "fluent",
@@ -1649,8 +1660,9 @@
         "web",
         "desktop"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "carbon",
@@ -1667,8 +1679,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "ant-design",
@@ -1685,8 +1698,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "primevue",
@@ -1702,8 +1716,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "vuetify",
@@ -1720,8 +1735,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "skeleton",
@@ -1737,8 +1753,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "react-native-paper",
@@ -1755,8 +1772,9 @@
       "platforms": [
         "mobile"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "react-native-elements",
@@ -1772,8 +1790,9 @@
       "platforms": [
         "mobile"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "flutter",
@@ -1793,8 +1812,9 @@
         "desktop",
         "mobile"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "avalonia",
@@ -1811,8 +1831,9 @@
       "platforms": [
         "desktop"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "winui-gallery",
@@ -1967,8 +1988,9 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
     },
     {
       "id": "bootstrap",
@@ -1985,8 +2007,257 @@
       "platforms": [
         "web"
       ],
-      "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "license_scope_reviewed": true,
+      "status": "scoped-first-party-software-only",
+      "review_note": "Only selected component source files; third-party image/font binaries are not covered or fetched with these snippets."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "character"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "character"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Furniture-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Furniture-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Furniture-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Furniture-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Halloween-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Halloween-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Halloween-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Halloween-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Prototype-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Prototype-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Prototype-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Prototype-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Restaurant-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Restaurant-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Restaurant-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Restaurant-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KayKit-Game-Assets/KayKit-Space-Base-Bits-1.0",
+      "name": "KayKit-Game-Assets/KayKit-Space-Base-Bits-1.0",
+      "url": "https://github.com/KayKit-Game-Assets/KayKit-Space-Base-Bits-1.0",
+      "repo": "KayKit-Game-Assets/KayKit-Space-Base-Bits-1.0",
+      "adapter": "github-assets",
+      "tags": [
+        "stylized",
+        "low-poly",
+        "game",
+        "film",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KenneyNL/Starter-Kit-3D-Platformer",
+      "name": "KenneyNL/Starter-Kit-3D-Platformer",
+      "url": "https://github.com/KenneyNL/Starter-Kit-3D-Platformer",
+      "repo": "KenneyNL/Starter-Kit-3D-Platformer",
+      "adapter": "github-assets",
+      "tags": [
+        "game",
+        "3d",
+        "platformer"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:KenneyNL/Starter-Kit-City-Builder",
+      "name": "KenneyNL/Starter-Kit-City-Builder",
+      "url": "https://github.com/KenneyNL/Starter-Kit-City-Builder",
+      "repo": "KenneyNL/Starter-Kit-City-Builder",
+      "adapter": "github-assets",
+      "tags": [
+        "city",
+        "architecture",
+        "3d"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "media:kirbycope/godot-quaternius",
+      "name": "kirbycope/godot-quaternius",
+      "url": "https://github.com/kirbycope/godot-quaternius",
+      "repo": "kirbycope/godot-quaternius",
+      "adapter": "github-assets",
+      "tags": [
+        "quaternius",
+        "low-poly",
+        "character",
+        "animation",
+        "environment"
+      ],
+      "style": "stylized low-poly",
+      "license_policy": "Nearest explicit CC0 asset dedication required; never inherit a software MIT license for media."
+    },
+    {
+      "id": "fuel",
+      "name": "Open Robotics Fuel / Google Scanned Objects and public model publishers",
+      "url": "https://fuel.gazebosim.org/1.0/models",
+      "adapter": "fuel",
+      "license_policy": "Per-model public access and CC0/CC-BY license evidence required. Restricted licenses remain references.",
+      "tags": [
+        "3d",
+        "photorealistic",
+        "scanned",
+        "robotics",
+        "architecture",
+        "props",
+        "industrial"
+      ]
+    },
+    {
+      "id": "kenney-packs",
+      "name": "Kenney official free packs",
+      "url": "https://kenney.nl/assets",
+      "adapter": "kenney-packs",
+      "license": "CC0-1.0",
+      "status": "archive-license-checked",
+      "media": [
+        "model-3d",
+        "sprite",
+        "ui-asset",
+        "audio",
+        "texture",
+        "font",
+        "template"
+      ]
+    },
+    {
+      "id": "khronos-assets",
+      "name": "Khronos glTF Sample Assets",
+      "url": "https://github.com/KhronosGroup/glTF-Sample-Assets",
+      "adapter": "khronos",
+      "status": "per-model-component-legal-review",
+      "media": [
+        "model-3d",
+        "animation-3d"
+      ]
     }
   ],
   "discovery_queries": [
@@ -2024,6 +2295,243 @@
     "topic:textures license:cc0-1.0",
     "topic:fonts license:ofl-1.1",
     "topic:creative-coding license:apache-2.0",
-    "topic:templates license:apache-2.0"
+    "topic:templates license:apache-2.0",
+    "topic:3d-assets license:mit",
+    "topic:3d-assets license:apache-2.0",
+    "topic:3d-assets license:cc0-1.0",
+    "topic:3d-assets license:cc-by-4.0",
+    "topic:3d-models license:mit",
+    "topic:3d-models license:apache-2.0",
+    "topic:3d-models license:cc-by-4.0",
+    "topic:low-poly license:mit",
+    "topic:low-poly license:apache-2.0",
+    "topic:low-poly license:cc0-1.0",
+    "topic:low-poly license:cc-by-4.0",
+    "topic:gltf license:apache-2.0",
+    "topic:gltf license:cc0-1.0",
+    "topic:gltf license:cc-by-4.0",
+    "topic:glb license:mit",
+    "topic:glb license:apache-2.0",
+    "topic:glb license:cc0-1.0",
+    "topic:glb license:cc-by-4.0",
+    "topic:blender-assets license:mit",
+    "topic:blender-assets license:apache-2.0",
+    "topic:blender-assets license:cc0-1.0",
+    "topic:blender-assets license:cc-by-4.0",
+    "topic:blender-models license:mit",
+    "topic:blender-models license:apache-2.0",
+    "topic:blender-models license:cc0-1.0",
+    "topic:blender-models license:cc-by-4.0",
+    "topic:pbr license:mit",
+    "topic:pbr license:apache-2.0",
+    "topic:pbr license:cc0-1.0",
+    "topic:pbr license:cc-by-4.0",
+    "topic:textures license:mit",
+    "topic:textures license:apache-2.0",
+    "topic:textures license:cc-by-4.0",
+    "topic:materials license:mit",
+    "topic:materials license:apache-2.0",
+    "topic:materials license:cc0-1.0",
+    "topic:materials license:cc-by-4.0",
+    "topic:hdr license:mit",
+    "topic:hdr license:apache-2.0",
+    "topic:hdr license:cc0-1.0",
+    "topic:hdr license:cc-by-4.0",
+    "topic:hdri license:mit",
+    "topic:hdri license:apache-2.0",
+    "topic:hdri license:cc0-1.0",
+    "topic:hdri license:cc-by-4.0",
+    "topic:vdb license:mit",
+    "topic:vdb license:apache-2.0",
+    "topic:vdb license:cc0-1.0",
+    "topic:vdb license:cc-by-4.0",
+    "topic:volumetric license:mit",
+    "topic:volumetric license:apache-2.0",
+    "topic:volumetric license:cc0-1.0",
+    "topic:volumetric license:cc-by-4.0",
+    "topic:rigging license:mit",
+    "topic:rigging license:apache-2.0",
+    "topic:rigging license:cc0-1.0",
+    "topic:rigging license:cc-by-4.0",
+    "topic:skeletal-animation license:mit",
+    "topic:skeletal-animation license:apache-2.0",
+    "topic:skeletal-animation license:cc0-1.0",
+    "topic:skeletal-animation license:cc-by-4.0",
+    "topic:character-animation license:mit",
+    "topic:character-animation license:apache-2.0",
+    "topic:character-animation license:cc0-1.0",
+    "topic:character-animation license:cc-by-4.0",
+    "topic:motion-capture license:mit",
+    "topic:motion-capture license:apache-2.0",
+    "topic:motion-capture license:cc0-1.0",
+    "topic:motion-capture license:cc-by-4.0",
+    "topic:animation-assets license:mit",
+    "topic:animation-assets license:apache-2.0",
+    "topic:animation-assets license:cc0-1.0",
+    "topic:animation-assets license:cc-by-4.0",
+    "topic:unity-assets license:mit",
+    "topic:unity-assets license:apache-2.0",
+    "topic:unity-assets license:cc0-1.0",
+    "topic:unity-assets license:cc-by-4.0",
+    "topic:unreal-engine-assets license:mit",
+    "topic:unreal-engine-assets license:apache-2.0",
+    "topic:unreal-engine-assets license:cc0-1.0",
+    "topic:unreal-engine-assets license:cc-by-4.0",
+    "topic:godot-assets license:mit",
+    "topic:godot-assets license:apache-2.0",
+    "topic:godot-assets license:cc0-1.0",
+    "topic:godot-assets license:cc-by-4.0",
+    "topic:pixel-art license:apache-2.0",
+    "topic:pixel-art license:cc0-1.0",
+    "topic:pixel-art license:cc-by-4.0",
+    "topic:sprites license:mit",
+    "topic:sprites license:apache-2.0",
+    "topic:sprites license:cc0-1.0",
+    "topic:sprites license:cc-by-4.0",
+    "topic:tilesets license:mit",
+    "topic:tilesets license:apache-2.0",
+    "topic:tilesets license:cc0-1.0",
+    "topic:tilesets license:cc-by-4.0",
+    "topic:game-art license:mit",
+    "topic:game-art license:apache-2.0",
+    "topic:game-art license:cc0-1.0",
+    "topic:game-art license:cc-by-4.0",
+    "topic:game-audio license:mit",
+    "topic:game-audio license:apache-2.0",
+    "topic:game-audio license:cc0-1.0",
+    "topic:game-audio license:cc-by-4.0",
+    "topic:sound-effects license:mit",
+    "topic:sound-effects license:apache-2.0",
+    "topic:sound-effects license:cc0-1.0",
+    "topic:sound-effects license:cc-by-4.0",
+    "topic:fonts license:mit",
+    "topic:fonts license:apache-2.0",
+    "topic:fonts license:cc0-1.0",
+    "topic:fonts license:cc-by-4.0",
+    "topic:icons license:apache-2.0",
+    "topic:icons license:cc0-1.0",
+    "topic:icons license:cc-by-4.0",
+    "topic:illustrations license:apache-2.0",
+    "topic:illustrations license:cc0-1.0",
+    "topic:illustrations license:cc-by-4.0",
+    "topic:svg-illustrations license:mit",
+    "topic:svg-illustrations license:apache-2.0",
+    "topic:svg-illustrations license:cc0-1.0",
+    "topic:svg-illustrations license:cc-by-4.0",
+    "topic:ui-kit license:mit",
+    "topic:ui-kit license:apache-2.0",
+    "topic:ui-kit license:cc0-1.0",
+    "topic:ui-kit license:cc-by-4.0",
+    "topic:ui-templates license:mit",
+    "topic:ui-templates license:apache-2.0",
+    "topic:ui-templates license:cc0-1.0",
+    "topic:ui-templates license:cc-by-4.0",
+    "topic:website-templates license:mit",
+    "topic:website-templates license:apache-2.0",
+    "topic:website-templates license:cc0-1.0",
+    "topic:website-templates license:cc-by-4.0",
+    "topic:landing-pages license:mit",
+    "topic:landing-pages license:apache-2.0",
+    "topic:landing-pages license:cc0-1.0",
+    "topic:landing-pages license:cc-by-4.0",
+    "topic:admin-template license:mit",
+    "topic:admin-template license:apache-2.0",
+    "topic:admin-template license:cc0-1.0",
+    "topic:admin-template license:cc-by-4.0",
+    "topic:mobile-ui license:mit",
+    "topic:mobile-ui license:apache-2.0",
+    "topic:mobile-ui license:cc0-1.0",
+    "topic:mobile-ui license:cc-by-4.0",
+    "topic:ios-ui license:mit",
+    "topic:ios-ui license:apache-2.0",
+    "topic:ios-ui license:cc0-1.0",
+    "topic:ios-ui license:cc-by-4.0",
+    "topic:android-ui license:mit",
+    "topic:android-ui license:apache-2.0",
+    "topic:android-ui license:cc0-1.0",
+    "topic:android-ui license:cc-by-4.0",
+    "topic:swiftui-components license:mit",
+    "topic:swiftui-components license:apache-2.0",
+    "topic:swiftui-components license:cc0-1.0",
+    "topic:swiftui-components license:cc-by-4.0",
+    "topic:compose-components license:mit",
+    "topic:compose-components license:apache-2.0",
+    "topic:compose-components license:cc0-1.0",
+    "topic:compose-components license:cc-by-4.0",
+    "topic:flutter-widgets license:mit",
+    "topic:flutter-widgets license:apache-2.0",
+    "topic:flutter-widgets license:cc0-1.0",
+    "topic:flutter-widgets license:cc-by-4.0",
+    "topic:react-native-components license:mit",
+    "topic:react-native-components license:apache-2.0",
+    "topic:react-native-components license:cc0-1.0",
+    "topic:react-native-components license:cc-by-4.0",
+    "topic:electron-ui license:mit",
+    "topic:electron-ui license:apache-2.0",
+    "topic:electron-ui license:cc0-1.0",
+    "topic:electron-ui license:cc-by-4.0",
+    "topic:winui license:mit",
+    "topic:winui license:apache-2.0",
+    "topic:winui license:cc0-1.0",
+    "topic:winui license:cc-by-4.0",
+    "topic:wpf-controls license:mit",
+    "topic:wpf-controls license:apache-2.0",
+    "topic:wpf-controls license:cc0-1.0",
+    "topic:wpf-controls license:cc-by-4.0",
+    "topic:qt-quick license:mit",
+    "topic:qt-quick license:apache-2.0",
+    "topic:qt-quick license:cc0-1.0",
+    "topic:qt-quick license:cc-by-4.0",
+    "topic:avalonia-controls license:mit",
+    "topic:avalonia-controls license:apache-2.0",
+    "topic:avalonia-controls license:cc0-1.0",
+    "topic:avalonia-controls license:cc-by-4.0",
+    "topic:webgpu license:mit",
+    "topic:webgpu license:apache-2.0",
+    "topic:webgpu license:cc0-1.0",
+    "topic:webgpu license:cc-by-4.0",
+    "topic:shader license:mit",
+    "topic:shader license:apache-2.0",
+    "topic:shader license:cc0-1.0",
+    "topic:shader license:cc-by-4.0",
+    "topic:glsl license:mit",
+    "topic:glsl license:apache-2.0",
+    "topic:glsl license:cc0-1.0",
+    "topic:glsl license:cc-by-4.0",
+    "topic:threejs-examples license:mit",
+    "topic:threejs-examples license:apache-2.0",
+    "topic:threejs-examples license:cc0-1.0",
+    "topic:threejs-examples license:cc-by-4.0",
+    "topic:r3f license:mit",
+    "topic:r3f license:apache-2.0",
+    "topic:r3f license:cc0-1.0",
+    "topic:r3f license:cc-by-4.0",
+    "topic:lottie license:apache-2.0",
+    "topic:lottie license:cc0-1.0",
+    "topic:lottie license:cc-by-4.0",
+    "topic:rive license:mit",
+    "topic:rive license:apache-2.0",
+    "topic:rive license:cc0-1.0",
+    "topic:rive license:cc-by-4.0",
+    "topic:css-transitions license:mit",
+    "topic:css-transitions license:apache-2.0",
+    "topic:css-transitions license:cc0-1.0",
+    "topic:css-transitions license:cc-by-4.0",
+    "topic:tailwind-components license:mit",
+    "topic:tailwind-components license:apache-2.0",
+    "topic:tailwind-components license:cc0-1.0",
+    "topic:tailwind-components license:cc-by-4.0",
+    "topic:svelte-components license:mit",
+    "topic:svelte-components license:apache-2.0",
+    "topic:svelte-components license:cc0-1.0",
+    "topic:svelte-components license:cc-by-4.0",
+    "topic:vue-ui license:mit",
+    "topic:vue-ui license:apache-2.0",
+    "topic:vue-ui license:cc0-1.0",
+    "topic:vue-ui license:cc-by-4.0",
+    "topic:react-ui license:mit",
+    "topic:react-ui license:apache-2.0",
+    "topic:react-ui license:cc0-1.0",
+    "topic:react-ui license:cc-by-4.0"
   ]
 }

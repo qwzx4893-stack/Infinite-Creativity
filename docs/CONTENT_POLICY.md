@@ -4,11 +4,11 @@ The catalog intentionally excludes pornography, sexual imagery, nudity, fetish a
 
 Current enforcement:
 
-1. Approved public APIs and scoped code repositories only for automated item ingestion.
+1. Approved public inventories, scoped repositories and official free archives with explicit license evidence.
 2. English/Arabic explicit-term screening over titles and tags; path and description screening for repository discovery.
 3. Unknown licenses, unreviewed general repositories and mixed commercial sources remain reference-only.
-4. The MCP resolver rejects reference-only records, inactive records and missing license evidence.
-5. No previews or original asset binaries are downloaded automatically by the MCP server.
+4. All content tools reject references, inactive records and missing license evidence.
+5. Eligible originals and previews are retrieved only on request into a bounded private cache; SVG/source text is never executed. Credentials are never sent to asset hosts. HTTPS host/DNS checks, byte budgets, hashes, archive path and decompression limits constrain retrieval.
 
 `metadata-screened` means only that textual admission checks passed. It must not be interpreted as human or machine visual approval. Visual assets may contain content not mentioned in metadata; an automated text filter cannot guarantee the user's visual-content requirements. General mixed-content sources must receive item-level visual review before any reusable adapter is enabled.
 

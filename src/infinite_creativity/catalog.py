@@ -12,7 +12,7 @@ class Catalog:
     def __init__(self, path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.db = sqlite3.connect(self.path)
+        self.db = sqlite3.connect(self.path,timeout=30)
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.executescript('''
@@ -28,9 +28,11 @@ class Catalog:
         CREATE INDEX IF NOT EXISTS assets_source ON assets(source, seen_run);
         CREATE INDEX IF NOT EXISTS assets_browse ON assets(active,id);
         CREATE INDEX IF NOT EXISTS assets_kind_browse ON assets(active,mode,kind,id);
+        CREATE INDEX IF NOT EXISTS assets_license ON assets(active,license);
         CREATE VIRTUAL TABLE IF NOT EXISTS assets_fts USING fts5(id UNINDEXED, title, tags, styles, tokenize='unicode61');
         CREATE TABLE IF NOT EXISTS sources (id TEXT PRIMARY KEY, data TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS sync_runs (id INTEGER PRIMARY KEY, source TEXT, started TEXT, completed TEXT, status TEXT, count INTEGER, error TEXT);
+        CREATE TABLE IF NOT EXISTS asset_details (asset_id TEXT PRIMARY KEY,data TEXT NOT NULL);
         ''')
 
     def close(self):
@@ -38,6 +40,50 @@ class Catalog:
 
     def source(self, item):
         self.db.execute("INSERT OR REPLACE INTO sources VALUES (?,?)", (item['id'], json.dumps(item, ensure_ascii=False)))
+
+    def set_details(self,asset_id,data):
+        self.db.execute('INSERT OR REPLACE INTO asset_details VALUES (?,?)',(asset_id,json.dumps(data,ensure_ascii=False)))
+
+    def details(self,asset_id):
+        row=self.db.execute('SELECT data FROM asset_details WHERE asset_id=?',(asset_id,)).fetchone()
+        return json.loads(row[0]) if row else {}
+
+    def source_info(self,source_id):
+        row=self.db.execute('SELECT data FROM sources WHERE id=?',(source_id,)).fetchone()
+        return json.loads(row[0]) if row else {}
+
+    def facets(self,kind='',mode='usable'):
+        if mode not in {'usable','reference','all'}: raise ValueError('Invalid mode')
+        where,args=['active=1'],[]
+        for field,value in (('kind',kind),('mode','' if mode=='all' else mode)):
+            if value: where.append(field+'=?'); args.append(value)
+        clause=' WHERE '+' AND '.join(where)
+        groups={field:dict(self.db.execute('SELECT '+field+',count(*) FROM assets'+clause+' GROUP BY '+field,args).fetchall()) for field in ('kind','license')}
+        for field in ('styles','platforms','formats'):
+            groups[field]=dict(self.db.execute('SELECT j.value,count(*) FROM assets,json_each(assets.'+field+') j'+clause+' GROUP BY j.value ORDER BY count(*) DESC LIMIT 100',args).fetchall())
+        return groups
+
+    def seek(self,query='',kind='',style='',platform='',mode='usable',source='',format='',after_id='',after_score=None,limit=30):
+        if mode not in {'usable','reference','all'} or not 1<=limit<=100: raise ValueError('Invalid browsing filters')
+        terms=normalize_query(query).split()[:16]
+        where,args=['a.active=1'],[]
+        join=''; score='0.0'; order='a.id'
+        if terms:
+            join=' JOIN assets_fts ON assets_fts.rowid=a.rowid'
+            where.append('assets_fts MATCH ?'); args.append(' AND '.join('"'+t.replace('"','""')+'"' for t in terms))
+            score='bm25(assets_fts)'; order=score+',a.id'
+        for field,value in (('kind',kind),('mode','' if mode=='all' else mode),('source',source)):
+            if value: where.append('a.'+field+'=?'); args.append(value)
+        for field,value in (('styles',normalize_query(style)),('platforms',platform),('formats',format)):
+            if value: where.append('EXISTS(SELECT 1 FROM json_each(a.'+field+') WHERE value=?)'); args.append(value)
+        if after_id:
+            if terms:
+                if after_score is None: raise ValueError('Search cursor needs its score')
+                where.append('('+score+'>? OR ('+score+'=? AND a.id>?))'); args.extend([after_score,after_score,after_id])
+            else: where.append('a.id>?'); args.append(after_id)
+        rows=self.db.execute('SELECT a.*,'+score+' AS match_score FROM assets a'+join+' WHERE '+' AND '.join(where)+' ORDER BY '+order+' LIMIT ?',args+[limit+1]).fetchall()
+        items=[self.decode(row) for row in rows[:limit]]
+        return {'items':items,'next':{'id':items[-1]['id'],'score':items[-1]['match_score']} if len(rows)>limit else None}
 
     def upsert(self, source, upstream_id, title, kind, url, *, license="unknown", license_url="", author="", tags=(), platforms=(), formats=(), access_url="", revision="", mode="usable", run="", safety="metadata-screened"):
         text = title + " " + " ".join(str(t) for t in tags)
@@ -86,7 +132,7 @@ class Catalog:
         if terms:
             # Quote each FTS token so arbitrary caller text cannot inject FTS operators.
             match = " AND ".join('"' + t.replace('"', '""') + '"' for t in terms)
-            join = " JOIN assets_fts f ON a.id=f.id"
+            join = " JOIN assets_fts ON a.rowid=assets_fts.rowid"
             where.append("assets_fts MATCH ?")
             args.append(match)
             order = "bm25(assets_fts), a.id"

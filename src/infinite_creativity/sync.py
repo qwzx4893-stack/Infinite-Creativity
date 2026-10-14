@@ -1,10 +1,12 @@
 import json
 from importlib.resources import files
-from .adapters import polyhaven, ambientcg, iconify, github_tree, discover, refresh_discovered, discover_partitions
+from .adapters import polyhaven, ambientcg, iconify, github_tree, discover, discover_rotating, refresh_discovered, discover_partitions
 from .catalog import now
 from .network import Fetcher
 from .policy import BLOCKED_URLS,BLOCKED_SOURCES
 from .locking import SyncLock
+from .asset_adapters import github_assets,fuel,khronos
+from .kenney import kenney
 
 def registry():
     return json.loads(files("infinite_creativity").joinpath("data/sources.json").read_text(encoding="utf-8"))
@@ -24,7 +26,7 @@ def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state
     fetch = Fetcher(cache)
     report = []
     run = now()
-    selected = set(adapters or ["polyhaven","ambientcg","iconify","github-tree","references"])
+    selected = set(adapters or ["polyhaven","ambientcg","iconify","github-tree","github-assets","fuel","kenney-packs","khronos","references"])
     for s in config["sources"]:
         c.source(s)
         previous=c.db.execute('SELECT status FROM sync_runs WHERE source=? ORDER BY id DESC LIMIT 1',(s['id'],)).fetchone()
@@ -48,8 +50,18 @@ def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state
         jobs.append(("iconify",lambda:iconify(c,fetch,run,max_sets)))
     if "github-tree" in selected:
         jobs.extend((s["id"], lambda s=s:github_tree(c,fetch,s,run)) for s in config["sources"] if s["adapter"] == "github-tree")
+    if 'github-assets' in selected:
+        jobs.extend((s['id'],lambda s=s:github_assets(c,fetch,s,run)) for s in config['sources'] if s['adapter']=='github-assets')
+    if 'fuel' in selected:
+        jobs.append(('fuel-inventory',lambda:fuel(c,fetch,run)))
+    if 'kenney-packs' in selected:
+        jobs.append(('kenney-packs',lambda:kenney(c,fetch,run)))
+    if 'khronos' in selected:
+        jobs.append(('khronos-assets',lambda:khronos(c,fetch,run)))
     if "discovery" in selected:
         jobs.append(("github-discovery",lambda:discover(c,fetch,run,config["discovery_queries"],discovery_pages)))
+    if 'discovery-rotate' in selected:
+        jobs.append(('rotating-discovery',lambda:discover_rotating(c,fetch,run,config['discovery_queries'],discovery_pages)))
     if "refresh-discovered" in selected:
         jobs.append(("discovered-refresh",lambda:refresh_discovered(c,fetch,run)))
     if "discovery-more" in selected:
