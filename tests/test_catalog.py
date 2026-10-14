@@ -5,7 +5,8 @@ from infinite_creativity.catalog import Catalog
 from infinite_creativity.policy import acceptable
 from infinite_creativity.policy import BLOCKED_URLS
 from infinite_creativity.service import resolve, recommend
-from infinite_creativity.adapters import polyhaven, github_tree
+from infinite_creativity.adapters import polyhaven, github_tree,discover_partitions
+from infinite_creativity.locking import SyncLock
 
 class CatalogTests(unittest.TestCase):
     def setUp(self):
@@ -45,6 +46,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(self.c.stats()["active_assets"],1)
         self.c.reconcile("fixture","empty-success")
         self.assertEqual(self.c.search()["total"],0)
+    def test_second_writer_is_rejected(self):
+        with SyncLock(self.c.path):
+            with self.assertRaises(RuntimeError):
+                with SyncLock(self.c.path): pass
+        with SyncLock(self.c.path): pass
     def test_metadata_changes_replace_search_index(self):
         url="https://example.com/stable"
         for title in ["minimal oldword", "industrial newword"]:
@@ -77,6 +83,19 @@ class CatalogTests(unittest.TestCase):
             def json(self,url): raise RuntimeError("offline")
         with self.assertRaises(RuntimeError): polyhaven(self.c,Broken(),"new")
         self.assertEqual(self.c.stats()["active_assets"],1)
+    def test_successful_polyhaven_and_font_inventory(self):
+        class Data:
+            def json(self,url):
+                if 'polyhaven' in url:
+                    return {'chair':{'name':'Wood chair','type':2,'authors':{'Artist':'All'},'tags':['wood']}}
+                if 'trees' in url:
+                    return {'tree':[{'type':'blob','path':'ofl/testfont/METADATA.pb','sha':'meta'}, {'type':'blob','path':'ofl/testfont/Font.ttf','sha':'font'}, {'type':'blob','path':'ofl/testfont/OFL.txt','sha':'license'}]}
+                return {'default_branch':'main','license':None}
+        self.assertEqual(polyhaven(self.c,Data(),'run'),1)
+        self.assertEqual(github_tree(self.c,Data(),{'id':'google-fonts','repo':'google/fonts','kind':'font','path_pattern':r'/METADATA\.pb$','license_scope_reviewed':True},'run'),1)
+        a=self.c.search(kind='font')['items'][0]
+        self.assertEqual(a['formats'],['ttf'])
+        self.assertTrue(a['usable'])
     def test_truncated_tree_never_reconciles(self):
         self.put(source="tree",run="old")
         class Truncated:
@@ -84,5 +103,14 @@ class CatalogTests(unittest.TestCase):
                 return {"truncated":True} if "trees" in url else {"default_branch":"main"}
         with self.assertRaises(RuntimeError): github_tree(self.c,Truncated(),{"id":"tree","repo":"a/b"},"new")
         self.assertEqual(self.c.stats()["active_assets"],1)
+    def test_partition_queue_splits_and_resumes(self):
+        class Oversized:
+            def json(self,url): return {'total_count':2001,'items':[]}
+        class Empty:
+            def json(self,url): return {'total_count':0,'items':[]}
+        discover_partitions(self.c,Oversized(),'run',['topic:icons'],budget=1)
+        self.assertEqual(self.c.db.execute('select count(*) from discovery_queue').fetchone()[0],2)
+        discover_partitions(self.c,Empty(),'run',['topic:icons'],budget=1)
+        self.assertEqual(self.c.db.execute('select count(*) from discovery_queue').fetchone()[0],1)
 
 if __name__ == "__main__": unittest.main()

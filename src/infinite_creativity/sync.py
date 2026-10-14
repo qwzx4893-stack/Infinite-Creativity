@@ -1,14 +1,19 @@
 import json
 from importlib.resources import files
-from .adapters import polyhaven, ambientcg, iconify, github_tree, discover, refresh_discovered
+from .adapters import polyhaven, ambientcg, iconify, github_tree, discover, refresh_discovered, discover_partitions
 from .catalog import now
 from .network import Fetcher
 from .policy import BLOCKED_URLS,BLOCKED_SOURCES
+from .locking import SyncLock
 
 def registry():
     return json.loads(files("infinite_creativity").joinpath("data/sources.json").read_text(encoding="utf-8"))
 
 def sync(c, adapters=None, max_sets=0, discovery_pages=2, cache="state/http"):
+    with SyncLock(c.path):
+        return _sync_unlocked(c,adapters,max_sets,discovery_pages,cache)
+
+def _sync_unlocked(c, adapters=None, max_sets=0, discovery_pages=2, cache="state/http"):
     config = registry()
     # A previous process may have exited before its source completed.
     c.db.execute("UPDATE sync_runs SET status='interrupted',completed=?,error='Process ended before completion; previous records retained' WHERE status='running'",(now(),))
@@ -22,6 +27,9 @@ def sync(c, adapters=None, max_sets=0, discovery_pages=2, cache="state/http"):
     selected = set(adapters or ["polyhaven","ambientcg","iconify","github-tree","references"])
     for s in config["sources"]:
         c.source(s)
+        previous=c.db.execute('SELECT status FROM sync_runs WHERE source=? ORDER BY id DESC LIMIT 1',(s['id'],)).fetchone()
+        if s['adapter']=='reference' and previous and previous[0]=='failed':
+            c.db.execute("INSERT INTO sync_runs(source,started,completed,status,count,error) VALUES (?,?,?,'disabled',0,'Automated adapter disabled; source retained as an unverified reference')",(s['id'],run,run))
     c.db.commit()
     jobs = []
     if "references" in selected:
@@ -44,6 +52,8 @@ def sync(c, adapters=None, max_sets=0, discovery_pages=2, cache="state/http"):
         jobs.append(("github-discovery",lambda:discover(c,fetch,run,config["discovery_queries"],discovery_pages)))
     if "refresh-discovered" in selected:
         jobs.append(("discovered-refresh",lambda:refresh_discovered(c,fetch,run)))
+    if "discovery-more" in selected:
+        jobs.append(("partitioned-discovery",lambda:discover_partitions(c,fetch,run,config['discovery_queries'])))
     for sid, job in jobs:
         started = now()
         cur = c.db.execute("INSERT INTO sync_runs(source,started,status,count,error) VALUES (?,?, 'running',0,'')", (sid,started))

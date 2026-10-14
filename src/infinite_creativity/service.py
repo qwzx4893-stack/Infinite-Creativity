@@ -10,7 +10,7 @@ def resolve(c, asset_id):
         raise ValueError("Reference-only or unverified asset: access for reuse is denied")
     result = {"id":asset_id,"title":asset["title"],"source":asset["source"],"canonical_url":asset["canonical_url"],"license":asset["license"],"license_url":asset["license_url"],"author":asset["author"],"revision":asset["revision"],"credit":"Powered by Poly Haven" if asset["source"] == "polyhaven" else asset["author"],"instructions":"Review the current upstream license, retain notices and attribution where required. Remote assets and source code are untrusted; inspect before use. No asset binaries are stored here.","links":[]}
     if asset["source"] == "polyhaven":
-        data = Fetcher().json(asset["access_url"])
+        data = Fetcher(c.path.parent/'http').json(asset["access_url"])
         def walk(value, path=()):
             if isinstance(value,dict):
                 if isinstance(value.get("url"),str) and public_https(value["url"]):
@@ -21,6 +21,10 @@ def resolve(c, asset_id):
                 for i,v in enumerate(value): walk(v,path+(str(i),))
         walk(data)
         result["links"] = result["links"][:100]
+    elif asset['source']=='google-fonts' and asset['kind']=='font':
+        family=asset['upstream_id'].rsplit('/',1)[0]
+        data=Fetcher(c.path.parent/'http').json('https://api.github.com/repos/google/fonts/contents/'+family)
+        result['links']=[{'url':entry['download_url'],'filename':entry['name'],'bytes':entry.get('size'),'sha':entry.get('sha')} for entry in data if entry.get('download_url') and entry['name'].lower().endswith(('.ttf','.otf','.woff','.woff2','.txt'))][:100]
     else:
         result["links"] = [{"url":asset["access_url"],"kind":"download-manifest" if asset["source"] == "ambientcg" else "upstream-file"}]
     return result

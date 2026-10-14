@@ -1404,10 +1404,7 @@
       "path_pattern": "\\.html$",
       "tags": [
         "css",
-        "tailwind",
-        "button",
-        "card",
-        "loader"
+        "tailwind"
       ],
       "platforms": [
         "web"
@@ -1460,7 +1457,7 @@
       "repo": "magicuidesign/magicui",
       "adapter": "github-tree",
       "kind": "ui-component",
-      "path_pattern": "^registry/.*\\.tsx$",
+      "path_pattern": "^apps/www/registry/magicui/.*\\.tsx$",
       "tags": [
         "react",
         "motion"
@@ -1495,7 +1492,7 @@
       "name": "Hover-Dev/Hover.dev",
       "url": "https://github.com/Hover-Dev/Hover.dev",
       "repo": "Hover-Dev/Hover.dev",
-      "adapter": "github-tree",
+      "adapter": "reference",
       "kind": "ui-component",
       "path_pattern": "\\.tsx$",
       "tags": [
@@ -1506,7 +1503,7 @@
         "web"
       ],
       "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "status": "repository-unavailable-verification-required"
     },
     {
       "id": "google-fonts",
@@ -1535,7 +1532,7 @@
       "repo": "markmead/hyperui",
       "adapter": "github-tree",
       "kind": "ui-component",
-      "path_pattern": "^public/components/.*\\.html$",
+      "path_pattern": "^public/examples/.*\\.html$",
       "tags": [
         "tailwind",
         "minimal"
@@ -1624,7 +1621,7 @@
       "repo": "mui/material-ui",
       "adapter": "github-tree",
       "kind": "ui-component",
-      "path_pattern": "^packages/mui-material/[^/]+/[^/]+\\.js$",
+      "path_pattern": "^packages/mui-material/src/[^/]+/[^/]+\\.(js|tsx)$",
       "tags": [
         "react",
         "material"
@@ -1961,8 +1958,8 @@
       "url": "https://github.com/tabler/tabler",
       "repo": "tabler/tabler",
       "adapter": "github-tree",
-      "kind": "template",
-      "path_pattern": "^core/pages/.*\\.html$",
+      "kind": "ui-component",
+      "path_pattern": "^core/js/src/bootstrap/[^/]+\\.ts$",
       "tags": [
         "dashboard",
         "bootstrap"
@@ -1980,7 +1977,7 @@
       "repo": "twbs/bootstrap",
       "adapter": "github-tree",
       "kind": "ui-component",
-      "path_pattern": "^js/src/[^/]+\\.js$",
+      "path_pattern": "^js/src/[^/]+\\.ts$",
       "tags": [
         "bootstrap",
         "navigation"

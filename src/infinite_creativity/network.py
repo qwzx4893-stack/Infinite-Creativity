@@ -12,6 +12,27 @@ class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
 
+def icon_inventory(stream):
+    """Extract only icon names and license evidence from large official exports."""
+    import ijson
+    class Bounded:
+        def __init__(self): self.total=0
+        def read(self,size=-1):
+            data=stream.read(size)
+            self.total+=len(data)
+            if self.total>512*1024*1024:
+                raise ValueError('Streaming export exceeded 512 MiB limit')
+            return data
+    names=set(); hidden=set(); license={}; prefix_value=''
+    for prefix,event,value in ijson.parse(Bounded()):
+        if prefix=='icons' and event=='map_key': names.add(value)
+        elif prefix.startswith('icons.') and prefix.endswith('.hidden') and event=='boolean' and value:
+            hidden.add(prefix[len('icons.'):-len('.hidden')])
+        elif prefix.startswith('info.license.') and event=='string':
+            license[prefix[len('info.license.'):]]=value
+        elif prefix=='prefix' and event=='string': prefix_value=value
+    return {'prefix':prefix_value,'icons':{name:{} for name in sorted(names-hidden)},'info':{'license':license}}
+
 class Fetcher:
     def __init__(self, cache="state/http"):
         self.cache = Path(cache)
@@ -40,10 +61,14 @@ class Fetcher:
             self.last[host] = time.monotonic()
             try:
                 with self.opener.open(Request(url, headers=headers), timeout=45) as response:
-                    body = response.read(60 * 1024 * 1024 + 1)
-                    if len(body) > 60 * 1024 * 1024:
-                        raise ValueError("Metadata response too large")
-                    data = json.loads(body)
+                    if url.endswith('/iconify/icon-sets/master/json/fluent-emoji.json'):
+                        data=icon_inventory(response)
+                        body=json.dumps(data).encode()
+                    else:
+                        body = response.read(60 * 1024 * 1024 + 1)
+                        if len(body) > 60 * 1024 * 1024:
+                            raise ValueError("Metadata response too large")
+                        data = json.loads(body)
                     tmp = body_path.with_suffix(".tmp")
                     tmp.write_bytes(gzip.compress(body))
                     tmp.replace(body_path)

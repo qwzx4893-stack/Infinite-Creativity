@@ -16,4 +16,6 @@ SQLite is a local single-writer index; each MCP call opens a connection, enablin
 
 GitHub search exposes at most 1,000 results for an individual query. The configured search budget enumerates only bounded pages, explicitly not the entire Internet. New repositories are reference records until their item inventory, rights and content are reviewed. Provider counts, repository counts, individual icon records and collection variants are not interchangeable.
 
+An additional persistent discovery queue partitions topic queries by creation date. Ranges above 1,000 results split in two; smaller ranges paginate with a saved cursor. Each scheduled run has a 20-request expansion budget, and subsequent runs resume the queue. New daily date intervals are enqueued separately. If even a single day exceeds the ceiling, the job reports a need for finer qualifiers and retains the checkpoint instead of silently skipping data.
+
 MCP uses the official Python SDK v1 maintenance line with a <2 bound; the tested v1 API avoids untested v2 migration assumptions. Transport is local stdio. No hosted endpoint, OAuth server, visual-embedding service or distributed crawler is provisioned by this repository.

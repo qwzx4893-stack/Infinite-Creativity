@@ -33,6 +33,9 @@ def main():
         elif a.command == "stats": print(json.dumps(c.stats(),ensure_ascii=False,indent=2))
         elif a.command == "search": print(json.dumps(c.search(a.query,kind=a.kind,style=a.style,mode=a.mode,limit=a.limit),ensure_ascii=False,indent=2))
         elif a.command == "export":
+            from .locking import SyncLock
+            export_lock=SyncLock(c.path)
+            export_lock.__enter__()
             out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
             c.db.commit()
             c.db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
@@ -43,6 +46,8 @@ def main():
             manifest={"schema_version":1,"stats":c.stats(),"files":{f.name:{"bytes":f.stat().st_size,"sha256":hashlib.sha256(f.read_bytes()).hexdigest()} for f in out.glob("*.gz")}}
             (out/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
             print(json.dumps(manifest,ensure_ascii=False))
-    finally: c.close()
+    finally:
+        c.close()
+        if 'export_lock' in locals(): export_lock.__exit__()
 
 if __name__ == "__main__": main()
