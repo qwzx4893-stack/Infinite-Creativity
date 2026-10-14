@@ -6,7 +6,7 @@ Paid and unverified items are references. Where supported, current public presen
 
 Blendkit's verified free royalty-free items are conditional end-product resources. Raw asset resale, redistribution, asset-pack mirroring and competing raw libraries are not permitted by that scope. Licensing state can change at the provider and is rechecked on selection.
 
-Explicit sexual/pornographic/obscene metadata is excluded. Suggestive terms are withheld. v0.5 additionally screens eligible recorded raster views before display. This remains incomplete geometry, animation-frame, speech and contextual certification. There is no saved moderation index or cached verdict in the default live model. No blanket promise of exhaustive removal is made.
+Explicit sexual/pornographic/obscene metadata is excluded. Suggestive terms are withheld. v0.6 checks supported current original rasters, vectors, temporal media, speech and GLB geometry/poses before display/delivery, with explicit bounded coverage. There is no saved moderation index or cached verdict in the default live model. No blanket promise of exhaustive removal is made.
 
 Small, minimal, pixel, outline and low-poly styles are not quality-rejection rules. Recommendations infer metadata/style matches; aesthetic quality is not automatically certified. Format variants may share a current logical model record. Exact complete known bundle identities and bounded client-cursor digest receipts are not a global artwork-similarity audit.
 
@@ -14,6 +14,7 @@ Original code is untrusted data and never executed. Archive reading is bounded; 
 
 Metadata and file manifests are held only during one MCP request. Requested preview/parser bytes are transient and deleted after the call. User project deliverables can be saved by the client when explicitly requested; the library itself creates no permanent creative-asset cache.
 
-## v0.5 admission and expansion
 
-Admission now occurs before cards are emitted and again on selected-item access. See [current admission policy](LIVE_ADMISSION.md) for the strict classifier/reviewer setup, bounded cursor digest receipts and the exact limits of preview, geometry, temporal and aesthetic coverage. See [connection expansion](V05_CONNECTIONS.md) for checked scope and external account requirements. Batched searches and section routing remain inside MCP; no human frontend or retained item index is added.
+## Current v0.6 admission
+
+Built-in local original-media reviewers, no-account public asset connectors and fresh visual matching are described in [admission](LIVE_ADMISSION.md), [coverage](LIVE_SOURCE_COVERAGE.md) and [verification](V06_VERIFICATION.md). Key-required connectors are removed. No item records, embeddings or originals persist across calls.

@@ -13,9 +13,11 @@ def plain(value):
 
 def cc_license(url):
     url = str(url or '').replace('http://', 'https://', 1)
-    if 'creativecommons.org/publicdomain/zero/1.0' in url:
+    parsed=urlsplit(url)
+    if parsed.scheme!='https' or parsed.hostname not in {'creativecommons.org','www.creativecommons.org'}:return 'unknown',url
+    if re.fullmatch(r'/publicdomain/zero/1\.0/?',parsed.path):
         return 'CC0-1.0', url
-    match = re.search(r'creativecommons.org/licenses/(by|by-sa)/(1\.0|2\.0|2\.5|3\.0|4\.0)', url)
+    match = re.fullmatch(r'/licenses/(by|by-sa)/(1\.0|2\.0|2\.5|3\.0|4\.0)/?',parsed.path)
     if match:
         return 'CC-' + match[1].upper() + '-' + match[2], url
     return 'unknown', url
@@ -163,44 +165,3 @@ def artic(http, s, f, after, limit, key=None):
     cap=min(data.get('pagination', {}).get('total', 0),10000)
     return {'items': rows, 'next': str(next_position) if next_position < cap else None,
             'total': None, 'scope': 'Current Art Institute public-domain artwork images; provider search cap is 10,000; refine query beyond this window'}
-
-
-def sketchfab(http, s, f, after, limit, key=None):
-    from .live_providers import item, matches
-    if key:
-        if not re.fullmatch('[0-9a-f]{32}', key): raise ValueError('Invalid Sketchfab model locator')
-        data = {'results': [http.json('https://api.sketchfab.com/v3/models/' + key)]}; start = 0
-    else:
-        cursor = json.loads(after) if after else {'cursor': '', 'skip': 0}; start = cursor['skip']
-        params = {'type': 'models', 'downloadable': 'true', 'q': f.get('query') or f.get('style') or 'stylized', 'count': 20}
-        if cursor['cursor']: params['cursor'] = cursor['cursor']
-        data = http.json('https://api.sketchfab.com/v3/search?' + urlencode(params))
-    rows = []; consumed = start
-    for x in data.get('results', [])[start:]:
-        consumed += 1
-        if x.get('isRestricted') or x.get('isAgeRestricted'): continue
-        licence = x.get('license') or {}; lic, evidence = cc_license(licence.get('url'))
-        if lic == 'unknown' and licence.get('label') == 'CC Attribution': lic, evidence = 'CC-BY-4.0', 'https://creativecommons.org/licenses/by/4.0/'
-        if lic == 'unknown' and licence.get('label') == 'CC0 Public Domain': lic, evidence = 'CC0-1.0', 'https://creativecommons.org/publicdomain/zero/1.0/'
-        previews = sorted(x.get('thumbnails', {}).get('images', []), key=lambda p: abs(p.get('width', 512) - 512))[:1]
-        files = []
-        import os
-        if key and os.environ.get('SKETCHFAB_TOKEN') and x.get('isDownloadable') and lic in LICENSES:
-            exports = http.json('https://api.sketchfab.com/v3/models/' + key + '/download')
-            for fmt, v in exports.items():
-                if isinstance(v, dict) and v.get('url'): files.append(original(http, v['url'], key + '-' + fmt + '.zip', bytes=v.get('size')))
-        a = item(s['id'], x['uid'], x['name'], 'model-3d', lic, evidence, (x.get('user') or {}).get('displayName', ''),
-                 [t.get('name', '') for t in x.get('tags', [])], ['glb', 'gltf', 'usdz'], files=files,
-                 previews=previews, description=plain(x.get('description')), revision=x.get('publishedAt', ''), reference_preview=True)
-        a['original_access'] = 'official-authenticated-download' if files else 'SKETCHFAB_TOKEN-required-for-originals'
-        a['features'] = {k: x.get(k) for k in ('vertexCount', 'faceCount', 'animationCount', 'likeCount')}
-        a['origin_url'] = x.get('viewerUrl') or 'https://sketchfab.com/3d-models/' + x['uid']
-        if key or matches(a, {**f, 'query': ''}): rows.append(a)
-        if not key and len(rows) == limit: break
-    if key:
-        if not rows: raise ValueError('Model unavailable or provider flagged restricted content')
-        return rows[0]
-    next_cursor = (data.get('cursors') or {}).get('next')
-    position = {'cursor': cursor['cursor'], 'skip': consumed} if consumed < len(data.get('results', [])) else {'cursor': next_cursor, 'skip': 0} if next_cursor else None
-    return {'items': rows, 'next': json.dumps(position) if position is not None else None, 'total': None,
-            'scope': 'Current public downloadable-model search; original download requires official account token'}

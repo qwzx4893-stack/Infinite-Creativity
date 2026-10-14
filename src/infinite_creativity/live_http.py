@@ -33,18 +33,15 @@ class LiveHTTP:
         current=url
         for _ in range(6):
             host=(urlsplit(current).hostname or '').lower()
+            if host not in self.hosts and urlsplit(url).hostname=='archive.org' and host.endswith('.archive.org'):
+                self.approve_content(current)
             if host not in self.hosts:raise ValueError('Unconfigured source content host')
             CONTENT_HOSTS.add(host)
             validate_url(current)
             if self.requests>=self.max_requests or time.monotonic()-self.started>55:raise ValueError('Live request budget exhausted; continue with a narrower source or pack')
-            headers={'User-Agent':'InfiniteCreativity/0.5 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
+            headers={'User-Agent':'InfiniteCreativity/0.6 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
             if host=='api.github.com' and os.environ.get('GITHUB_TOKEN'):headers['Authorization']='Bearer '+os.environ['GITHUB_TOKEN']
             if host in {'www.blendkit.com','www.blenderkit.com'} and os.environ.get('BLENDERKIT_TOKEN'):headers['Authorization']='Bearer '+os.environ['BLENDERKIT_TOKEN']
-            credentials={'api.openverse.org':('OPENVERSE_TOKEN','Bearer '),'api.sketchfab.com':('SKETCHFAB_TOKEN','Token '),'freesound.org':('FREESOUND_TOKEN','Token '),'api.dribbble.com':('DRIBBBLE_TOKEN','Bearer '),'api.cgtrader.com':('CGTRADER_TOKEN','Bearer ')}
-            if host in credentials:
-                name,prefix=credentials[host]
-                if os.environ.get(name):headers['Authorization']=prefix+os.environ[name]
-            if host=='freesound.org' and os.environ.get('FREESOUND_OAUTH_TOKEN'):headers['Authorization']='Bearer '+os.environ['FREESOUND_OAUTH_TOKEN']
             with self.lock:
                 if self.requests>=self.max_requests:raise ValueError('Live request budget exhausted')
                 self.requests+=1

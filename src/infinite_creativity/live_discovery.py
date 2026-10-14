@@ -18,7 +18,7 @@ def github_current(http,s,f,after,limit,key=None):
     if pack:
         repos=[{'full_name':scoped_repo}];index=0
     else:
-        query=(f.get('query') or f.get('style') or s.get('search','game assets'))+' license:cc0 archived:false fork:false'
+        query=(f.get('query') or f.get('style') or s.get('search','game assets'))+' license:cc0-1.0 archived:false fork:false'
         data=http.json('https://api.github.com/search/repositories?q='+quote(query)+f'&per_page=10&page={state["page"]}')
         repos=data.get('items',[]);index=state['repo']
     rows=[];errors=[];member=state['member'];next_position=None

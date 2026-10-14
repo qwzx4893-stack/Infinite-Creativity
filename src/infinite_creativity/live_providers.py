@@ -143,6 +143,7 @@ def github(http,s,f,after,limit,key=None):
             text=dedications[scope]
             license='CC0-1.0' if any(x in text for x in ['creativecommons.org/publicdomain/zero/1.0','cc0 1.0 universal','creative commons zero v1.0']) else 'unknown'
             kind=MEDIA[ext]
+            if kind=='texture' and ext in {'png','jpg','jpeg','webp'} and re.search(r'(?:sprite|tileset|tilemap|pixel[-_ ]?art|2d[-_ ]?assets|characters?/[a-z])',repo+'/'+path,re.I) and not re.search(r'(?:^|/)(?:3d|textures?|materials?)(?:/|$)',path.lower()):kind='sprite'
             if kind=='texture' and s.get('image_kind') and not re.search(r'(?:^|/)(?:3d|textures?|materials?)(?:/|$)',path.lower()):kind=s['image_kind']
         else:kind=s.get('kind','ui-component')
         filename=PurePosixPath(path).name
@@ -216,13 +217,12 @@ from .live_web import public_web
 from .live_blendkit import blendkit
 from .live_media import fuel,fsd50k,blender_demos,khronos
 from .live_packs import kenney,quaternius
-from .live_remote import motionsites
 from .live_luts import luts
 from .live_icons import icons
-from .live_catalogs import openverse,commons,artic,sketchfab
-from .live_services import freesound,cgtrader,dribbble,npm_package
+from .live_catalogs import openverse,commons,artic
+from .live_services import npm_package
 from .live_discovery import github_current
-from .live_21st import twentyfirst
+from .live_public_assets import lazytextures,opengameart,internet_archive
 def repository(http,s,f,after,limit,key=None):
     # Revalidate current per-pack CC0 media scopes or permissive software rights.
     media=f.get('kind') in (set(MEDIA.values())-{'shader'}) or f.get('section','').startswith(('three-d','two-d','surfaces','lighting','audio'))
@@ -232,11 +232,11 @@ def repository(http,s,f,after,limit,key=None):
         if license not in LICENSES:config['license_scope_reviewed']=False
     return github(http,config,f,after,limit,key)
 
-ADAPTERS={'polyhaven':polyhaven,'ambientcg':ambient,'github-tree':github,'github-assets':github,'codrops':codrops,'aceternity':aceternity,'public-web':public_web,'blendkit':blendkit,'fuel':fuel,'fsd50k':fsd50k,'blender-demos':blender_demos,'khronos':khronos,'kenney-packs':kenney,'quaternius-live':quaternius,'motionsites-mcp':motionsites,'lut-manifest':luts,'iconify':icons,'github-repository':repository}
-ADAPTERS.update({'openverse':openverse,'commons':commons,'artic':artic,'sketchfab':sketchfab})
-ADAPTERS.update({'freesound':freesound,'cgtrader':cgtrader,'dribbble':dribbble,'npm-package':npm_package})
+ADAPTERS={'polyhaven':polyhaven,'ambientcg':ambient,'github-tree':github,'github-assets':github,'codrops':codrops,'aceternity':aceternity,'public-web':public_web,'blendkit':blendkit,'fuel':fuel,'fsd50k':fsd50k,'blender-demos':blender_demos,'khronos':khronos,'kenney-packs':kenney,'quaternius-live':quaternius,'lut-manifest':luts,'iconify':icons,'github-repository':repository}
+ADAPTERS.update({'openverse':openverse,'commons':commons,'artic':artic})
+ADAPTERS['npm-package']=npm_package
 ADAPTERS['github-current']=github_current
-ADAPTERS['21st-mcp']=twentyfirst
+ADAPTERS.update({'lazytextures':lazytextures,'opengameart':opengameart,'internet-archive':internet_archive})
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources

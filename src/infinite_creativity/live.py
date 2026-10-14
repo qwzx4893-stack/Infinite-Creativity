@@ -47,14 +47,12 @@ def source_configs():
     if extensions.is_file():
         for s in json.loads(extensions.read_text(encoding='utf-8')):configs[s['id']]={**configs.get(s['id'],{}),**s}
     overlays=files('infinite_creativity').joinpath('data/live_sources.json')
+    media_connections=files('infinite_creativity').joinpath('data/live_media_connections.json')
+    if media_connections.is_file():
+        for s in json.loads(media_connections.read_text(encoding='utf-8')):configs[s['id']]=s
     if overlays.is_file():
         for sid,values in json.loads(overlays.read_text(encoding='utf-8')).items():
             if sid in configs:configs[sid].update(values)
-    connections=files('infinite_creativity').joinpath('data/repository_connections.json')
-    if connections.is_file():
-        for repo in json.loads(connections.read_text(encoding='utf-8')):
-            sid='github:'+repo
-            configs.setdefault(sid,repository_config(repo))
     for s in configs.values():
         if s.get('sections'):continue
         adapter=s.get('live_adapter',s.get('adapter'))
@@ -69,7 +67,7 @@ def source_configs():
             repo=s['repo'].lower()
             if repo in canonical:s['live_alias_of']=canonical[repo]
             else:canonical[repo]=s['id']
-    return configs
+    return {sid:s for sid,s in configs.items() if s.get('live_adapter',s.get('adapter')) in ADAPTERS}
 
 def repository_config(repo):
     import re
@@ -85,9 +83,7 @@ class LiveLibrary:
         self.providers=Providers(self.http,self.sources)
     def supported(self,s):return s.get('live_adapter',s.get('adapter')) in ADAPTERS
     def source_cards(self):
-        import os
-        accounts={'21st':['API_KEY_21ST'],'cgtrader':['CGTRADER_TOKEN'],'dribbble':['DRIBBBLE_TOKEN'],'motionsites':['IC_MOTIONSITES_TOKEN'],'freesound':['FREESOUND_TOKEN','FREESOUND_OAUTH_TOKEN']}
-        return [{'id':s['id'],'name':s.get('name',s['id']),'connector_implemented':self.supported(s),'inventory_availability':'not-probed','adapter':s.get('live_adapter',s.get('adapter')),'status':s.get('live_status','live-on-demand' if self.supported(s) else 'not-integrated'),'reason':s.get('live_reason','Metadata fetched directly for each request; no retained index' if self.supported(s) else 'Provider item connector is not implemented'),'required_account_env_any':accounts.get(s['id'],[]),'account_configured':any(os.environ.get(k) for k in accounts.get(s['id'],[])) if s['id'] in accounts else None,'alias_of':s.get('live_alias_of'),'source_uri':'creativity://source/'+quote(s['id'],safe='')} for s in self.sources.values()]
+        return [{'id':s['id'],'name':s.get('name',s['id']),'connector_implemented':self.supported(s),'inventory_availability':'not-probed','adapter':s.get('live_adapter',s.get('adapter')),'status':s.get('live_status','live-on-demand'),'reason':s.get('live_reason','Fresh upstream metadata on each request'),'authentication':'none-required','alias_of':s.get('live_alias_of'),'source_uri':'creativity://source/'+quote(s['id'],safe='')} for s in self.sources.values()]
     def sections(self,parent=''):
         if parent and parent not in LEAVES and not any(k.startswith(parent+'/') for k in LEAVES):raise ValueError('Unknown section ID')
         ids=sorted({k.split('/')[0] if not parent else parent+'/'+k[len(parent)+1:].split('/')[0] for k in LEAVES if not parent or k.startswith(parent+'/')})
@@ -124,9 +120,6 @@ class LiveLibrary:
                 else:raise ValueError('Unknown source ID; use list_sources')
             return [f['source']]
         supported=[s for s in self.sources.values() if self.supported(s) and not s.get('live_alias_of') and not s.get('discovery_only')]
-        import os
-        needed={'21st':['API_KEY_21ST'],'cgtrader':['CGTRADER_TOKEN'],'dribbble':['DRIBBBLE_TOKEN'],'motionsites':['IC_MOTIONSITES_TOKEN'],'freesound':['FREESOUND_TOKEN','FREESOUND_OAUTH_TOKEN']}
-        supported=[s for s in supported if s['id'] not in needed or any(os.environ.get(k) for k in needed[s['id']])]
         target=f.get('section','').split('/')[0]
         kinds={'model-3d':'three-d','scene-3d':'three-d','animation-3d':'three-d','volume-3d':'three-d','mocap':'three-d','pose-3d':'three-d','procedural-3d':'three-d','groom-3d':'three-d','audio':'audio','sprite':'two-d','illustration':'two-d','animation-2d':'two-d','material':'surfaces','texture':'surfaces','hdri':'lighting','light-profile':'lighting','font':'typography','ui-component':'interface','template':'interface','mockup':'interface','lut':'editing','video':'editing','video-title':'editing','compositing-project':'editing','motion-graphic':'motion','shader':'motion'}
         target=target or kinds.get(f.get('kind'), '')
@@ -171,6 +164,10 @@ class LiveLibrary:
                     statuses.append({'source':sid,'status':'unavailable','reason':error,'snapshot_fallback':False});state['done'].append(sid);continue
                 statuses.append({'source':sid,'status':'fresh','scope':data.get('scope'),'total':None,**({'provider_notice':data['provider_notice']} if data.get('provider_notice') else {}),**({'repository_errors':data['repository_errors']} if data.get('repository_errors') else {})})
                 for a in data['items']:
+                    if not a.get('files') and a['kind'] in {'audio','video','animation-2d','icon','vector-pack'}:
+                        try:a=self.providers.get(sid,a['key'])
+                        except ValueError:
+                            admission.withhold('current-original-manifest-unavailable');continue
                     if admission.accept(a):results.append(self.card(a))
                 if data.get('next') is None:state['done'].append(sid)
                 else:state['positions'][sid]=data['next']
@@ -258,13 +255,14 @@ class LiveLibrary:
             for cid,container in a.get('containers',{}).items():c.db.execute('INSERT INTO containers VALUES (?,?)',(cid,json.dumps(container)))
             library=Library.__new__(Library);library.c=c;library.fetch=self.http
             library.live_policy=True
+            from .live_media_review import check_delivery
+            library.live_review=lambda original,path:check_delivery(a,original,path)
             from .content import ContentCache
             live_http=self.http
             class RequestContent(ContentCache):
                 def request_headers(self,url):
                     import os
                     headers=super().request_headers(url)
-                    if urlsplit(url).hostname=='freesound.org' and os.environ.get('FREESOUND_OAUTH_TOKEN'):headers['Authorization']='Bearer '+os.environ['FREESOUND_OAUTH_TOKEN']
                     return headers
                 def descriptor(self,url):
                     if a['source'] in {'blendkit','blenderkit'} and urlsplit(url).hostname in {'www.blendkit.com','www.blenderkit.com'} and urlsplit(url).path.startswith('/api/v1/downloads/'):

@@ -206,6 +206,7 @@ class Library:
             with path.open('rb') as f: header=f.read(4000).decode('utf-8',errors='replace')
             declared=re.search(r'SPDX-License-Identifier:\s*([A-Za-z0-9.+-]+)',header)
             if declared and declared[1]!=a['license']: raise ValueError('File license declaration conflicts with indexed license; review required')
+        if getattr(self,'live_review',None):self.live_review(r,path)
         self.runtime.db.execute('INSERT OR REPLACE INTO availability VALUES (?,?)',(aid,json.dumps({'state':'verified-file','file_id':r['id'],'filename':r['filename'],'checked_at':__import__('infinite_creativity.catalog',fromlist=['now']).now(),'notice':'This selected file was retrieved; other variants and future provider availability are separate.'})));self.runtime.db.commit()
         return {**result,'asset_id':aid,'file_id':r['id'],'resource_uri':r['resource_uri'],'relative_path':r.get('relative_path',r['filename']),'mime':r['mime'],'license':a['license'],'license_url':a['license_url'],'author':a['author'],'component_legal':self.c.details(aid).get('legal',[])}
     def code(self,aid,fid='',start_line=1,line_count=200):
@@ -276,6 +277,13 @@ class Library:
             r=self.file(aid,max_bytes=10*1024*1024)
             if r['mime']=='image/svg+xml': return {**r,'svg':Path(r['path']).read_text(encoding='utf-8')}
             return r
+        elif getattr(self,'live_policy',False) and a['kind'] in {'model-3d','animation-3d','scene-3d'}:
+            file=next((f for f in self.files(aid)['files'] if f['format']=='glb'),None)
+            if not file:raise ValueError('Original model has no locally renderable GLB variant')
+            original=self.file(aid,file['id'],32*1024*1024)
+            from .live_media_review import render_glb_preview
+            result=self.cache.store(render_glb_preview(Path(original['path']).read_bytes()),'model-preview.png','image/png')
+            return {**result,'asset_id':aid,'license':a['license'],'credit':a['author'],'preview_only':True,'preview_notice':'Local isometric view of current reviewed geometry; material face colours, not a photorealistic render.'}
         else: raise ValueError('No licensed preview is indexed for this item; inspect its files or 3D data inside MCP')
         result=self.cache.fetch(url,'preview'+(Path(urlsplit(url).path).suffix or '.png'),2*1024*1024 if study else 10*1024*1024,cache_revision=a['revision'])
         with Path(result['path']).open('rb') as f: header=f.read(16)

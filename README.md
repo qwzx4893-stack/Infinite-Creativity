@@ -1,92 +1,63 @@
 # Infinite Creativity
 
-مكتبة إبداعية موحدة عبر MCP محلي يتصل بالمصادر مباشرة. تُجلب بيانات العناصر عند كل طلب، وتبقى الأصول عند مصادرها. لا يحتاج النموذج الافتراضي إلى قاعدة بيانات أو فهرس عناصر أو نسخة catalog أو كاش بيانات محلي.
+مكتبة إبداعية موحدة للوكيل عبر MCP محلي. يجلب كل طلب بيانات العناصر مباشرة من مصادرها، وتبقى الأصول هناك. يبحث الوكيل ويتصفح الأقسام والحزم ويشاهد الصور ويسمع الصوت ويقرأ الملفات داخل MCP؛ لا توجد واجهة بشرية أو قاعدة بيانات عناصر أو فهرس متجهات محفوظ.
 
-Local, live federated MCP for creative assets. Every item operation requests current upstream metadata. Source connection addresses and the controlled taxonomy are configuration; asset records, file manifests and search results are not retained between calls. Eligible original/preview bytes are read transiently for admission and selected delivery. Parser/preview temporary files are deleted before the response completes.
+Local stdio MCP with live provider federation, exact categories, internal original/preview delivery and local media review. No asset records, manifests, search results, embeddings or original-media copies survive a request. Source routing and pinned model software are configuration/software, not an asset index.
 
 ## Install
 
 Python 3.11+:
 
 ```bash
-git clone https://github.com/qwzx4893-stack/Infinite-Creativity.git
+git clone --depth=1 --filter=blob:none https://github.com/qwzx4893-stack/Infinite-Creativity.git
 cd Infinite-Creativity
 python -m venv .venv
 # PowerShell: .\.venv\Scripts\Activate.ps1
 # Unix: source .venv/bin/activate
-python -m pip install -e ".[vision]"
+python -m pip install -e ".[media]"
 infinite-creativity prepare-live-vision
+infinite-creativity prepare-live-media
+infinite-creativity prepare-live-style
 infinite-creativity-mcp
 ```
 
-No sync, catalog download, restore or export step is required.
-
-## Connect a local MCP host
+These preparations install approximately 617 MiB of pinned, hash-verified local model software. No provider account or API key is required. Basic software browsing can run without the media extra; unreviewable media is withheld in strict mode. No sync, catalog download or snapshot export is needed.
 
 ```json
-{
-  "mcpServers": {
-    "infinite-creativity": {
-      "command": "/absolute/path/Infinite-Creativity/.venv/bin/python",
-      "args": ["-m", "infinite_creativity.server"]
-    }
-  }
-}
+{"mcpServers":{"infinite-creativity":{"command":"/absolute/path/.venv/bin/python","args":["-m","infinite_creativity.server"]}}}
 ```
 
-Windows: use the absolute `.venv\Scripts\python.exe` path, escaping backslashes in JSON. Optional `GITHUB_TOKEN` in the process environment increases GitHub API capacity. The program is local stdio; upstream requests are HTTPS. No hosted endpoint or human frontend is provided.
+On Windows, use `.venv\Scripts\python.exe` with escaped backslashes. Optional `IC_VISION_MODEL`, `IC_SPEECH_MODEL` and `IC_STYLE_MODEL` point to already prepared software folders; they contain no assets. GitHub public API limits still apply; an existing optional `GITHUB_TOKEN` can increase capacity, but browsing public providers does not require it.
 
 ## Agent workflow
 
-1. `library_overview`, `library_sections`, `list_sources`: exact categories and actual connector capabilities. Counts are unknown without querying providers.
-2. `open_library(source="polyhaven", kind="model-3d", query="chair")`: current source data, normalized internal cards and live cursors.
-3. `library_page(cursor=next_cursor)`: refresh the next source window. Cursors contain filters, positions and bounded digest-only navigation receipts, never cached result sets.
-4. `get_library_item`, `asset_files`: revalidate current metadata, rights and original variants.
-5. `preview_asset`, `preview_audio_asset`, `read_asset_code`, `inspect_3d_asset`, `inspect_asset_media`: consume selected content inside MCP.
-6. `read_asset_file`, `fetch_asset`, `fetch_asset_bundle`, `read_archive_entry`: selected original bytes. Inline files/bundles are bounded to 2 MiB; larger originals use verified HTTP range windows where supported.
+1. `library_overview` → `library_sections`: **12 root families, 80 exclusive leaves, 25 independent style facets**.
+2. `section_sources` → `open_library`: current item cards, per-item rights and signed continuation cursors.
+3. `library_packs` → `get_library_pack`: actual thematic pack members; no external page navigation is required.
+4. `get_library_item` → `preview_asset`, `preview_audio_asset`, `inspect_3d_asset`: current native media and structure.
+5. `asset_files` → `fetch_asset`, `fetch_asset_bundle`, `read_asset_file`, `read_asset_code`: selected original bytes/code and licence notices inside MCP.
+6. `recommend_assets` provides a metadata shortlist; `rank_library_items` compares fresh admitted previews with the requested art direction through local CLIP. Scores are relative visual relevance, not safety/aesthetic probabilities.
+7. `discover_sources` → `open_repository` discovers current public repositories and their actual rights-scoped items. The former dump of 32,938 unselected repository addresses has been removed.
 
-`library_packs` and `get_library_pack` navigate current themed pack membership. `discover_sources` and `open_repository` discover and inspect public repositories online without a saved search index. Known repository addresses remain configuration only; they are queried when selected, rather than issuing tens of thousands of requests for a single library page.
+Public references use `mode="reference"`. Paid/unverified originals remain inaccessible; a reference preview grants no copying rights. Every native preview, including a pack cover, is checked before emission.
 
-Reference views use `mode="reference"` or `mode="all"`: public presentations can have native previews, while paid or unverified original source files remain inaccessible. A free price is not a reuse license. Blendkit royalty-free records allow end-product use under their own restrictions; raw asset redistribution or asset-pack mirroring is not permitted.
+## Source scope
 
-## Current source scope
+The v0.6 registry has **322 default query scopes**, including **126 newly retained media repository connections**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
 
-Live adapters cover Poly Haven, ambientCG, scoped UI/software and CC0 media repositories, Uiverse, Motion Primitives, Mapcn, Codrops code packs, official Blendkit free-asset APIs, Kenney original ZIP members, supported creator-linked Quaternius public Drive folders, Fuel, per-clip FSD50K audio, official Blender demo subsets, licensed LUT collections and optional Iconify queries.
+Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKit/Quaternius packs, public creator-linked Drive folders, Fuel, FSD50K recordings, Blender demo subsets, Khronos assets, licensed LUTs, Openverse provider connections, Wikimedia, Uiverse, Motion Primitives, Mapcn, Codrops and current permissive UI/code repositories. Public presentation scopes are detailed in [coverage](docs/LIVE_SOURCE_COVERAGE.md).
 
-Public presentation item windows are available for MockupBro, NameThatUI, Refero, Awwwards, Jiro, Oron, Prompt Motion, Jitter and Screenrove. Aceternity's public free registry is browsable as reference metadata while its applicable free-item redistribution scope remains unresolved. These are not claims of reusable originals or complete whole-site coverage.
+**Account/key-required connectors have been removed**, including 21st, MotionSites, CGTrader, Dribbble, Freesound and Sketchfab. Other nonworking placeholders are absent from live routing. No provider key onboarding is part of this library.
 
-MotionSites metadata can be federated through its [official account-authorized MCP](https://motionsites.ai/mcp), using an authorized `IC_MOTIONSITES_TOKEN` process environment variable. OAuth acquisition is not automated by this project. Full paid prompts are never copied. Provider notices and account access limits are preserved.
+## Admission and practical limits
 
-Official 21st, CGTrader, Dribbble, Freesound and MotionSites connectors need their own authorized account keys/tokens. Sketchfab originals need its official token. Some sources reject requests or expose no supported public inventory. They return explicit limitations, with no stored snapshot fallback or protection bypass. [Live coverage and limitations](docs/LIVE_SOURCE_COVERAGE.md) distinguish original access, reference previews, conditional connections and unavailable sources.
+Filtering happens before cards are emitted and again before exact selected bytes are delivered. It checks explicit/suggestive metadata and source text, available original rasters, rendered static SVG, bounded complete audio plus translated speech, all bounded video/animated-image frames, and supported GLB textures/geometry/skin poses. Exact original/bundle digests and bounded client cursor receipts suppress duplicates during collection. Minimal, pixel and low-poly art is preserved.
 
-## Freshness and limits
+Unsupported native projects, large recordings/videos, complex rigs and uncertain media are withheld; a safe thumbnail does not authorize an unreviewed variant. Automatic classifiers can miss contextual innuendo or reject benign material. Technical validity is checked; no subjective aesthetic certification or global/permanent uniqueness guarantee is claimed. With no retained index, neither a verified million-item total nor a perfect all-site inventory is asserted. See [exact admission scopes](docs/LIVE_ADMISSION.md) and [verification](docs/V06_VERIFICATION.md).
 
-Provider changes can alter results between pages. Item/file locators bind current source identities and revisions; stale file selections require a fresh manifest. Signed cursors expire after 24 hours and after server restart. Cursor digest receipts are client navigation state, not a server-side item index. Metadata, HTTP responses and decoded audio/model/image bytes are discarded after the request; software configuration and source addresses remain.
-
-v0.5 runs [admission before display](docs/LIVE_ADMISSION.md): explicit/suggestive metadata, current source text, eligible original rasters/previews, valid-media checks and exact known original/dependency bundle identities. Missing classifiers or unsupported/unreviewed temporal media are withheld by default. Duplicate receipts have a bounded cursor scope; there is no saved global uniqueness index. Unseen 3D geometry, contextual innuendo and aesthetic quality are not blanket-certified. Minimal/pixel/low-poly styles are preserved.
-
-The library exposes **12 root families, 80 exclusive leaf categories and 25 style facets**. `section_sources` routes categories to appropriate connectors. `search_library_batch` searches up to eight media/category selections; `inspect_library_batch` revalidates selected items. Recommendations now sample all requested kinds and rank explainable current metadata; they do not claim a supplied visual embedding/art-quality model.
-
-[Source expansion](docs/V05_CONNECTIONS.md) covers additional checked creative-code repositories, 55 aggregator provider connections and official catalog/account connectors. These numbers count connections, not admitted originals.
-
-Live access depends on provider latency, quotas and rights. Full metadata distributions such as FSD50K can take longer because this model deliberately retains no local copy. A provider may have its own CDN cache; this server makes fresh requests and does not silently substitute old records.
-
-## Optional WebMCP host adapter
-
-`integrations/webmcp.mjs` exposes the same read-only library tools through imperative `document.modelContext.registerTool` when a browser host provides an initialized MCP client. It creates no human frontend. It feature-detects support, awaits completed results, marks source data untrusted, limits tool registration and unregisters with AbortSignal. Browser support/host connection remain required; this does not grant access to other sites' protected libraries.
-
-## Development
+The optional [WebMCP host adapter](docs/WEBMCP.md) forwards the same completed read tools to a compatible browser host. No human library UI or hosted endpoint is created.
 
 ```bash
 python -m unittest discover -s tests -v
-infinite-creativity stats
-infinite-creativity search chair --source polyhaven --kind model-3d
+node tests/webmcp.test.mjs
 ```
-
-The historical indexed implementation requires explicit `IC_MODE=legacy-indexed` and an explicit maintenance database. It is retained only for compatibility and is not the default library. Old v0.3 catalog counts and review reports describe that archived approach, not live inventories.
-
-The six-hour snapshot publisher has been retired. Every live query observes its source directly; no automated asset-index exports are produced.
-
-[Architecture](docs/ARCHITECTURE.md) · [Agent usage](docs/AGENT_USAGE.md) · [Content policy](docs/CONTENT_POLICY.md)
-
-Software is MIT licensed. Original assets retain their own licenses. The MCP is provided by this project; no endorsement by GitHub or source providers is implied. Powered by [Poly Haven](https://polyhaven.com/).

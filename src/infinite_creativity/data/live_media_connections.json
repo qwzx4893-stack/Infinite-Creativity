@@ -1,0 +1,2405 @@
+[
+  {
+    "id": "media:w1nt3r-eth/rings-for-loot",
+    "name": "w1nt3r-eth/rings-for-loot",
+    "url": "https://github.com/w1nt3r-eth/rings-for-loot",
+    "repo": "w1nt3r-eth/rings-for-loot",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:tommyettinger/PixVoxelAssets",
+    "name": "tommyettinger/PixVoxelAssets",
+    "url": "https://github.com/tommyettinger/PixVoxelAssets",
+    "repo": "tommyettinger/PixVoxelAssets",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Mesh2Motion/mesh2motion-assets",
+    "name": "Mesh2Motion/mesh2motion-assets",
+    "url": "https://github.com/Mesh2Motion/mesh2motion-assets",
+    "repo": "Mesh2Motion/mesh2motion-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:ToxSam/3d-anvil",
+    "name": "ToxSam/3d-anvil",
+    "url": "https://github.com/ToxSam/3d-anvil",
+    "repo": "ToxSam/3d-anvil",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:pastthepixels/InfiniteShooter-Assets",
+    "name": "pastthepixels/InfiniteShooter-Assets",
+    "url": "https://github.com/pastthepixels/InfiniteShooter-Assets",
+    "repo": "pastthepixels/InfiniteShooter-Assets",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Pachenko7/3D-Assets",
+    "name": "Pachenko7/3D-Assets",
+    "url": "https://github.com/Pachenko7/3D-Assets",
+    "repo": "Pachenko7/3D-Assets",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:rostock/3DModels",
+    "name": "rostock/3DModels",
+    "url": "https://github.com/rostock/3DModels",
+    "repo": "rostock/3DModels",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:f-leonkin/3d-assets",
+    "name": "f-leonkin/3d-assets",
+    "url": "https://github.com/f-leonkin/3d-assets",
+    "repo": "f-leonkin/3d-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:hpnrep6/3d-assets",
+    "name": "hpnrep6/3d-assets",
+    "url": "https://github.com/hpnrep6/3d-assets",
+    "repo": "hpnrep6/3d-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:luisjuniorawr1/assets-3d",
+    "name": "luisjuniorawr1/assets-3d",
+    "url": "https://github.com/luisjuniorawr1/assets-3d",
+    "repo": "luisjuniorawr1/assets-3d",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:itisnotmac/3D-Assets",
+    "name": "itisnotmac/3D-Assets",
+    "url": "https://github.com/itisnotmac/3D-Assets",
+    "repo": "itisnotmac/3D-Assets",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Samjoel3101/3d-assets",
+    "name": "Samjoel3101/3d-assets",
+    "url": "https://github.com/Samjoel3101/3d-assets",
+    "repo": "Samjoel3101/3d-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:astrofra/demo-redline-assets",
+    "name": "astrofra/demo-redline-assets",
+    "url": "https://github.com/astrofra/demo-redline-assets",
+    "repo": "astrofra/demo-redline-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:demicarata/pixelart_assets",
+    "name": "demicarata/pixelart_assets",
+    "url": "https://github.com/demicarata/pixelart_assets",
+    "repo": "demicarata/pixelart_assets",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:astrofra/demo-cosmowave-music-trailer-assets",
+    "name": "astrofra/demo-cosmowave-music-trailer-assets",
+    "url": "https://github.com/astrofra/demo-cosmowave-music-trailer-assets",
+    "repo": "astrofra/demo-cosmowave-music-trailer-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:PabloFMM/numinia-digital-goods-data",
+    "name": "PabloFMM/numinia-digital-goods-data",
+    "url": "https://github.com/PabloFMM/numinia-digital-goods-data",
+    "repo": "PabloFMM/numinia-digital-goods-data",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "editing",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:DareToDoyle/D2D-Armour",
+    "name": "DareToDoyle/D2D-Armour",
+    "url": "https://github.com/DareToDoyle/D2D-Armour",
+    "repo": "DareToDoyle/D2D-Armour",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:subsoap/chip-sounds",
+    "name": "subsoap/chip-sounds",
+    "url": "https://github.com/subsoap/chip-sounds",
+    "repo": "subsoap/chip-sounds",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:p5ych0c0rps3/Sound-Effects",
+    "name": "p5ych0c0rps3/Sound-Effects",
+    "url": "https://github.com/p5ych0c0rps3/Sound-Effects",
+    "repo": "p5ych0c0rps3/Sound-Effects",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:NeoSoundFonts/SimonePiervergili-SoundEffects",
+    "name": "NeoSoundFonts/SimonePiervergili-SoundEffects",
+    "url": "https://github.com/NeoSoundFonts/SimonePiervergili-SoundEffects",
+    "repo": "NeoSoundFonts/SimonePiervergili-SoundEffects",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:iiiDaNiii/gem-getter-pro-sound-effects",
+    "name": "iiiDaNiii/gem-getter-pro-sound-effects",
+    "url": "https://github.com/iiiDaNiii/gem-getter-pro-sound-effects",
+    "repo": "iiiDaNiii/gem-getter-pro-sound-effects",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:soggycheetoz/Dungeon-Master-Sound-Effects",
+    "name": "soggycheetoz/Dungeon-Master-Sound-Effects",
+    "url": "https://github.com/soggycheetoz/Dungeon-Master-Sound-Effects",
+    "repo": "soggycheetoz/Dungeon-Master-Sound-Effects",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:pbinkley/js-typewriter",
+    "name": "pbinkley/js-typewriter",
+    "url": "https://github.com/pbinkley/js-typewriter",
+    "repo": "pbinkley/js-typewriter",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "surfaces"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:StathisLiontis/Ping-pong-two-players",
+    "name": "StathisLiontis/Ping-pong-two-players",
+    "url": "https://github.com/StathisLiontis/Ping-pong-two-players",
+    "repo": "StathisLiontis/Ping-pong-two-players",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:cmesias/Multikill-SFX",
+    "name": "cmesias/Multikill-SFX",
+    "url": "https://github.com/cmesias/Multikill-SFX",
+    "repo": "cmesias/Multikill-SFX",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:dmb369/Snake_Game",
+    "name": "dmb369/Snake_Game",
+    "url": "https://github.com/dmb369/Snake_Game",
+    "repo": "dmb369/Snake_Game",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:mshark1/audio-mcp-assets",
+    "name": "mshark1/audio-mcp-assets",
+    "url": "https://github.com/mshark1/audio-mcp-assets",
+    "repo": "mshark1/audio-mcp-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:CarlosLaurine/Countdown-Project-with-Explosion-Audio-GIF-Animation",
+    "name": "CarlosLaurine/Countdown-Project-with-Explosion-Audio-GIF-Animation",
+    "url": "https://github.com/CarlosLaurine/Countdown-Project-with-Explosion-Audio-GIF-Animation",
+    "repo": "CarlosLaurine/Countdown-Project-with-Explosion-Audio-GIF-Animation",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:doficia/project-cordon-sprites",
+    "name": "doficia/project-cordon-sprites",
+    "url": "https://github.com/doficia/project-cordon-sprites",
+    "repo": "doficia/project-cordon-sprites",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:kooyoseb/grappling-armor",
+    "name": "kooyoseb/grappling-armor",
+    "url": "https://github.com/kooyoseb/grappling-armor",
+    "repo": "kooyoseb/grappling-armor",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:timezhong/SvgSprite",
+    "name": "timezhong/SvgSprite",
+    "url": "https://github.com/timezhong/SvgSprite",
+    "repo": "timezhong/SvgSprite",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:N8python/claudesona",
+    "name": "N8python/claudesona",
+    "url": "https://github.com/N8python/claudesona",
+    "repo": "N8python/claudesona",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Mantimestwo/Light-sprite-renderer",
+    "name": "Mantimestwo/Light-sprite-renderer",
+    "url": "https://github.com/Mantimestwo/Light-sprite-renderer",
+    "repo": "Mantimestwo/Light-sprite-renderer",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:SpriteCook/spritecook-free-game-assets",
+    "name": "SpriteCook/spritecook-free-game-assets",
+    "url": "https://github.com/SpriteCook/spritecook-free-game-assets",
+    "repo": "SpriteCook/spritecook-free-game-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:indiesoftby/defold-dissolve-fx",
+    "name": "indiesoftby/defold-dissolve-fx",
+    "url": "https://github.com/indiesoftby/defold-dissolve-fx",
+    "repo": "indiesoftby/defold-dissolve-fx",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Jordyfel/duelyst-animated-sprites-godot",
+    "name": "Jordyfel/duelyst-animated-sprites-godot",
+    "url": "https://github.com/Jordyfel/duelyst-animated-sprites-godot",
+    "repo": "Jordyfel/duelyst-animated-sprites-godot",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:discatte/longmaze-is-loooong",
+    "name": "discatte/longmaze-is-loooong",
+    "url": "https://github.com/discatte/longmaze-is-loooong",
+    "repo": "discatte/longmaze-is-loooong",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Anaxarchus/Worlds",
+    "name": "Anaxarchus/Worlds",
+    "url": "https://github.com/Anaxarchus/Worlds",
+    "repo": "Anaxarchus/Worlds",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:CDRX7/SPRITES",
+    "name": "CDRX7/SPRITES",
+    "url": "https://github.com/CDRX7/SPRITES",
+    "repo": "CDRX7/SPRITES",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:staledonuts/SpriteLibrary",
+    "name": "staledonuts/SpriteLibrary",
+    "url": "https://github.com/staledonuts/SpriteLibrary",
+    "repo": "staledonuts/SpriteLibrary",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:ericholsinger/2DPlatformerDemo",
+    "name": "ericholsinger/2DPlatformerDemo",
+    "url": "https://github.com/ericholsinger/2DPlatformerDemo",
+    "repo": "ericholsinger/2DPlatformerDemo",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:SteveWLaw/top_down_game",
+    "name": "SteveWLaw/top_down_game",
+    "url": "https://github.com/SteveWLaw/top_down_game",
+    "repo": "SteveWLaw/top_down_game",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:RPicster/Godot-particle-and-vfx-textures",
+    "name": "RPicster/Godot-particle-and-vfx-textures",
+    "url": "https://github.com/RPicster/Godot-particle-and-vfx-textures",
+    "repo": "RPicster/Godot-particle-and-vfx-textures",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:fabien-michel/sweethome3d-textures-ambientcg",
+    "name": "fabien-michel/sweethome3d-textures-ambientcg",
+    "url": "https://github.com/fabien-michel/sweethome3d-textures-ambientcg",
+    "repo": "fabien-michel/sweethome3d-textures-ambientcg",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:amini-allight/backrooms-textures",
+    "name": "amini-allight/backrooms-textures",
+    "url": "https://github.com/amini-allight/backrooms-textures",
+    "repo": "amini-allight/backrooms-textures",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Nolram12345/DevTextures",
+    "name": "Nolram12345/DevTextures",
+    "url": "https://github.com/Nolram12345/DevTextures",
+    "repo": "Nolram12345/DevTextures",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:darriagada/Decay-Textures",
+    "name": "darriagada/Decay-Textures",
+    "url": "https://github.com/darriagada/Decay-Textures",
+    "repo": "darriagada/Decay-Textures",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:dphfox/Accessible-Textures",
+    "name": "dphfox/Accessible-Textures",
+    "url": "https://github.com/dphfox/Accessible-Textures",
+    "repo": "dphfox/Accessible-Textures",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:sylvxa/bedframe",
+    "name": "sylvxa/bedframe",
+    "url": "https://github.com/sylvxa/bedframe",
+    "repo": "sylvxa/bedframe",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:vindocel/Dark-Everywhere",
+    "name": "vindocel/Dark-Everywhere",
+    "url": "https://github.com/vindocel/Dark-Everywhere",
+    "repo": "vindocel/Dark-Everywhere",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:inexorgame/textures",
+    "name": "inexorgame/textures",
+    "url": "https://github.com/inexorgame/textures",
+    "repo": "inexorgame/textures",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:PurpBatBoi/N64-Styled-Texture-Repository",
+    "name": "PurpBatBoi/N64-Styled-Texture-Repository",
+    "url": "https://github.com/PurpBatBoi/N64-Styled-Texture-Repository",
+    "repo": "PurpBatBoi/N64-Styled-Texture-Repository",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Null-MC/Textureless",
+    "name": "Null-MC/Textureless",
+    "url": "https://github.com/Null-MC/Textureless",
+    "repo": "Null-MC/Textureless",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:bshuler/Rosources",
+    "name": "bshuler/Rosources",
+    "url": "https://github.com/bshuler/Rosources",
+    "repo": "bshuler/Rosources",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:sagieppel/Unsupervised-extraction-of-textures-and-PBR-materials-from-images",
+    "name": "sagieppel/Unsupervised-extraction-of-textures-and-PBR-materials-from-images",
+    "url": "https://github.com/sagieppel/Unsupervised-extraction-of-textures-and-PBR-materials-from-images",
+    "repo": "sagieppel/Unsupervised-extraction-of-textures-and-PBR-materials-from-images",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:mir-one/fingerprints",
+    "name": "mir-one/fingerprints",
+    "url": "https://github.com/mir-one/fingerprints",
+    "repo": "mir-one/fingerprints",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Simplexity-Development/High_Contrast_Extended",
+    "name": "Simplexity-Development/High_Contrast_Extended",
+    "url": "https://github.com/Simplexity-Development/High_Contrast_Extended",
+    "repo": "Simplexity-Development/High_Contrast_Extended",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:niivue/matcaps",
+    "name": "niivue/matcaps",
+    "url": "https://github.com/niivue/matcaps",
+    "repo": "niivue/matcaps",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:RobbinBob/NL2-MegaTextures",
+    "name": "RobbinBob/NL2-MegaTextures",
+    "url": "https://github.com/RobbinBob/NL2-MegaTextures",
+    "repo": "RobbinBob/NL2-MegaTextures",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:wwwriks/wrad-textures",
+    "name": "wwwriks/wrad-textures",
+    "url": "https://github.com/wwwriks/wrad-textures",
+    "repo": "wwwriks/wrad-textures",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:AFCMS/mc-like-textures",
+    "name": "AFCMS/mc-like-textures",
+    "url": "https://github.com/AFCMS/mc-like-textures",
+    "repo": "AFCMS/mc-like-textures",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:subsoap/defmaterial",
+    "name": "subsoap/defmaterial",
+    "url": "https://github.com/subsoap/defmaterial",
+    "repo": "subsoap/defmaterial",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Null-MC/Oversized",
+    "name": "Null-MC/Oversized",
+    "url": "https://github.com/Null-MC/Oversized",
+    "repo": "Null-MC/Oversized",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:gadenbuie/tidyexplain",
+    "name": "gadenbuie/tidyexplain",
+    "url": "https://github.com/gadenbuie/tidyexplain",
+    "repo": "gadenbuie/tidyexplain",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Kuronons/FZ_graphics",
+    "name": "Kuronons/FZ_graphics",
+    "url": "https://github.com/Kuronons/FZ_graphics",
+    "repo": "Kuronons/FZ_graphics",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:tommyettinger/noisefarm",
+    "name": "tommyettinger/noisefarm",
+    "url": "https://github.com/tommyettinger/noisefarm",
+    "repo": "tommyettinger/noisefarm",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:BigAndCrispy/Unity-First-Person-Melee",
+    "name": "BigAndCrispy/Unity-First-Person-Melee",
+    "url": "https://github.com/BigAndCrispy/Unity-First-Person-Melee",
+    "repo": "BigAndCrispy/Unity-First-Person-Melee",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:tichaesque/FabObscura",
+    "name": "tichaesque/FabObscura",
+    "url": "https://github.com/tichaesque/FabObscura",
+    "repo": "tichaesque/FabObscura",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:jumibot/MVCGameEngine",
+    "name": "jumibot/MVCGameEngine",
+    "url": "https://github.com/jumibot/MVCGameEngine",
+    "repo": "jumibot/MVCGameEngine",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Pixelguru26/RFX-Blender-Asset-Library",
+    "name": "Pixelguru26/RFX-Blender-Asset-Library",
+    "url": "https://github.com/Pixelguru26/RFX-Blender-Asset-Library",
+    "repo": "Pixelguru26/RFX-Blender-Asset-Library",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:samuel-etver/3d-models",
+    "name": "samuel-etver/3d-models",
+    "url": "https://github.com/samuel-etver/3d-models",
+    "repo": "samuel-etver/3d-models",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:MysticPl4y3r/BlenderModels",
+    "name": "MysticPl4y3r/BlenderModels",
+    "url": "https://github.com/MysticPl4y3r/BlenderModels",
+    "repo": "MysticPl4y3r/BlenderModels",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:EPC-MSU/EduNet-content",
+    "name": "EPC-MSU/EduNet-content",
+    "url": "https://github.com/EPC-MSU/EduNet-content",
+    "repo": "EPC-MSU/EduNet-content",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:smallduckinette/blender",
+    "name": "smallduckinette/blender",
+    "url": "https://github.com/smallduckinette/blender",
+    "repo": "smallduckinette/blender",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:yuokamoto/blender_models",
+    "name": "yuokamoto/blender_models",
+    "url": "https://github.com/yuokamoto/blender_models",
+    "repo": "yuokamoto/blender_models",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:orrinjelo/blender-models",
+    "name": "orrinjelo/blender-models",
+    "url": "https://github.com/orrinjelo/blender-models",
+    "repo": "orrinjelo/blender-models",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:campai/3d-models",
+    "name": "campai/3d-models",
+    "url": "https://github.com/campai/3d-models",
+    "repo": "campai/3d-models",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:X3N0-Life-Form/blender-workspace",
+    "name": "X3N0-Life-Form/blender-workspace",
+    "url": "https://github.com/X3N0-Life-Form/blender-workspace",
+    "repo": "X3N0-Life-Form/blender-workspace",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:mateus-andre-araujo/BlenderFinalRenders",
+    "name": "mateus-andre-araujo/BlenderFinalRenders",
+    "url": "https://github.com/mateus-andre-araujo/BlenderFinalRenders",
+    "repo": "mateus-andre-araujo/BlenderFinalRenders",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:colinc-w/MondoTools",
+    "name": "colinc-w/MondoTools",
+    "url": "https://github.com/colinc-w/MondoTools",
+    "repo": "colinc-w/MondoTools",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Pulucat/GPT6-Godot-Little-Nightmares-Inspired-Scene-Demo",
+    "name": "Pulucat/GPT6-Godot-Little-Nightmares-Inspired-Scene-Demo",
+    "url": "https://github.com/Pulucat/GPT6-Godot-Little-Nightmares-Inspired-Scene-Demo",
+    "repo": "Pulucat/GPT6-Godot-Little-Nightmares-Inspired-Scene-Demo",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:CrowtreesStudio/A-Frame-Tutorial-Models",
+    "name": "CrowtreesStudio/A-Frame-Tutorial-Models",
+    "url": "https://github.com/CrowtreesStudio/A-Frame-Tutorial-Models",
+    "repo": "CrowtreesStudio/A-Frame-Tutorial-Models",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:9-zzz/SomeFreeLowpolySwords",
+    "name": "9-zzz/SomeFreeLowpolySwords",
+    "url": "https://github.com/9-zzz/SomeFreeLowpolySwords",
+    "repo": "9-zzz/SomeFreeLowpolySwords",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:samuelsullins/low-poly-3d-in-blender",
+    "name": "samuelsullins/low-poly-3d-in-blender",
+    "url": "https://github.com/samuelsullins/low-poly-3d-in-blender",
+    "repo": "samuelsullins/low-poly-3d-in-blender",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:samuel-etver/3d-models-part-2",
+    "name": "samuel-etver/3d-models-part-2",
+    "url": "https://github.com/samuel-etver/3d-models-part-2",
+    "repo": "samuel-etver/3d-models-part-2",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "lighting",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:learnpixelart/pixelart",
+    "name": "learnpixelart/pixelart",
+    "url": "https://github.com/learnpixelart/pixelart",
+    "repo": "learnpixelart/pixelart",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:pixelartexchange/collections",
+    "name": "pixelartexchange/collections",
+    "url": "https://github.com/pixelartexchange/collections",
+    "repo": "pixelartexchange/collections",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:kalkspace/pixel",
+    "name": "kalkspace/pixel",
+    "url": "https://github.com/kalkspace/pixel",
+    "repo": "kalkspace/pixel",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:manadream/Anti-Aliased-Pixel-Art-Scaling-in-Godot",
+    "name": "manadream/Anti-Aliased-Pixel-Art-Scaling-in-Godot",
+    "url": "https://github.com/manadream/Anti-Aliased-Pixel-Art-Scaling-in-Godot",
+    "repo": "manadream/Anti-Aliased-Pixel-Art-Scaling-in-Godot",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:brodcoli/Godot-Low-Poly-World",
+    "name": "brodcoli/Godot-Low-Poly-World",
+    "url": "https://github.com/brodcoli/Godot-Low-Poly-World",
+    "repo": "brodcoli/Godot-Low-Poly-World",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:SkywolfGameStudios/CC0Tree",
+    "name": "SkywolfGameStudios/CC0Tree",
+    "url": "https://github.com/SkywolfGameStudios/CC0Tree",
+    "repo": "SkywolfGameStudios/CC0Tree",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:YspCoder/PixelAdventure2D-UE5",
+    "name": "YspCoder/PixelAdventure2D-UE5",
+    "url": "https://github.com/YspCoder/PixelAdventure2D-UE5",
+    "repo": "YspCoder/PixelAdventure2D-UE5",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:DJKuhleb/LowPolyModels",
+    "name": "DJKuhleb/LowPolyModels",
+    "url": "https://github.com/DJKuhleb/LowPolyModels",
+    "repo": "DJKuhleb/LowPolyModels",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:temi-daramola/lowpoly-runner",
+    "name": "temi-daramola/lowpoly-runner",
+    "url": "https://github.com/temi-daramola/lowpoly-runner",
+    "repo": "temi-daramola/lowpoly-runner",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:khhvmc5g6f-eng/prior-mindset-assets",
+    "name": "khhvmc5g6f-eng/prior-mindset-assets",
+    "url": "https://github.com/khhvmc5g6f-eng/prior-mindset-assets",
+    "repo": "khhvmc5g6f-eng/prior-mindset-assets",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:UncannyApostle/Low-Poly-Models",
+    "name": "UncannyApostle/Low-Poly-Models",
+    "url": "https://github.com/UncannyApostle/Low-Poly-Models",
+    "repo": "UncannyApostle/Low-Poly-Models",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:domblazer/kod-models-new",
+    "name": "domblazer/kod-models-new",
+    "url": "https://github.com/domblazer/kod-models-new",
+    "repo": "domblazer/kod-models-new",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:FreakinGroovy/cartoonyweapons",
+    "name": "FreakinGroovy/cartoonyweapons",
+    "url": "https://github.com/FreakinGroovy/cartoonyweapons",
+    "repo": "FreakinGroovy/cartoonyweapons",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:EmreCanKURAN/PolyAnimalWorks",
+    "name": "EmreCanKURAN/PolyAnimalWorks",
+    "url": "https://github.com/EmreCanKURAN/PolyAnimalWorks",
+    "repo": "EmreCanKURAN/PolyAnimalWorks",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:JamesLaFritz/Imphenzia-Pix-Pal",
+    "name": "JamesLaFritz/Imphenzia-Pix-Pal",
+    "url": "https://github.com/JamesLaFritz/Imphenzia-Pix-Pal",
+    "repo": "JamesLaFritz/Imphenzia-Pix-Pal",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:GrokCodeReliant/OpenKit3D",
+    "name": "GrokCodeReliant/OpenKit3D",
+    "url": "https://github.com/GrokCodeReliant/OpenKit3D",
+    "repo": "GrokCodeReliant/OpenKit3D",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:bzsantos/cartoon",
+    "name": "bzsantos/cartoon",
+    "url": "https://github.com/bzsantos/cartoon",
+    "repo": "bzsantos/cartoon",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Oliver-makes-code/cartoon-pack",
+    "name": "Oliver-makes-code/cartoon-pack",
+    "url": "https://github.com/Oliver-makes-code/cartoon-pack",
+    "repo": "Oliver-makes-code/cartoon-pack",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:penguin32/RaisingCartoonCharacters",
+    "name": "penguin32/RaisingCartoonCharacters",
+    "url": "https://github.com/penguin32/RaisingCartoonCharacters",
+    "repo": "penguin32/RaisingCartoonCharacters",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:himoqiuhan/HimoToonURP",
+    "name": "himoqiuhan/HimoToonURP",
+    "url": "https://github.com/himoqiuhan/HimoToonURP",
+    "repo": "himoqiuhan/HimoToonURP",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "motion",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:chibifire-stages/quaternius-stage",
+    "name": "chibifire-stages/quaternius-stage",
+    "url": "https://github.com/chibifire-stages/quaternius-stage",
+    "repo": "chibifire-stages/quaternius-stage",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:marwafarghly00-blip/twingame",
+    "name": "marwafarghly00-blip/twingame",
+    "url": "https://github.com/marwafarghly00-blip/twingame",
+    "repo": "marwafarghly00-blip/twingame",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:ahamlabs/PrysmLab",
+    "name": "ahamlabs/PrysmLab",
+    "url": "https://github.com/ahamlabs/PrysmLab",
+    "repo": "ahamlabs/PrysmLab",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Butanium/claude-unit-7",
+    "name": "Butanium/claude-unit-7",
+    "url": "https://github.com/Butanium/claude-unit-7",
+    "repo": "Butanium/claude-unit-7",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:ffttasd/Didi-Dev-Lab",
+    "name": "ffttasd/Didi-Dev-Lab",
+    "url": "https://github.com/ffttasd/Didi-Dev-Lab",
+    "repo": "ffttasd/Didi-Dev-Lab",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:PaulDemeulenaere/vfx-uniform-mesh-sampling",
+    "name": "PaulDemeulenaere/vfx-uniform-mesh-sampling",
+    "url": "https://github.com/PaulDemeulenaere/vfx-uniform-mesh-sampling",
+    "repo": "PaulDemeulenaere/vfx-uniform-mesh-sampling",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:OrsonFavrel/VFXGraph-ClockedAndLoaded",
+    "name": "OrsonFavrel/VFXGraph-ClockedAndLoaded",
+    "url": "https://github.com/OrsonFavrel/VFXGraph-ClockedAndLoaded",
+    "repo": "OrsonFavrel/VFXGraph-ClockedAndLoaded",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:PaulDemeulenaere/vfx-neighborhood-grid-3d",
+    "name": "PaulDemeulenaere/vfx-neighborhood-grid-3d",
+    "url": "https://github.com/PaulDemeulenaere/vfx-neighborhood-grid-3d",
+    "repo": "PaulDemeulenaere/vfx-neighborhood-grid-3d",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:mlvfx/vfxAssetBox",
+    "name": "mlvfx/vfxAssetBox",
+    "url": "https://github.com/mlvfx/vfxAssetBox",
+    "repo": "mlvfx/vfxAssetBox",
+    "adapter": "github-assets",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:JoeHarper-dev/VFX-6102-citybuilder",
+    "name": "JoeHarper-dev/VFX-6102-citybuilder",
+    "url": "https://github.com/JoeHarper-dev/VFX-6102-citybuilder",
+    "repo": "JoeHarper-dev/VFX-6102-citybuilder",
+    "adapter": "github-assets",
+    "sections": [
+      "editing",
+      "motion",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:PaulDemeulenaere/vfx-custom-mesh-output",
+    "name": "PaulDemeulenaere/vfx-custom-mesh-output",
+    "url": "https://github.com/PaulDemeulenaere/vfx-custom-mesh-output",
+    "repo": "PaulDemeulenaere/vfx-custom-mesh-output",
+    "adapter": "github-assets",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Kitsune-Arcana-Studios/Unity_VFX_and_Shader_Experiments",
+    "name": "Kitsune-Arcana-Studios/Unity_VFX_and_Shader_Experiments",
+    "url": "https://github.com/Kitsune-Arcana-Studios/Unity_VFX_and_Shader_Experiments",
+    "repo": "Kitsune-Arcana-Studios/Unity_VFX_and_Shader_Experiments",
+    "adapter": "github-assets",
+    "sections": [
+      "lighting",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:AntonPalmqvist/physically-based-api",
+    "name": "AntonPalmqvist/physically-based-api",
+    "url": "https://github.com/AntonPalmqvist/physically-based-api",
+    "repo": "AntonPalmqvist/physically-based-api",
+    "adapter": "github-assets",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:gitmardt/game-feel-example",
+    "name": "gitmardt/game-feel-example",
+    "url": "https://github.com/gitmardt/game-feel-example",
+    "repo": "gitmardt/game-feel-example",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:HassanRasool1/3D-Zombie-Shooter-Game",
+    "name": "HassanRasool1/3D-Zombie-Shooter-Game",
+    "url": "https://github.com/HassanRasool1/3D-Zombie-Shooter-Game",
+    "repo": "HassanRasool1/3D-Zombie-Shooter-Game",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:Momen-Sanad/Unity_EclipseProtocol",
+    "name": "Momen-Sanad/Unity_EclipseProtocol",
+    "url": "https://github.com/Momen-Sanad/Unity_EclipseProtocol",
+    "repo": "Momen-Sanad/Unity_EclipseProtocol",
+    "adapter": "github-assets",
+    "sections": [
+      "audio",
+      "surfaces",
+      "three-d",
+      "two-d"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "current-public-CC0-tree",
+    "live_reason": "Public CC0 search, licence file and supported media tree verified at connection creation. Current item rights and content are screened on each query."
+  },
+  {
+    "id": "media:KenneyNL/Starter-Kit-FPS",
+    "name": "KenneyNL/Starter-Kit-FPS",
+    "url": "https://github.com/KenneyNL/Starter-Kit-FPS",
+    "repo": "KenneyNL/Starter-Kit-FPS",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "creator-public-pack-tree",
+    "live_reason": "Creator-owned repository and media tree checked. Only current per-pack CC0-dedicated media is admitted; software licence does not cover unrelated art."
+  },
+  {
+    "id": "media:KenneyNL/Starter-Kit-Basic-Scene",
+    "name": "KenneyNL/Starter-Kit-Basic-Scene",
+    "url": "https://github.com/KenneyNL/Starter-Kit-Basic-Scene",
+    "repo": "KenneyNL/Starter-Kit-Basic-Scene",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "creator-public-pack-tree",
+    "live_reason": "Creator-owned repository and media tree checked. Only current per-pack CC0-dedicated media is admitted; software licence does not cover unrelated art."
+  },
+  {
+    "id": "media:KenneyNL/Starter-Kit-Racing",
+    "name": "KenneyNL/Starter-Kit-Racing",
+    "url": "https://github.com/KenneyNL/Starter-Kit-Racing",
+    "repo": "KenneyNL/Starter-Kit-Racing",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "creator-public-pack-tree",
+    "live_reason": "Creator-owned repository and media tree checked. Only current per-pack CC0-dedicated media is admitted; software licence does not cover unrelated art."
+  },
+  {
+    "id": "media:KenneyNL/Starter-Kit-Match-3",
+    "name": "KenneyNL/Starter-Kit-Match-3",
+    "url": "https://github.com/KenneyNL/Starter-Kit-Match-3",
+    "repo": "KenneyNL/Starter-Kit-Match-3",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "creator-public-pack-tree",
+    "live_reason": "Creator-owned repository and media tree checked. Only current per-pack CC0-dedicated media is admitted; software licence does not cover unrelated art."
+  },
+  {
+    "id": "media:KenneyNL/KayKit-Hexagons",
+    "name": "KenneyNL/KayKit-Hexagons",
+    "url": "https://github.com/KenneyNL/KayKit-Hexagons",
+    "repo": "KenneyNL/KayKit-Hexagons",
+    "adapter": "github-assets",
+    "sections": [
+      "three-d",
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "priority": 2,
+    "content_hosts": [
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "live_status": "creator-public-pack-tree",
+    "live_reason": "Creator-owned repository and media tree checked. Only current per-pack CC0-dedicated media is admitted; software licence does not cover unrelated art."
+  }
+]

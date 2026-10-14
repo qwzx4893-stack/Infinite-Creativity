@@ -74,18 +74,6 @@
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
     {
-      "id": "cgtrader",
-      "name": "CGTrader",
-      "url": "https://www.cgtrader.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "model-3d"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
       "id": "string-tune",
       "name": "String Tune",
       "url": "https://string-tune.fiddle.digital/",
@@ -137,19 +125,6 @@
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
     {
-      "id": "motionsites",
-      "name": "MotionSites",
-      "url": "https://motionsites.ai/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "prompt",
-        "motion"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
       "id": "aceternity",
       "name": "Aceternity UI",
       "url": "https://ui.aceternity.com/",
@@ -162,19 +137,6 @@
       ],
       "policy": "Official public free registry found; the Pro licence page restricts stock/source redistribution. Do not assume MIT or mirror source without explicit applicable rights.",
       "terms_url": "https://ui.aceternity.com/licence"
-    },
-    {
-      "id": "21st",
-      "name": "21st.dev",
-      "url": "https://21st.dev/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "permission-required-for-automated-marketplace-collection",
-      "tags": [
-        "ui-component"
-      ],
-      "policy": "Current July 20, 2026 terms prohibit automated marketplace collection and republication of structured metadata/media without written consent.",
-      "terms_url": "https://21st.dev/terms"
     },
     {
       "id": "mapcn",
@@ -209,18 +171,6 @@
       "tags": [
         "image",
         "tool"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "dribbble",
-      "name": "Dribbble",
-      "url": "https://dribbble.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "inspiration"
       ],
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
@@ -385,31 +335,6 @@
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
     {
-      "id": "sketchfab",
-      "name": "Sketchfab",
-      "url": "https://sketchfab.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "model-3d"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "smithsonian",
-      "name": "Smithsonian Open Access",
-      "url": "https://www.si.edu/openaccess",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "model-3d",
-        "illustration"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
       "id": "nasa-3d",
       "name": "NASA 3D Resources",
       "url": "https://nasa3d.arc.nasa.gov/",
@@ -450,19 +375,6 @@
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
     {
-      "id": "freesound",
-      "name": "Freesound",
-      "url": "https://freesound.org/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "audio",
-        "sfx"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
       "id": "incompetech",
       "name": "Incompetech",
       "url": "https://incompetech.com/music/",
@@ -485,45 +397,6 @@
       "tags": [
         "audio",
         "music"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "pixabay",
-      "name": "Pixabay",
-      "url": "https://pixabay.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "image",
-        "video",
-        "audio"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "pexels",
-      "name": "Pexels",
-      "url": "https://www.pexels.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "image",
-        "video"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "unsplash",
-      "name": "Unsplash",
-      "url": "https://unsplash.com/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "image"
       ],
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
@@ -557,19 +430,6 @@
       "id": "met-openaccess",
       "name": "The Met Open Access",
       "url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "image",
-        "art"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "rijksmuseum",
-      "name": "Rijksmuseum",
-      "url": "https://www.rijksmuseum.nl/",
       "adapter": "reference",
       "access": "mixed-or-unverified",
       "status": "manual-license-and-content-review-required",
@@ -671,36 +531,9 @@
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
     },
     {
-      "id": "poly-pizza",
-      "name": "Poly Pizza",
-      "url": "https://poly.pizza/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "model-3d",
-        "low-poly"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
       "id": "mesh2motion",
       "name": "Mesh2Motion",
       "url": "https://mesh2motion.org/",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "rig",
-        "animation",
-        "model-3d"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "mixamo",
-      "name": "Mixamo",
-      "url": "https://www.mixamo.com/",
       "adapter": "reference",
       "access": "mixed-or-unverified",
       "status": "manual-license-and-content-review-required",
@@ -1143,19 +976,6 @@
       "status": "manual-license-and-content-review-required",
       "tags": [
         "game",
-        "template"
-      ],
-      "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."
-    },
-    {
-      "id": "figma-community",
-      "name": "Figma Community",
-      "url": "https://www.figma.com/community",
-      "adapter": "reference",
-      "access": "mixed-or-unverified",
-      "status": "manual-license-and-content-review-required",
-      "tags": [
-        "design-system",
         "template"
       ],
       "policy": "Links and high-level inspiration only; no paid assets, prompts, screenshots or binaries mirrored."

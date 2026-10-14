@@ -6,7 +6,7 @@ const allowed = new Set([
   'inspect_3d_asset', 'inspect_asset_media', 'read_asset_file', 'fetch_asset',
   'fetch_asset_bundle', 'discover_sources', 'open_repository',
   'catalog_providers', 'search_library_batch', 'inspect_library_batch',
-  'recommend_assets', 'section_sources',
+  'recommend_assets', 'rank_library_items', 'section_sources',
 ]);
 
 const hosts = new WeakMap();

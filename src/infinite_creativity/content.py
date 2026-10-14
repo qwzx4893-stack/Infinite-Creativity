@@ -15,16 +15,19 @@ from urllib.request import Request,build_opener
 from .network import NoRedirect
 
 CONTENT_HOSTS={'raw.githubusercontent.com','api.iconify.design','cdn.polyhaven.com','dl.polyhaven.org','polyhaven.com','ambientcg.com','downloads.ambientcg.com','api.github.com','fuel.gazebosim.org','storage.googleapis.com','codeload.github.com','kenney.nl','quaternius.com','drive.google.com','drive.usercontent.google.com','zenodo.org','download.blender.org','www.blender.org','studio.blender.org','huggingface.co'}
-HOST_SUFFIXES=('.polyhaven.com','.polyhaven.org','.ambientcg.com','.backblazeb2.com','.githubusercontent.com','.blender.org')
+HOST_SUFFIXES=('.polyhaven.com','.polyhaven.org','.ambientcg.com','.backblazeb2.com','.githubusercontent.com','.blender.org','.archive.org')
 CONTENT_HOSTS.add('freshluts.com')
+# A single documented public provider uses this TLS port. Never accept arbitrary
+# ports supplied by asset metadata or redirects.
+CONTENT_PORTS={('lazytextures.net',3000)}
 
 def validate_url(url,resolve_dns=True):
     p=urlsplit(url)
     host=(p.hostname or '').lower()
-    if p.scheme!='https' or p.username or p.password or p.port not in (None,443): raise ValueError('Only public HTTPS content is allowed')
+    if p.scheme!='https' or p.username or p.password or (p.port not in (None,443) and (host,p.port) not in CONTENT_PORTS): raise ValueError('Only public HTTPS content is allowed')
     if host not in CONTENT_HOSTS and not any(host.endswith(s) for s in HOST_SUFFIXES): raise ValueError('Content host is not approved')
     if resolve_dns:
-        for item in socket.getaddrinfo(host,443,type=socket.SOCK_STREAM):
+        for item in socket.getaddrinfo(host,p.port or 443,type=socket.SOCK_STREAM):
             if not ipaddress.ip_address(item[4][0]).is_global: raise ValueError('Private network content is prohibited')
     return url
 
@@ -34,7 +37,7 @@ class ContentCache:
         self.root.mkdir(parents=True,exist_ok=True)
         self.opener=build_opener(NoRedirect())
     def request_headers(self,url):
-        return {'User-Agent':'InfiniteCreativity/0.5','Accept':'*/*'}
+        return {'User-Agent':'InfiniteCreativity/0.6','Accept':'*/*'}
 
     def range(self,url,start,length):
         """Read a verified HTTP byte range; never silently download a whole archive."""

@@ -18,15 +18,13 @@ def code(source='fixture',key='button.tsx',digest='a'*40,dependency='b'*40):
 
 
 class ExpansionTests(unittest.TestCase):
-    def test_21st_uses_metadata_search_and_never_returns_premium_code(self):
-        from infinite_creativity.live_21st import twentyfirst
-        calls=[]
-        async def remote(name,*args):
-            calls.append(name);return {'components':[{'id':'one','name':'Card','code':'premium original','full_prompt':'protected full prompt'}]},False
-        with patch('infinite_creativity.live_21st.read_remote',remote):
-            a=twentyfirst(object(),{'id':'21st'},{'mode':'reference'},'',1,key='one')
-        self.assertEqual(calls,['search']);self.assertEqual(a['files'],[])
-        self.assertNotIn('premium original',json.dumps(a));self.assertNotIn('protected full prompt',json.dumps(a))
+    def test_account_only_sources_and_adapters_are_entirely_removed(self):
+        from infinite_creativity.live import source_configs
+        from infinite_creativity.live_providers import ADAPTERS
+        sources=source_configs()
+        for name in ('21st','cgtrader','dribbble','motionsites','freesound','sketchfab','mixamo','pixabay','pexels','unsplash'):
+            self.assertNotIn(name,sources);self.assertNotIn(name,ADAPTERS)
+        self.assertTrue(all(s['authentication']=='none-required' for s in LiveLibrary().source_cards()))
     def test_live_text_delivery_blocks_content_even_with_an_ordinary_title(self):
         from infinite_creativity.catalog import Catalog
         from infinite_creativity.library import Library

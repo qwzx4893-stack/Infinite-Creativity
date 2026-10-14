@@ -29,9 +29,19 @@ def main():
     sub.add_parser('curate')
     sub.add_parser('prepare-vision')
     pv=sub.add_parser('prepare-live-vision');pv.add_argument('--model-dir',default='')
+    pm=sub.add_parser('prepare-live-media');pm.add_argument('--model-dir',default='')
+    ps=sub.add_parser('prepare-live-style');ps.add_argument('--model-dir',default='')
     v=sub.add_parser('screen-vision');v.add_argument('--limit',type=int,default=500);v.add_argument('--source',default='')
     v=sub.add_parser('apply-reviews');v.add_argument('file')
     a=p.parse_args()
+    if a.command=='prepare-live-style':
+        from .live_visual_rank import prepare,model_path
+        target=Path(a.model_dir) if a.model_dir else model_path();prepare(target)
+        print(json.dumps({'prepared':'pinned visual ranking software only','path':str(target.resolve()),'asset_index':'none'}));return
+    if a.command=='prepare-live-media':
+        from .live_media_review import prepare_speech,speech_path
+        target=Path(a.model_dir) if a.model_dir else speech_path();prepare_speech(target)
+        print(json.dumps({'prepared':'pinned local speech model software only','path':str(target.resolve()),'asset_index':'none'}));return
     if a.command=='prepare-live-vision':
         from .vision import prepare
         from .live_admission import model_path

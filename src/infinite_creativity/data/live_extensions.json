@@ -55,53 +55,6 @@
     "priority": 2
   },
   {
-    "id": "sketchfab",
-    "name": "Sketchfab official current models",
-    "url": "https://api.sketchfab.com/",
-    "adapter": "sketchfab",
-    "sections": [
-      "three-d"
-    ],
-    "content_hosts": [
-      "media.sketchfab.com"
-    ],
-    "priority": 2,
-    "live_status": "public-search-originals-require-SKETCHFAB_TOKEN"
-  },
-  {
-    "id": "freesound",
-    "name": "Freesound official audio API",
-    "url": "https://freesound.org/",
-    "adapter": "freesound",
-    "sections": [
-      "audio"
-    ],
-    "live_status": "official-FREESOUND_TOKEN-required"
-  },
-  {
-    "id": "cgtrader",
-    "name": "CGTrader official developer API",
-    "url": "https://api.cgtrader.com/",
-    "adapter": "cgtrader",
-    "sections": [
-      "three-d",
-      "inspiration"
-    ],
-    "live_status": "official-CGTRADER_TOKEN-required",
-    "live_reason": "Developer API implemented; free-price presentations, original licence scope remains unresolved."
-  },
-  {
-    "id": "dribbble",
-    "name": "Dribbble official account API",
-    "url": "https://api.dribbble.com/",
-    "adapter": "dribbble",
-    "sections": [
-      "inspiration"
-    ],
-    "live_status": "official-DRIBBBLE_TOKEN-required",
-    "live_reason": "API v2 exposes authorized account shots, not a public aggregate gallery."
-  },
-  {
     "id": "string-tune",
     "name": "StringTune official npm package",
     "url": "https://string-tune.fiddle.digital/",
@@ -2940,5 +2893,221 @@
     "platforms": [],
     "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
     "priority": 5
+  },
+  {
+    "id": "opengameart",
+    "name": "OpenGameArt public original assets and packs",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "sections": [
+      "two-d",
+      "three-d",
+      "audio",
+      "interface",
+      "motion"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "opengameart:2d",
+    "name": "OpenGameArt 2d",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "art_type": 9,
+    "sections": [
+      "two-d",
+      "interface"
+    ],
+    "discovery_only": true
+  },
+  {
+    "id": "opengameart:3d",
+    "name": "OpenGameArt 3d",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "art_type": 10,
+    "sections": [
+      "three-d"
+    ],
+    "discovery_only": true
+  },
+  {
+    "id": "opengameart:music",
+    "name": "OpenGameArt music",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "art_type": 12,
+    "sections": [
+      "audio"
+    ],
+    "discovery_only": true
+  },
+  {
+    "id": "opengameart:sounds",
+    "name": "OpenGameArt sounds",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "art_type": 13,
+    "sections": [
+      "audio"
+    ],
+    "discovery_only": true
+  },
+  {
+    "id": "opengameart:concept",
+    "name": "OpenGameArt concept",
+    "url": "https://opengameart.org",
+    "adapter": "opengameart",
+    "art_type": 14,
+    "sections": [
+      "two-d",
+      "inspiration"
+    ],
+    "discovery_only": true
+  },
+  {
+    "id": "lazytextures:models",
+    "name": "Lazytextures models",
+    "url": "https://lazytextures.net:3000",
+    "content_hosts": [
+      "lazytextures.net"
+    ],
+    "adapter": "lazytextures",
+    "media": "models",
+    "sections": [
+      "three-d"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "lazytextures:materials",
+    "name": "Lazytextures materials",
+    "url": "https://lazytextures.net:3000",
+    "content_hosts": [
+      "lazytextures.net"
+    ],
+    "adapter": "lazytextures",
+    "media": "materials",
+    "sections": [
+      "surfaces"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "lazytextures:textures",
+    "name": "Lazytextures textures",
+    "url": "https://lazytextures.net:3000",
+    "content_hosts": [
+      "lazytextures.net"
+    ],
+    "adapter": "lazytextures",
+    "media": "textures",
+    "sections": [
+      "surfaces"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "lazytextures:hdris",
+    "name": "Lazytextures hdris",
+    "url": "https://lazytextures.net:3000",
+    "content_hosts": [
+      "lazytextures.net"
+    ],
+    "adapter": "lazytextures",
+    "media": "hdris",
+    "sections": [
+      "lighting"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "lazytextures:other",
+    "name": "Lazytextures other",
+    "url": "https://lazytextures.net:3000",
+    "content_hosts": [
+      "lazytextures.net"
+    ],
+    "adapter": "lazytextures",
+    "media": "other",
+    "sections": [
+      "three-d",
+      "editing"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "archive:sound-effects",
+    "name": "Internet Archive sound-effects",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "audio",
+    "query": "sound effects",
+    "sections": [
+      "audio"
+    ],
+    "priority": 3
+  },
+  {
+    "id": "archive:music-loops",
+    "name": "Internet Archive music-loops",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "audio",
+    "query": "loop",
+    "sections": [
+      "audio"
+    ],
+    "priority": 3
+  },
+  {
+    "id": "archive:animation",
+    "name": "Internet Archive animation",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "movies",
+    "query": "animation",
+    "sections": [
+      "editing",
+      "motion"
+    ],
+    "priority": 3
+  },
+  {
+    "id": "archive:stock-footage",
+    "name": "Internet Archive stock-footage",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "movies",
+    "query": "stock footage",
+    "sections": [
+      "editing"
+    ],
+    "priority": 3
+  },
+  {
+    "id": "archive:textures",
+    "name": "Internet Archive textures",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "image",
+    "query": "texture",
+    "sections": [
+      "surfaces",
+      "two-d"
+    ],
+    "priority": 3
+  },
+  {
+    "id": "archive:illustrations",
+    "name": "Internet Archive illustrations",
+    "url": "https://archive.org",
+    "adapter": "internet-archive",
+    "media": "image",
+    "query": "illustration",
+    "sections": [
+      "two-d"
+    ],
+    "priority": 3
   }
 ]

@@ -1,39 +1,27 @@
-# Live source coverage — v0.5
+# Source coverage — v0.6
 
-This describes connector capabilities, not stored item inventories or whole-provider completion. Every item query obtains current upstream data. Counts from v0.3 snapshots are historical and are not used by the default MCP.
+The user's list contains 23 distinct sources. Seventeen remain connected at the scopes below; seven provide some licence-scoped original/code access and ten provide public presentation/registry windows. These are scope statements, not claims that every free element on a site is reachable or admitted.
 
-| Original requested source | Current live behavior |
-| --- | --- |
-| Poly Haven | Current complete public metadata response; original variants and previews on demand |
-| Uiverse | Current scoped original HTML from the official galaxy repository, with MIT notice |
-| Motion Primitives | Current scoped core/UI code and original notices |
-| Codrops | Current public MIT organization windows and selected original code/shader pack members; vendor media/fonts excluded |
-| Mapcn | Current original registry code; map tile services retain independent terms |
-| Blendkit / BlenderKit | Unified official free-asset API. CC0 or conditional royalty-free end-product rights; original descriptors use official scene UUID parameters and current account access limits |
-| MockupBro | Current public mockup presentation entries and native eligible thumbnails; raw creator files are not assumed stock-redistributable |
-| NameThatUI | Current public pattern entries; visual reference only |
-| Refero | Current public style entries; visual reference only |
-| Awwwards | Current public showcase entries; visual reference only |
-| Jiro | Current public template/component presentation entries; original copying requires verified rights |
-| Oron | Current public library entry presentations; original copying requires verified rights |
-| Prompt Motion | Current public item presentations; paid/protected full prompts are not exposed as reusable originals |
-| Jitter | Current public template presentations; native preview where the permitted presentation transport is supported |
-| Screenrove | Current public product-reference pages; visual reference only |
-| Aceternity | Current public free registry metadata. Applicable free original-source redistribution scope unresolved; no blanket MIT assumption |
-| MotionSites | First-party MCP metadata through authorized account OAuth. Local access token configuration required; no copying of paid full prompts |
-| 21st.dev | Official account MCP metadata connector using `API_KEY_21ST`; no marketplace scraper, hosted generation or unverified premium code copying |
-| CGTrader | Official developer API for free-price presentations, requiring `CGTRADER_TOKEN`. Current royalty-free/custom original scope remains unresolved; originals withheld |
-| Dribbble | Official API v2 using `DRIBBBLE_TOKEN`; authorized account shots only, not the whole public gallery |
-| Magnific | Supplied app endpoint rejected public access (HTTP 403); no public original-asset inventory established |
-| String Tune | Current official `@fiddle-digital/string-tune` package, verified MIT notice and bounded original JS/CJS/MJS members, read inside MCP |
-| SiteReel | Public page did not expose supported item permalinks; dynamic inventory not integrated |
+| Original list | Current no-account scope |
+|---|---|
+| Poly Haven | Current public CC0 inventory and selected originals/variants |
+| Blendkit | Official public free metadata and available download descriptors; CC0 or restricted royalty-free end-product rights; unsupported native originals still require specialized media review |
+| Uiverse | Current official galaxy repository, MIT source scopes |
+| Motion Primitives | Current permissively licensed code |
+| Mapcn | Current permissively licensed code |
+| Codrops | Scoped first-party licensed code packs; third-party demo media is not inherited |
+| String Tune | Current official MIT npm package, notice and selected source members |
+| MockupBro, NameThatUI, Refero, Awwwards, Jiro, Oron, Prompt Motion, Jitter, Screenrove | Supported public item/presentation windows with screened previews where available; no claim of complete inventory or original reuse rights |
+| Aceternity | Public free registry metadata/presentations; applicable original redistribution scope remains unresolved |
+| 21st, MotionSites, CGTrader, Dribbble | Removed entirely because implemented account/API paths required credentials |
+| Magnific, SiteReel | Removed from live routing: inaccessible supplied app/public page or no supported item inventory |
 
-Additional current connectors cover ambientCG, scoped CC0 game/2D/3D repositories, Kenney original ranged ZIP members, supported creator-linked Quaternius Drive folders, Fuel, individually licensed FSD50K recordings, official Blender demo subsets, audited LUT collections and optional Iconify queries.
+Also removed: Freesound, Sketchfab, Mixamo and other key/account-only source definitions. No provider key requests are part of the MCP.
 
-Known repository connection addresses are retained as software routing configuration only. Search, licenses and item metadata are fetched anew; addresses are not proof of usable assets. The MCP can discover current repositories and open their scoped items without navigating websites.
+New public originals: OpenGameArt per-item licences and ZIP members; Lazytextures public CC0 inventories and current public Infos manifests; Internet Archive individually licensed original media excluding restricted/dark items. New curated media repositories are listed in [connections](V06_CONNECTIONS.md). Existing Openverse/Wikimedia, creator packs, public creator-linked Drive folders, Fuel, FSD50K, Blender samples, Khronos assets, LUTs and UI repositories remain live.
 
-Rights eligibility and original availability are separate. Upstream deletion, changed licenses, quotas, account restrictions and unsupported formats can affect the next call. Native public preview endpoints may themselves be unavailable or point to a general presentation image; this is never claimed as a full original download.
+Public Drive folder parsing supports creator-linked anonymous listings and refuses incomplete oversized listings. Quaternius distribution flows requiring different authentication/store interactions are explicit limitations. No private Drive or marketplace protection is bypassed.
 
-References: [official Blendkit licenses](https://www.blendkit.com/docs/licenses/), [MotionSites MCP/account limits](https://motionsites.ai/mcp), [21st terms](https://21st.dev/terms), [Aceternity licence](https://ui.aceternity.com/licence).
+Poly Pizza was investigated but not integrated: its current terms prohibit general automated scraping; the permitted programmatic API requires an account key. It is excluded under the no-key requirement. Reference: [Poly Pizza terms](https://poly.pizza/docs/tos). Lazytextures documents its no-auth CC0 public API: [official API](https://blendermaterials.com/PublicAPI).
 
-All rows describe connector scopes. Default v0.5 admission can withhold their items before display. The current Art Institute metadata API worked, but its original image host rejected our verification requests with HTTP 403; these images were withheld. Account connectors above have not been tested with authorized account keys in this workspace. [Admission limits](LIVE_ADMISSION.md) · [New connections](V05_CONNECTIONS.md).
+All content still passes current rights/content admission. Unavailable provider windows and withheld items are returned explicitly. Connector counts are not asset counts, and whole-site completeness is not claimed.

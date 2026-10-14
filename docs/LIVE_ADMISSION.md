@@ -1,31 +1,27 @@
-# Admission before display — v0.5
+# Live admission — v0.6
 
-Every live page runs admission before emitting cards. It checks current title, description, tags, source keys and filenames for explicit/obscene/suggestive content. Original source-text delivery checks the actual current text as well. Paid and unverified source files remain unavailable; visual references are a separate access scope.
+No saved asset or moderation index is used. Every request refreshes metadata; admission is performed before card display, and selected file variants are rechecked before delivery.
 
-The default `IC_SAFETY_MODE=strict` screens eligible raster images with the pinned Apache-2.0 ONNX five-class model. Safe-looking titles are insufficient. Risk or uncertainty above the conservative threshold is withheld. Missing model software, unsupported vectors, malformed/oversized images and unavailable previews are withheld, with counts/reasons in the page response. Full original rasters are used where available within the review budget; selected original ZIP raster members can be screened without extracting whole packs. Tiny pixel art and intentional minimal styles are not low-quality rejection rules.
+| Content | Built-in inspection |
+|---|---|
+| All items | Explicit and suggestive titles, descriptions, tags, filenames, source flags and applicable rights |
+| Source code/notices | Current complete bounded text, including explicit/suggestive source-content policy |
+| Raster originals | Decoded visible pixels, transparency/structure and pinned local image classifier |
+| Static SVG | Source text, no external/active markup, complete local raster rendering and classifier |
+| Audio | Entire bounded decode, empty/nonfinite/severe-clipping checks, local multilingual Whisper translation and lexical speech policy |
+| Animated images/video | Every decoded frame inside the frame budget; audio track is checked when present |
+| GLB | Self-contained geometry, embedded visible textures, six views, and supported keyframe/midpoint skin poses |
+| Packs | Container navigation; each selected member is independently admitted. Covers are checked before preview emission |
+| Paid references | Screened current public presentation only; no original source reuse |
 
-Install classifier software with `pip install -e ".[vision]"`, then `infinite-creativity prepare-live-vision`. The pinned weights and checksums are software, not an asset index. `IC_VISION_MODEL` can select an existing pinned installation. Weight loading is reused in memory; image data/verdicts are not kept across calls. The explicit `metadata` mode is for compatibility and does **not** promise visual filtering.
+Default budgets: 32 MiB selected-original review, 90 seconds complete decoded audio, 240 complete decoded frames, 120,000 triangles and 48 animation keyframe/midpoint poses. External model buffers, morph/cubic animation, unsupported influences/native project formats and items above these budgets require specialized review or a smaller independently licensed member. They are withheld rather than passed from a safe cover.
 
-The classifier covers the recorded image views. It does not certify unseen model geometry, animation frames, speech, music lyrics, contextual innuendo or subjective artistic quality. A 3D thumbnail pass remains a thumbnail pass. Audio, video and other temporal/project originals are withheld by default unless a real local reviewer is configured. Do not call these items completely reviewed merely because upstream declared a safe flag.
+The pinned image, speech and CLIP model software is prepared with `prepare-live-vision`, `prepare-live-media`, `prepare-live-style`. No account/API key is needed. Missing models do not authorize unchecked media. Model files may stay installed; original bytes, embeddings, temporary parser files and verdicts are discarded when the RPC ends.
 
-## Exact duplicate admission
+The optional local `IC_MEDIA_REVIEW_COMMAND` hook remains available for a trusted operator-supplied reviewer. It is a JSON argv array, never a source-provided command. Its verdict must match the current revision and cover sexual, suggestive and technical-quality checks. The built-in supported-media reviewers work without this hook.
 
-Response-local identities and complete known original/dependency digest bundles are compared before emitting cards. Common geometry with different texture dependencies is preserved. Exact reviewed original-raster digests can also collapse repeats. Signed **client navigation cursors** carry at most 384 digest receipts; they contain no titles, licences, image data, manifests or saved result set. This is bounded traversal deduplication, not a persistent global artwork/perceptual similarity database. Different pages or sources outside that horizon can still repeat an artwork. No blanket global uniqueness claim is made.
+Deduplication uses exact item/current-bundle identities and reviewed original digests. At most 384 digest-only receipts travel in the signed client cursor. This removes encountered duplicates while collecting, with no persistent global registry. Different material/dependency bundles remain distinct.
 
-## Optional original-media reviewer
+Image risk uses a conservative threshold and can produce false positives, including benign texture atlases. Discrete camera/keyframe views do not prove every occluded surface or continuously interpolated pose. Speech recognition can miss lyrics, words and nonverbal innuendo. CLIP ranks shown visual relevance and does not assess safety. Validity/empty/clipping/geometry checks do not certify aesthetic quality; intentional simple styles are preserved. No blanket guarantee of perfect sexual-content removal or globally exhaustive deduplication is made.
 
-`IC_MEDIA_REVIEW_COMMAND` is a JSON argv array of a trusted program installed by the local operator. It is never obtained from source data or a tool input, never runs through a shell, and receives one current item descriptor on stdin. It must fetch/check the current original content without keeping it. Timeout and response size are bounded. The response must contain:
-
-```json
-{
-  "revision": "the exact current revision from stdin",
-  "decision": "allow",
-  "checks": ["sexual", "suggestive", "technical-quality"],
-  "scope": "the actual original media checked",
-  "evidence": "brief verifiable evidence"
-}
-```
-
-Missing required checks, a mismatched revision, an unavailable reviewer or rejection cannot create an approval. This is a backend integration contract, not a supplied comprehensive audio/geometry/art-quality model. Do not invent a permissive reviewer merely to increase library counts.
-
-No image classifier or metadata rule can guarantee perfect contextual moderation. The current quality gate rejects invalid/unsupported media; it does not claim to distinguish all bad art from deliberately simple art.
+`IC_SAFETY_MODE=metadata` is an explicit compatibility mode that omits media review; strict is the default. Provider registration alone never implies safety, rights or original availability.

@@ -132,27 +132,6 @@
       "motion"
     ]
   },
-  "21st": {
-    "live_adapter": "21st-mcp",
-    "live_status": "official-API_KEY_21ST-required",
-    "live_reason": "Official account-authorized MCP search and component metadata; no marketplace scraper, hosted generation, or unverified premium original copying.",
-    "sections": [
-      "interface",
-      "inspiration"
-    ]
-  },
-  "cgtrader": {
-    "live_status": "official-CGTRADER_TOKEN-required",
-    "live_reason": "Official developer API requires CGTRADER_TOKEN; free-price presentations, original royalty-free/custom scope unresolved.",
-    "adapter": "cgtrader",
-    "live_adapter": "cgtrader"
-  },
-  "dribbble": {
-    "live_status": "official-DRIBBBLE_TOKEN-required",
-    "live_reason": "Official API v2 requires DRIBBBLE_TOKEN and exposes authorized account shots only.",
-    "adapter": "dribbble",
-    "live_adapter": "dribbble"
-  },
   "magnific": {
     "live_status": "authentication-or-access-required",
     "live_reason": "The supplied app endpoint returned HTTP 403; it is not an accessible public original-asset inventory."
@@ -162,19 +141,6 @@
     "live_reason": "Official npm package; current declared licence and bundled notice checked on each query.",
     "adapter": "npm-package",
     "live_adapter": "npm-package"
-  },
-  "motionsites": {
-    "live_adapter": "motionsites-mcp",
-    "live_status": "official-oauth-required",
-    "live_reason": "Official OAuth account connection required. Only source metadata and previews are exposed; paid prompt originals are excluded.",
-    "content_hosts": [
-      "pub-86dc5b5484314368ac5436a674b0d919.r2.dev"
-    ],
-    "sections": [
-      "inspiration",
-      "interface",
-      "motion"
-    ]
   },
   "sitereel": {
     "live_status": "dynamic-library-not-integrated",
@@ -223,5 +189,10 @@
       "interface"
     ],
     "priority": 20
+  },
+  "opengameart": {
+    "live_adapter": "opengameart",
+    "live_status": "current-public-originals-and-packs",
+    "live_reason": "Current per-item public licences, originals and ZIP members; no account required."
   }
 }

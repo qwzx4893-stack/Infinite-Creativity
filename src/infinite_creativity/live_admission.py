@@ -80,10 +80,30 @@ class Admission:
                 if reviewed['state']=='withheld':return self.withhold(reviewed['scope'])
                 evidence=reviewed
             else:
+                # Built-in reviewers inspect selected originals locally. They
+                # work without API keys or an external review service.
+                from .live_media_review import review_original
+                import time
+                if hasattr(self.http,'started') and time.monotonic()-self.http.started>50:return self.withhold('request-review-budget-exhausted')
+                builtin=None
+                if a.get('files') and (a['kind'] in {'audio','video','animation-2d','animation-3d','model-3d','icon','vector-pack'} or 'svg' in a.get('formats',[])):
+                    try:
+                        classifier=None if a['kind']=='audio' else screener(str(model_path()))
+                        builtin=review_original(self.http,a,classifier)
+                    except Exception as e:return self.withhold(str(e)[:180] or 'original-media-review-unavailable')
+                if builtin:
+                    evidence=builtin
+                    original_key='original-media:'+builtin['sha256']
+                    if original_key in self.seen:self.report['duplicates']+=1;return False
+                    keys.append(original_key)
                 # Speech, video frames, project files and geometry without a
                 # preview require an actual reviewer; a cover image is insufficient.
-                if a['kind'] in {'audio','video','animation-2d','animation-3d','editing-template','volume-3d','vector-animation','mocap','pose-3d','groom-3d','procedural-3d','compositing-project'}:
+                if not builtin and a['kind'] in {'audio','video','animation-2d','animation-3d','editing-template','volume-3d','vector-animation','mocap','pose-3d','groom-3d','procedural-3d','compositing-project'}:
                     return self.withhold('original-temporal-media-review-required')
+                if builtin:
+                    a['admission']={'safety':evidence,'quality':builtin['quality'],'dedup_scope':'Exact original bytes and current bundle identities; client cursor retains bounded digests only.'}
+                    self.seen.update(keys);self.seen_order.extend(keys);self.report['admitted']+=1
+                    return True
                 previews=a.get('previews',[])
                 raster=a['kind'] in {'illustration','image','texture','sprite','decal','atlas','terrain','brush','ui-asset'} and a.get('files') and set(a.get('formats',[]))&{'png','jpg','jpeg','webp'}
                 if not previews and raster:previews=[{'url':a['files'][0]['url']}]
