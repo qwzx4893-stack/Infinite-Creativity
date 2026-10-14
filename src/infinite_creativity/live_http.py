@@ -39,7 +39,7 @@ class LiveHTTP:
             CONTENT_HOSTS.add(host)
             validate_url(current)
             if self.requests>=self.max_requests or time.monotonic()-self.started>55:raise ValueError('Live request budget exhausted; continue with a narrower source or pack')
-            headers={'User-Agent':'InfiniteCreativity/0.6 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
+            headers={'User-Agent':'InfiniteCreativity/0.7 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
             if host=='api.github.com' and os.environ.get('GITHUB_TOKEN'):headers['Authorization']='Bearer '+os.environ['GITHUB_TOKEN']
             if host in {'www.blendkit.com','www.blenderkit.com'} and os.environ.get('BLENDERKIT_TOKEN'):headers['Authorization']='Bearer '+os.environ['BLENDERKIT_TOKEN']
             with self.lock:

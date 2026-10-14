@@ -4,6 +4,7 @@ Evaluates every declared keyframe time and interval midpoint, with skinning.
 Does not claim that discrete views prove every continuously interpolated pose.
 """
 import json,struct
+from .review_limits import limits
 
 def poses(body):
     import numpy as np
@@ -24,12 +25,21 @@ def poses(body):
     def accessor(index):
         if index in cache:return cache[index]
         a=doc['accessors'][index]
-        if a.get('sparse') or 'bufferView' not in a:raise ValueError('Sparse or compressed animation accessor unsupported')
-        view=doc['bufferViews'][a['bufferView']]
-        if view.get('buffer',0)!=0:raise ValueError('External buffer unsupported')
-        count=a['count'];cols=length[a['type']];dtype=np.dtype(component[a['componentType']]);stride=view.get('byteStride',cols*dtype.itemsize);start=view.get('byteOffset',0)+a.get('byteOffset',0)
-        if not 0<count<=1000000 or stride<cols*dtype.itemsize or start+(count-1)*stride+cols*dtype.itemsize>min(len(binary),view.get('byteOffset',0)+view['byteLength']):raise ValueError('Animation accessor exceeds bounds')
-        values=np.ndarray((count,cols),dtype=dtype,buffer=binary,offset=start,strides=(stride,dtype.itemsize)).astype(float)
+        count=a['count'];cols=length[a['type']];dtype=np.dtype(component[a['componentType']])
+        if not 0<count<=max(1000000,limits()['triangles']*3):raise ValueError('Animation accessor exceeds count budget')
+        def read(view_index,offset,count,cols,dtype):
+            view=doc['bufferViews'][view_index]
+            if view.get('buffer',0)!=0:raise ValueError('External buffer unsupported')
+            stride=view.get('byteStride',cols*dtype.itemsize);start=view.get('byteOffset',0)+offset
+            if offset<0 or stride<cols*dtype.itemsize or start+(count-1)*stride+cols*dtype.itemsize>min(len(binary),view.get('byteOffset',0)+view['byteLength']):raise ValueError('Animation accessor exceeds bounds')
+            return np.ndarray((count,cols),dtype=dtype,buffer=binary,offset=start,strides=(stride,dtype.itemsize)).astype(float)
+        values=read(a['bufferView'],a.get('byteOffset',0),count,cols,dtype) if 'bufferView' in a else np.zeros((count,cols))
+        if a.get('sparse'):
+            sparse=a['sparse'];n=sparse['count'];indices=sparse['indices'];delta=sparse['values']
+            if not 0<n<=count or indices['componentType'] not in {5121,5123,5125}:raise ValueError('Invalid sparse accessor count/index type')
+            selected=read(indices['bufferView'],indices.get('byteOffset',0),n,1,np.dtype(component[indices['componentType']])).ravel().astype(int)
+            if selected.min()<0 or selected.max()>=count or len(selected)>1 and not np.all(np.diff(selected)>0):raise ValueError('Invalid sparse accessor indices')
+            values[selected]=read(delta['bufferView'],delta.get('byteOffset',0),n,cols,dtype)
         if a.get('normalized'):
             if dtype.kind=='u':values/=np.iinfo(dtype).max
             elif dtype.kind=='i':values=np.maximum(values/np.iinfo(dtype).max,-1)
@@ -42,18 +52,31 @@ def poses(body):
         matrix=np.eye(4);matrix[:3,:3]=np.array([[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],[2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w)],[2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]])@np.diag(s);matrix[:3,3]=t;return matrix
     nodes=doc.get('nodes',[]);parents={c:i for i,n in enumerate(nodes) for c in n.get('children',[])}
     total_views=0
-    for animation in doc.get('animations',[]):
+    animations=doc.get('animations',[]) or [{'name':'static morph defaults','samplers':[],'channels':[]}]
+    for animation in animations:
         times=sorted({float(t) for sampler in animation['samplers'] for t in accessor(sampler['input'])[:,0]})
         times=sorted(set(times+[float((a+b)/2) for a,b in zip(times,times[1:])]))
+        if not times:times=[0.0]
         total_views+=len(times)
-        if total_views>48:raise ValueError('Animation exceeds complete keyframe/midpoint review budget (48 poses); choose a smaller clip file')
+        if total_views>limits()['poses']:raise ValueError('Animation exceeds complete keyframe/midpoint review budget; choose a smaller clip file')
         for timestamp in times:
             changes={}
             for channel in animation['channels']:
                 target=channel['target'];path=target['path'];sampler=animation['samplers'][channel['sampler']]
-                if path=='weights' or sampler.get('interpolation','LINEAR')=='CUBICSPLINE':raise ValueError('Morph/cubic animation needs specialized temporal review')
                 ts=accessor(sampler['input'])[:,0];values=accessor(sampler['output']);i=max(0,min(len(ts)-1,int(np.searchsorted(ts,timestamp,side='right')-1)));j=min(len(ts)-1,i+1)
+                interpolation=sampler.get('interpolation','LINEAR')
+                if not np.all(np.diff(ts)>0):raise ValueError('Animation times must strictly increase')
+                if path=='weights':
+                    mesh=doc['meshes'][nodes[target['node']]['mesh']];width=len(mesh['primitives'][0].get('targets',[]))
+                    if not width:raise ValueError('Morph animation has no targets')
+                    values=values.reshape(len(ts)*(3 if interpolation=='CUBICSPLINE' else 1),width)
                 fraction=0 if sampler.get('interpolation')=='STEP' or ts[j]==ts[i] else float(np.clip((timestamp-ts[i])/(ts[j]-ts[i]),0,1))
+                if interpolation=='CUBICSPLINE':
+                    left,right=values[i*3+1],values[j*3+1];f=fraction;dt=float(ts[j]-ts[i])
+                    value=(2*f**3-3*f**2+1)*left+(f**3-2*f**2+f)*dt*values[i*3+2]+(-2*f**3+3*f**2)*right+(f**3-f**2)*dt*values[j*3]
+                    if path=='rotation':value=value/max(float(np.linalg.norm(value)),1e-12)
+                    changes.setdefault(target['node'],{})[path]=value;continue
+                if interpolation not in {'LINEAR','STEP'}:raise ValueError('Unknown animation interpolation')
                 left=values[i];right=values[j]
                 if path=='rotation' and np.dot(left,right)<0:right=-right
                 value=left*(1-fraction)+right*fraction
@@ -70,14 +93,23 @@ def poses(body):
             for index,node in enumerate(nodes):
                 if 'mesh' not in node:continue
                 for primitive in doc['meshes'][node['mesh']]['primitives']:
-                    if primitive.get('mode',4)!=4 or primitive.get('targets'):raise ValueError('Non-triangle or morph geometry requires specialized review')
-                    attributes=primitive['attributes'];positions=accessor(attributes['POSITION']);v=np.c_[positions,np.ones(len(positions))]
+                    if primitive.get('mode',4)!=4:raise ValueError('Non-triangle geometry requires specialized review')
+                    attributes=primitive['attributes'];positions=accessor(attributes['POSITION']).copy()
+                    targets=primitive.get('targets',[])
+                    weights=changes.get(index,{}).get('weights',node.get('weights',doc['meshes'][node['mesh']].get('weights',[0]*len(targets))))
+                    if len(weights)!=len(targets):raise ValueError('Morph weights do not match target count')
+                    for weight,target in zip(weights,targets):
+                        if 'POSITION' in target:positions+=float(weight)*accessor(target['POSITION'])
+                    v=np.c_[positions,np.ones(len(positions))]
                     if 'skin' in node:
-                        if 'JOINTS_0' not in attributes or 'WEIGHTS_0' not in attributes or 'JOINTS_1' in attributes:raise ValueError('Unsupported skin influence layout')
+                        if 'JOINTS_0' not in attributes or 'WEIGHTS_0' not in attributes:raise ValueError('Unsupported skin influence layout')
                         skin=doc['skins'][node['skin']];inverse=accessor(skin['inverseBindMatrices']).reshape(-1,4,4).transpose(0,2,1) if 'inverseBindMatrices' in skin else np.tile(np.eye(4),(len(skin['joints']),1,1))
                         matrices=np.array([world(joint)@bind for joint,bind in zip(skin['joints'],inverse)]);joints=accessor(attributes['JOINTS_0']).astype(int);weights=accessor(attributes['WEIGHTS_0'])
+                        if 'JOINTS_1' in attributes:
+                            if 'WEIGHTS_1' not in attributes:raise ValueError('Missing additional skin weights')
+                            joints=np.concatenate([joints,accessor(attributes['JOINTS_1']).astype(int)],axis=1);weights=np.concatenate([weights,accessor(attributes['WEIGHTS_1'])],axis=1)
                         if joints.min()<0 or joints.max()>=len(matrices) or not np.allclose(weights.sum(axis=1),1,atol=.025):raise ValueError('Invalid skin weights or joint indices')
-                        transformed=sum(np.einsum('nij,nj->ni',matrices[joints[:,k]],v)*weights[:,k,None] for k in range(4))[:,:3]
+                        transformed=sum(np.einsum('nij,nj->ni',matrices[joints[:,k]],v)*weights[:,k,None] for k in range(joints.shape[1]))[:,:3]
                     else:transformed=(v@world(index).T)[:,:3]
                     indices=accessor(primitive['indices']).astype(int).ravel() if 'indices' in primitive else np.arange(len(v))
                     if len(indices)%3 or indices.min()<0 or indices.max()>=len(v):raise ValueError('Invalid animation mesh indices')

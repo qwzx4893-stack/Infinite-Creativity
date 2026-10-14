@@ -161,7 +161,7 @@ class Library:
                 content=archive.extractfile(member).read(max_bytes+1)
             if len(content)>max_bytes or r.get('sha256') and hashlib.sha256(content).hexdigest()!=r['sha256']:raise ValueError('Current source member integrity mismatch')
             result=self.cache.store(content,r['filename'],r['mime'])
-        elif source.get('adapter')=='github-tree' and source.get('repo') and r.get('sha') and re.fullmatch('[0-9a-f]{40}',r['sha']):
+        elif source.get('adapter')=='github-tree' and source.get('repo') and r.get('sha') and re.fullmatch('[0-9a-f]{40}',r['sha']) and (r.get('bytes') or 0)<=8*1024*1024:
             blob=self.fetch.json('https://api.github.com/repos/'+source['repo']+'/git/blobs/'+r['sha'])
             if blob.get('size',0)>max_bytes: raise ValueError('Indexed blob exceeds content budget')
             body=base64.b64decode(blob['content'],validate=False)
@@ -190,8 +190,10 @@ class Library:
             if p.hostname!='raw.githubusercontent.com': raise ValueError('Unsupported LFS origin')
             result=self.cache.fetch('https://media.githubusercontent.com/media'+p.path,r['filename'],max_bytes,oid[1],cache_revision=oid[1]); path=Path(result['path'])
         elif r.get('sha') and re.fullmatch('[0-9a-f]{40}',r['sha']):
-            body=path.read_bytes()
-            if hashlib.sha1(b'blob '+str(len(body)).encode()+b'\0'+body).hexdigest()!=r['sha']:
+            digest=hashlib.sha1(b'blob '+str(path.stat().st_size).encode()+b'\0')
+            with path.open('rb') as stream:
+                while block:=stream.read(1024*1024):digest.update(block)
+            if digest.hexdigest()!=r['sha']:
                 raise ValueError('Upstream file differs from indexed revision; refresh catalog before using it')
         if r.get('transport')=='gzip':
             import gzip

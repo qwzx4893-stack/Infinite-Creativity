@@ -83,11 +83,14 @@ def khronos(http,s,f,after,limit,key=None):
     from .live_providers import item,matches
     from .asset_adapters import complete_tree
     repo='KhronosGroup/glTF-Sample-Assets';meta=http.json('https://api.github.com/repos/'+repo);commit=http.json('https://api.github.com/repos/'+repo+'/commits/'+meta['default_branch'])['sha'];entries=complete_tree(http,repo,commit,max_requests=12);raw=f'https://raw.githubusercontent.com/{repo}/{commit}/';rows=[]
+    scanned=[];stopped=False
     for e in sorted(entries,key=lambda e:e['path']):
         path=e['path']
         if not re.fullmatch('Models/[^/]+/metadata.json',path):continue
         root=str(PurePosixPath(path).parent)
         if key and root!=key or not key and root<=after:continue
+        if not key and len(scanned)>=16:stopped=True;break
+        scanned.append(root)
         d=http.json(raw+quote(path,safe='/'));legal=d.get('legal',[]);rights={v.get('spdx',v.get('license','unknown')) for v in legal};allowed=bool(rights) and rights<=LICENSES
         lic=next((x for x in ['CC-BY-4.0','CC-BY-3.0','MIT','CC0-1.0'] if x in rights),'unknown') if allowed else 'unknown';scope=[v for v in entries if v['path'].startswith(root+'/') and v['type']=='blob'];models=[v for v in scope if v['path'].endswith(('.glb','.gltf'))]
         if not models:continue
@@ -95,8 +98,8 @@ def khronos(http,s,f,after,limit,key=None):
         originals=[{'url':raw+quote(v['path'],safe='/'),'filename':PurePosixPath(v['path']).name,'relative_path':v['path'],'sha':v['sha'],'bytes':v.get('size'),'bundle_key':str(PurePosixPath(v['path']).parent),'role':'variant' if v in models else 'license' if PurePosixPath(v['path']).name in {'metadata.json','LICENSE.md'} else 'dependency'} for v in selected] if allowed else []
         a=item(s['id'],root,d.get('name',root.rsplit('/',1)[-1]),'model-3d',lic,raw+quote(path,safe='/'),'; '.join(dict.fromkeys(v.get('artist','') for v in legal)),d.get('tags',[])+['gltf','pbr'],sorted({PurePosixPath(v['path']).suffix.lstrip('.') for v in models}),files=originals,previews=[{'url':raw+quote(root+'/'+d['screenshot'],safe='/')}] if d.get('screenshot') and allowed else [],description=d.get('summary',''),revision=commit)
         if matches(a,f):rows.append(a)
-        if not key and len(rows)>limit:break
+        if not key and len(rows)>limit:stopped=True;break
     if key:
         if not rows:raise ValueError('Sample asset no longer public or eligible')
         return rows[0]
-    return {'items':rows[:limit],'next':rows[limit-1]['key'] if len(rows)>limit else None,'total':None,'scope':'Current sample models with all component legal entries checked'}
+    return {'items':rows[:limit],'next':rows[limit-1]['key'] if len(rows)>limit else scanned[-1] if stopped and scanned else None,'total':None,'scope':'Current sample models with all component legal entries checked; at most 16 metadata scopes per navigation window'}

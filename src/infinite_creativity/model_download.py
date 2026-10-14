@@ -10,7 +10,7 @@ def install(repo,revision,remote,target,digest,max_bytes=512*1024*1024):
     descriptor,temp=tempfile.mkstemp(prefix='.model-install-',suffix='.part',dir=target.parent)
     try:
         total=0;checksum=hashlib.sha256()
-        with os.fdopen(descriptor,'wb') as output,urlopen(Request(url,headers={'User-Agent':'InfiniteCreativity/0.6'}),timeout=30) as response:
+        with os.fdopen(descriptor,'wb') as output,urlopen(Request(url,headers={'User-Agent':'InfiniteCreativity/0.7'}),timeout=30) as response:
             while True:
                 block=response.read(1024*1024)
                 if not block:break

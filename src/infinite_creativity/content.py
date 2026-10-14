@@ -37,7 +37,7 @@ class ContentCache:
         self.root.mkdir(parents=True,exist_ok=True)
         self.opener=build_opener(NoRedirect())
     def request_headers(self,url):
-        return {'User-Agent':'InfiniteCreativity/0.6','Accept':'*/*'}
+        return {'User-Agent':'InfiniteCreativity/0.7','Accept':'*/*'}
 
     def range(self,url,start,length):
         """Read a verified HTTP byte range; never silently download a whole archive."""
@@ -112,6 +112,8 @@ class ContentCache:
                     total+=len(chunk)
                     if total>max_bytes: raise ValueError('Content exceeds requested byte budget')
                     digest.update(chunk); out.write(chunk)
+                    from .review_limits import progress
+                    progress(total,int(response.headers.get('Content-Length','0')) or max_bytes,'Fetching selected original into request-only staging')
                 mime=response.headers.get_content_type()
             sha=digest.hexdigest()
             if expected_sha256 and sha!=expected_sha256: raise ValueError('Upstream checksum mismatch')

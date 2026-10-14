@@ -40,6 +40,15 @@ def unseal(token,kind):
         return result['data']
     except Exception:raise ValueError('Invalid or expired live locator/cursor; open a fresh library view') from None
 
+def file_fingerprint(f):
+    fields=('filename','relative_path','archive_entry','tar_entry','container_id','bundle_key','role','sha','sha256','md5','crc32','bytes')
+    return hashlib.sha256(json.dumps({k:f[k] for k in fields if k in f},sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
+def metadata_fingerprint(a):
+    fields=('source','key','revision','license','license_url','author','title','tags','description','original_access','end_product_only_verified','reuse_scope')
+    data={k:a.get(k) for k in fields};data['files']=sorted(file_fingerprint(f) for f in a.get('files',[]))
+    return hashlib.sha256(json.dumps(data,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
 def source_configs():
     data=json.loads(files('infinite_creativity').joinpath('data/sources.json').read_text(encoding='utf-8'))
     configs={s['id']:dict(s) for s in data['sources']}
@@ -157,7 +166,7 @@ class LiveLibrary:
             sid,quota=pair
             try:return sid,self.providers.page(sid,f,state['positions'].get(sid,''),quota),None
             except Exception as e:return sid,None,str(e)[:400]
-        results=[];statuses=[];admission=Admission(self.http,state.get('receipts',[]))
+        results=[];queue=[];statuses=[];admission=Admission(self.http,state.get('receipts',[]))
         with ThreadPoolExecutor(max_workers=8) as pool:
             for sid,data,error in pool.map(fetch,zip(chosen,quotas)):
                 if error:
@@ -168,22 +177,44 @@ class LiveLibrary:
                         try:a=self.providers.get(sid,a['key'])
                         except ValueError:
                             admission.withhold('current-original-manifest-unavailable');continue
+                    admission.last_withhold=None
                     if admission.accept(a):results.append(self.card(a))
+                    elif admission.last_withhold and a.get('files'):
+                        reason=admission.last_withhold
+                        # Pending metadata is separate from admitted usable items.
+                        # A risk decision never becomes a route around screening.
+                        if not any(t in reason.lower() for t in ('sexual','suggestive','content policy','content-policy','classifier','reviewer-incomplete-or-rejected')):
+                            card=self.card(a);card.update(access='pending-original-review',actions=['candidate_asset_files','review_asset_media'],admission={'state':'pending','reason':reason},original_access='withheld-until-selected-review')
+                            queue.append(card)
                 if data.get('next') is None:state['done'].append(sid)
                 else:state['positions'][sid]=data['next']
         state['turn']+=len(chosen)
         state['receipts']=admission.receipts()
         remaining=[sid for sid in ids if sid not in state['done']]
         next_token=seal('view',state) if remaining else None
-        return {'items':results,'session_id':token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Empty admitted page may still have next_cursor.'}
-    def get(self,aid):
+        return {'items':results,'review_queue':queue,'session_id':token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor.'}
+    def raw_get(self,aid):
         loc=unseal(aid,'asset')
         if loc['source'] not in self.sources:
             if loc['source'].startswith('github:'):self.sources[loc['source']]=repository_config(loc['source'][7:])
             elif loc['source'].startswith('openverse:'):self.select({'source':loc['source']})
             else:raise ValueError('Source configuration changed; open a fresh view')
         a=self.providers.get(loc['source'],loc['key'])
-        if not acceptable(a['title']+' '+' '.join(a['tags'])) or review_terms(a['title']+' '+' '.join(a['tags'])):raise ValueError('Item excluded or withheld by live content policy')
+        text=' '.join([a['title'],a['key'],a.get('description',''),*a.get('tags',[]),*[f.get('filename','') for f in a.get('files',[])]])
+        if not acceptable(text) or review_terms(text) or a.get('provider_mature_flag'):raise ValueError('Item excluded or withheld by live content policy')
+        if loc.get('selection'):
+            from .selected_review import archive_selection
+            a=archive_selection(self,a,loc['selection'])
+        return a
+    def get(self,aid):
+        loc=unseal(aid,'asset');a=self.raw_get(aid)
+        if loc.get('review'):
+            receipt=loc['review']
+            if metadata_fingerprint(a)!=receipt['metadata']:raise ValueError('Current rights, revision or file manifest changed; run review_asset_media again')
+            a['_review_files']=receipt['files']
+            a['files']=[{**f,'_review_key':file_fingerprint(f)} for f in a['files'] if file_fingerprint(f) in receipt['files']]
+            a['admission']={'safety':{'state':'selected-original-screened','scope':receipt['scope']},'quality':{'state':'decoded-and-structurally-valid','limits':'Automatic checks do not certify artistic quality or perfect detection.'}}
+            return a
         gate=Admission(self.http)
         if not gate.accept(a):raise ValueError('Current item withheld by admission policy: '+json.dumps(gate.report))
         return a
@@ -219,8 +250,10 @@ class LiveLibrary:
         p=unseal(pid,'pack')
         return {'id':pid,'name':p['key'],'source':p['source'],'view':self.open(source=p['source'],pack=pid,limit=limit),'records':None,'metadata_fetched_at':now()}
     @contextmanager
-    def content(self,aid,allow_reference_preview=False):
-        a=self.get(aid)
+    def content(self,aid,allow_reference_preview=False,selected_review=False):
+        a=self.raw_get(aid) if selected_review else self.get(aid)
+        if selected_review:a['_source_metadata']=metadata_fingerprint(a)
+        for original in a['files']:original.setdefault('_review_key',file_fingerprint(original))
         if not allow_reference_preview and 'required-for-originals' in a.get('original_access',''):raise ValueError(a['original_access'])
         if (a['license'] not in LICENSES and not a.get('end_product_only_verified')) or not a['license_url']:
             if not allow_reference_preview or not a.get('reference_preview'):raise ValueError('Reference-only or unverified item: original content cannot be copied')
@@ -256,7 +289,7 @@ class LiveLibrary:
             library=Library.__new__(Library);library.c=c;library.fetch=self.http
             library.live_policy=True
             from .live_media_review import check_delivery
-            library.live_review=lambda original,path:check_delivery(a,original,path)
+            library.live_review=None if selected_review else lambda original,path:check_delivery(a,original,path)
             from .content import ContentCache
             live_http=self.http
             class RequestContent(ContentCache):

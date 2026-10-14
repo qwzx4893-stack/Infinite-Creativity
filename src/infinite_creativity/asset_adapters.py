@@ -11,6 +11,7 @@ MEDIA={'glb':'model-3d','gltf':'model-3d','blend':'model-3d','fbx':'model-3d','o
 MEDIA.update({'woff':'font','woff2':'font','capx':'template','c3p':'template','unitypackage':'template','aseprite':'sprite','ase':'sprite'})
 MEDIA.update({'cube':'lut','3dl':'lut','look':'lut','glsl':'shader','frag':'shader','vert':'shader','riv':'vector-animation','sif':'animation-2d','kra':'illustration','ora':'illustration','kdenlive':'editing-template','mlt':'editing-template','aep':'editing-template','drp':'editing-template','prproj':'editing-template','mp4':'video','webm':'video','mov':'video','gif':'animation-2d'})
 MEDIA.update({'ies':'light-profile','bvh':'mocap','sbsar':'material','sbs':'material','abr':'brush','afbrushes':'brush','vroid':'model-3d','psd':'illustration','afdesign':'illustration','afphoto':'illustration','srt':'video-title','vtt':'video-title','otio':'editing-template','lwo':'model-3d','ma':'scene-3d','mb':'scene-3d','max':'scene-3d','c4d':'scene-3d'})
+MEDIA.update({**dict.fromkeys(('ply','stl','off','3mf','dae'),'model-3d'),**dict.fromkeys(('usda','usdc'),'scene-3d'),**dict.fromkeys(('psb','bmp','tif','tiff','dds'),'illustration'),**dict.fromkeys(('m4a','aac','aiff','aif','opus'),'audio'),**dict.fromkeys(('mkv','avi'),'video')})
 FORMAT_DIRS={'glb','gltf','fbx','obj','blend','models','meshes','formats','gltf format','glb format','fbx format','obj format','blend format'}
 
 def complete_tree(fetch,repo,commit,max_requests=2500):

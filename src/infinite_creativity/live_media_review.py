@@ -12,6 +12,10 @@ import time
 from functools import lru_cache
 from pathlib import Path
 from .policy import acceptable,review_terms
+from .review_limits import limits,progress
+
+def media_input(body):
+    return str(body) if isinstance(body,(Path,str)) else io.BytesIO(body)
 
 SPEECH_MODEL={'repo':'Systran/faster-whisper-base','revision':'ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66','license':'MIT',
  'files':{'model.bin':'d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9','config.json':'56a6d8110d311f19c8f0471e562832c7527f146b567275bfca59fcf7c184da9a','tokenizer.json':'fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab','vocabulary.txt':'34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913'}}
@@ -54,23 +58,33 @@ def original_bytes(http,a,f,max_bytes=32*1024*1024):
 def image_check(image,classifier,directory,index):
     from PIL import Image
     if not isinstance(image,Image.Image):raise ValueError('Invalid decoded image')
-    if image.width*image.height>40000000:raise ValueError('Decoded image exceeds pixel budget')
-    path=Path(directory)/('view-'+str(index)+'.png');image.save(path)
-    verdict=classifier.image(path)
-    if verdict['state']!='preview-screened':raise ValueError('Original media sexual/suggestive classifier risk')
-    return float(verdict.get('risk_probability',0))
+    if image.width*image.height>limits()['pixels']:raise ValueError('Decoded image exceeds pixel budget')
+    # Retain a full-image view plus every tile for high-resolution originals.
+    views=[image]
+    if image.width*image.height>40000000:
+        views=[image.copy()];views[0].thumbnail((4096,4096))
+        views.extend(image.crop((x,y,min(x+4096,image.width),min(y+4096,image.height))) for y in range(0,image.height,4096) for x in range(0,image.width,4096))
+    risks=[]
+    path=Path(directory)/('view-'+str(index)+'.png')
+    try:
+        for view in views:
+            view.save(path);verdict=classifier.image(path)
+            if verdict['state']!='preview-screened':raise ValueError('Original media sexual/suggestive classifier risk')
+            risks.append(float(verdict.get('risk_probability',0)))
+    finally:path.unlink(missing_ok=True)
+    return max(risks)
 
 def review_audio(body):
     import av
     import numpy as np
     from av.audio.resampler import AudioResampler
     frames=[];count=0;resampler=AudioResampler(format='fltp',layout='mono',rate=16000)
-    with av.open(io.BytesIO(body)) as container:
+    with av.open(media_input(body)) as container:
         if not container.streams.audio:raise ValueError('Original has no audio stream')
         for frame in container.decode(audio=0):
             for converted in resampler.resample(frame):
                 block=converted.to_ndarray().reshape(-1);count+=len(block)
-                if count>16000*90:raise ValueError('Audio exceeds complete review duration budget (90 seconds)')
+                if count>16000*limits()['audio_seconds']:raise ValueError('Audio exceeds complete review duration budget')
                 frames.append(block)
         for converted in resampler.resample(None):frames.append(converted.to_ndarray().reshape(-1))
     samples=np.concatenate(frames) if frames else np.array([],dtype=np.float32)
@@ -80,9 +94,10 @@ def review_audio(body):
     segments,info=speech_model(str(speech_path())).transcribe(samples,task='translate',beam_size=1,condition_on_previous_text=False,vad_filter=True)
     transcript=[];started=time.monotonic()
     for segment in segments:
-        if time.monotonic()-started>20:raise ValueError('Full speech review exceeded CPU budget')
+        if time.monotonic()-started>limits()['cpu_seconds']:raise ValueError('Full speech review exceeded CPU budget')
         if not acceptable(segment.text) or review_terms(segment.text):raise ValueError('Audio speech sexual/suggestive content policy')
         transcript.append(segment.text)
+        progress(getattr(segment,'end',len(samples)/16000), len(samples)/16000,'Reviewing original audio speech')
     return {'scope':'entire decoded audio and multilingual speech translated to English; lexical sexual/suggestive screening','duration':len(samples)/16000,
             'speech_segments':len(transcript),'language':info.language,'rms':rms,'clipping_fraction':clipping,'model_revision':SPEECH_MODEL['revision'],
             'limits':'Speech recognition can miss words, music lyrics and nonverbal contextual innuendo; no transcript is retained or returned.'}
@@ -91,20 +106,21 @@ def review_frames(body,extension,classifier,directory):
     from PIL import Image
     risks=[];frames=0
     if extension in {'gif','webp','apng','png'}:
-        with Image.open(io.BytesIO(body)) as im:
+        with Image.open(media_input(body)) as im:
             total=getattr(im,'n_frames',1)
-            if total>240:raise ValueError('Animation exceeds full-frame review budget (240 frames)')
+            if total>limits()['frames']:raise ValueError('Animation exceeds full-frame review budget')
             for i in range(total):
-                im.seek(i);risks.append(image_check(im.convert('RGBA'),classifier,directory,i));frames+=1
+                im.seek(i);risks.append(image_check(im.convert('RGBA'),classifier,directory,i));frames+=1;progress(frames,total,'Reviewing every original animation frame')
         audio=None
     else:
         import av
-        with av.open(io.BytesIO(body)) as container:
+        with av.open(media_input(body)) as container:
             if not container.streams.video:raise ValueError('Original has no video stream')
             has_audio=bool(container.streams.audio)
             for frame in container.decode(video=0):
-                if frames>=240:raise ValueError('Video exceeds full-frame review budget (240 frames)')
+                if frames>=limits()['frames']:raise ValueError('Video exceeds full-frame review budget')
                 risks.append(image_check(frame.to_image(),classifier,directory,frames));frames+=1
+                progress(frames,container.streams.video[0].frames or limits()['frames'],'Reviewing every decoded video frame')
         audio=review_audio(body) if has_audio else None
     if not frames:raise ValueError('Original contains no decoded frames')
     return {'scope':'all decoded original frames'+(' and complete audio track' if audio else ''),'frames':frames,'maximum_risk':max(risks),'audio':audio}
@@ -141,19 +157,42 @@ def review_geometry(body,classifier,directory):
     version,total,length,kind=struct.unpack_from('<IIII',body,4)
     if version!=2 or total!=len(body) or kind!=0x4E4F534A or length>16*1024*1024 or 20+length>len(body):raise ValueError('Invalid original GLB JSON chunk')
     document=json.loads(body[20:20+length])
-    if any(v.get('uri','').startswith(('http:','https:','file:')) for key in ('buffers','images') for v in document.get(key,[])):raise ValueError('External model dependencies require scoped review')
+    if any(v.get('uri') for v in document.get('buffers',[])) or any(v.get('uri') and not v['uri'].startswith('data:') for v in document.get('images',[])):raise ValueError('External model dependencies require scoped review')
     scene=trimesh.load(io.BytesIO(body),file_type='glb',force='scene',process=False)
     risks=[];triangles=0;texture_count=0
+    # Inspect all stored image bytes, including unused/normal/occlusion maps.
+    # Material conversion alone can silently omit those original images.
+    offset=20+length;binary=b''
+    while offset+8<=len(body):
+        size,chunk=struct.unpack_from('<II',body,offset);offset+=8
+        if offset+size>len(body):raise ValueError('Invalid GLB binary extent')
+        if chunk==0x004E4942:binary=body[offset:offset+size]
+        offset+=size
+    for entry in document.get('images',[]):
+        if 'bufferView' in entry:
+            view=document['bufferViews'][entry['bufferView']];start=view.get('byteOffset',0);end=start+view['byteLength']
+            if view.get('buffer',0)!=0 or not 0<=start<end<=len(binary):raise ValueError('Embedded image exceeds GLB buffer bounds')
+            pixels=binary[start:end]
+        elif entry.get('uri','').startswith('data:'):
+            import base64
+            header,payload=entry['uri'].split(',',1)
+            if ';base64' not in header:raise ValueError('Unsupported embedded texture encoding')
+            pixels=base64.b64decode(payload,validate=True)
+        else:raise ValueError('Original embedded texture is missing')
+        with Image.open(io.BytesIO(pixels)) as image:risks.append(image_check(image.convert('RGBA'),classifier,directory,'embedded-'+str(texture_count)))
+        texture_count+=1
     for geometry in scene.geometry.values():
         if not hasattr(geometry,'vertices') or not hasattr(geometry,'faces'):raise ValueError('Non-triangle geometry requires a different reviewer')
         if not np.isfinite(geometry.vertices).all():raise ValueError('Non-finite original geometry')
         triangles+=len(geometry.faces)
-        if triangles>120000:raise ValueError('Geometry exceeds full rendering budget')
+        if triangles>limits()['triangles']:raise ValueError('Geometry exceeds full rendering budget')
         material=getattr(geometry.visual,'material',None)
         for name in ('image','baseColorTexture','emissiveTexture'):
             texture=getattr(material,name,None)
             if texture is not None and hasattr(texture,'size'):
                 risks.append(image_check(texture.convert('RGBA'),classifier,directory,texture_count));texture_count+=1
+    instanced=sum(len(scene.geometry[name].faces) for node in scene.graph.nodes_geometry for _,name in [scene.graph[node]])
+    if instanced>limits()['triangles']:raise ValueError('Instanced geometry exceeds rendering budget')
     mesh=scene.to_mesh()
     if not len(mesh.faces) or not len(mesh.vertices) or not np.ptp(mesh.vertices,axis=0).max()>0:raise ValueError('Empty or degenerate original mesh')
     vertices=np.asarray(mesh.vertices,dtype=float);vertices=(vertices-(vertices.min(axis=0)+vertices.max(axis=0))/2)/np.ptp(vertices,axis=0).max()
@@ -164,23 +203,26 @@ def review_geometry(body,classifier,directory):
         if i>=3:points[:,0]*=-1;points[:,2]*=-1
         points[:,1]*=-1
         order=np.argsort(points[faces,2].mean(axis=1));im=Image.new('RGB',(384,384),'#ffffff');draw=ImageDraw.Draw(im)
-        for face_index in order:
+        for n,face_index in enumerate(order):
+            if n%10000==0:progress(n,len(order),'Rendering complete model views')
             polygon=[tuple(v) for v in (points[faces[face_index],:2]*330+192)]
             draw.polygon(polygon,fill=tuple(int(v) for v in colors[face_index,:3]))
         risks.append(image_check(im,classifier,directory,texture_count+i))
     pose_count=0
-    if document.get('animations'):
+    if document.get('animations') or any(p.get('targets') for mesh in document.get('meshes',[]) for p in mesh.get('primitives',[])):
         from .gltf_review import poses
         for vertices,faces,colors,clip,timestamp in poses(body):
-            if len(faces)>120000:raise ValueError('Animated geometry exceeds rendering budget')
+            if len(faces)>limits()['triangles']:raise ValueError('Animated geometry exceeds rendering budget')
             vertices=(vertices-(vertices.min(axis=0)+vertices.max(axis=0))/2)/max(float(np.ptp(vertices,axis=0).max()),1e-9)
             for axis in [(0,1,2),(1,2,0)]:
                 points=vertices[:,axis].copy();points[:,1]*=-1;im=Image.new('RGB',(384,384),'white');draw=ImageDraw.Draw(im)
-                for face_index in np.argsort(points[faces,2].mean(axis=1)):
+                for n,face_index in enumerate(np.argsort(points[faces,2].mean(axis=1))):
+                    if n%10000==0:progress(n,len(faces),'Rendering animation pose geometry')
                     draw.polygon([tuple(v) for v in points[faces[face_index],:2]*330+192],fill=tuple(int(np.clip(v,0,255)) for v in colors[face_index,:3]))
                 risks.append(image_check(im,classifier,directory,texture_count+6+pose_count*2+axis[0]))
             pose_count+=1
-    return {'scope':'self-contained original GLB, embedded textures, six static views'+(' and all declared keyframe/midpoint skin poses' if pose_count else ''),'triangles':triangles,'textures':texture_count,'rendered_views':6+pose_count*2,'animation_poses':pose_count,'maximum_risk':max(risks),'limits':'Discrete orthographic views can miss occluded detail or intermediate motion. Morph/cubic animations, external dependencies and files above bounded pose budgets are withheld.'}
+            progress(pose_count,limits()['poses'],'Reviewing original animation poses')
+    return {'scope':'self-contained original GLB, embedded textures, six static views'+(' and declared keyframe/midpoint skin/morph poses' if pose_count else ''),'triangles':triangles,'textures':texture_count,'rendered_views':6+pose_count*2,'animation_poses':pose_count,'maximum_risk':max(risks),'limits':'Discrete orthographic views can miss occluded detail, unanimated morph combinations or intermediate motion. External dependencies and files above bounded pose budgets are withheld.'}
 
 def review_original(http,a,classifier):
     supported={'wav','ogg','mp3','flac','m4a','gif','webp','apng','mp4','webm','mov','svg','glb','exr','hdr'}
@@ -204,6 +246,11 @@ def check_delivery(a,file,path):
     if os.environ.get('IC_SAFETY_MODE','strict')!='strict':return
     from .live_admission import screener,model_path
     from .library import TEXT_FORMATS
+    receipt=a.get('_review_files',{}).get(file.get('_review_key'))
+    if receipt:
+        with Path(path).open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
+        if digest!=receipt['sha256'] or Path(path).stat().st_size!=receipt['bytes']:raise ValueError('Original changed since selected review; run review_asset_media again')
+        return
     body=Path(path).read_bytes();ext=Path(file['filename']).suffix.lstrip('.').lower()
     if file.get('role') in {'license','provenance'} or a.get('software_only') or ext in TEXT_FORMATS-{'svg','obj','gltf'}:return
     evidence=a.get('admission',{}).get('safety',{})
@@ -229,7 +276,7 @@ def render_glb_preview(body):
     import trimesh
     from PIL import Image,ImageDraw
     mesh=trimesh.load(io.BytesIO(body),file_type='glb',force='scene',process=False).to_mesh()
-    if len(mesh.faces)>120000:raise ValueError('Preview geometry exceeds rendering budget')
+    if len(mesh.faces)>limits()['triangles']:raise ValueError('Preview geometry exceeds rendering budget')
     vertices=np.asarray(mesh.vertices,dtype=float);vertices=(vertices-(vertices.min(axis=0)+vertices.max(axis=0))/2)/max(float(np.ptp(vertices,axis=0).max()),1e-9)
     horizontal=np.array([1,0,-1])/np.sqrt(2);vertical=np.array([1,-2,1])/np.sqrt(6);depth=np.array([1,1,1])/np.sqrt(3)
     points=vertices@np.stack([horizontal,vertical,depth],axis=1)

@@ -10,7 +10,7 @@ def title(body,fallback):
     return ' '.join(html.unescape(re.sub('<[^>]+>',' ',text)).split())[:250]
 
 def quaternius(http,s,f,after,limit,key=None):
-    from .live_providers import item,window
+    from .live_providers import item,window,matches
     from .drive import public_entries
     pack=f.get('_pack_key') or (key.split('|',1)[0] if key else '')
     if pack:
@@ -46,12 +46,13 @@ def quaternius(http,s,f,after,limit,key=None):
         if slug<=after:continue
         page=urljoin('https://quaternius.com/',path);body=http.text(page)
         if not re.search(r'CC0|creativecommons.org/publicdomain/zero',body,re.I):continue
-        a=item(s['id'],slug,title(body,slug),'asset-pack','CC0-1.0',page,'Quaternius',['3d','cartoon','stylized',slug],pack=slug);a['member_kind']='model-3d';rows.append(a)
+        a=item(s['id'],slug,title(body,slug),'asset-pack','CC0-1.0',page,'Quaternius',['3d','cartoon','stylized',slug],pack=slug);a['member_kind']='model-3d'
+        if matches(a,f):rows.append(a)
         if len(rows)>limit:break
     return window(rows,after,limit,f)
 
 def kenney(http,s,f,after,limit,key=None):
-    from .live_providers import item,window
+    from .live_providers import item,window,matches
     from .content import ContentCache
     from tempfile import TemporaryDirectory
     pack=f.get('_pack_key') or (key.split('|',1)[0] if key else '')
@@ -68,24 +69,29 @@ def kenney(http,s,f,after,limit,key=None):
             cache=ContentCache(folder)
             with cache.remote_zip(archive) as z:
                 infos=z.infolist()
+                atlases=[v for v in infos if not v.is_dir() and '/textures/' in ('/'+v.filename.lower()) and PurePosixPath(v.filename).suffix.lower() in {'.png','.jpg','.jpeg','.webp','.dds'}]
                 for i in infos:
                     path=i.filename;ext=PurePosixPath(path).suffix.lstrip('.').lower();locator=pack+'|'+path
                     if i.is_dir() or ext not in MEDIA or not acceptable(path) or key and locator!=key:continue
                     original={'url':archive,'archive_entry':path,'filename':PurePosixPath(path).name,'relative_path':path,'bytes':i.file_size,'crc32':i.CRC,'role':'main'}
                     dependencies=[v for v in infos if not v.is_dir() and v!=i and ((MEDIA[ext] in {'model-3d','animation-3d','scene-3d'} and PurePosixPath(v.filename).parent==PurePosixPath(path).parent and PurePosixPath(v.filename).suffix.lower() in {'.png','.jpg','.jpeg','.mtl','.bin'}) or PurePosixPath(v.filename).name.lower() in {'license.txt','license.md','cc0.txt'})]
+                    if MEDIA[ext] in {'model-3d','animation-3d','scene-3d'} and len(atlases)<=16:
+                        dependencies=list({v.filename:v for v in dependencies+atlases}.values())
                     bundle=[original]+[{'url':archive,'archive_entry':v.filename,'filename':PurePosixPath(v.filename).name,'relative_path':v.filename,'bytes':v.file_size,'crc32':v.CRC,'role':'license' if PurePosixPath(v.filename).name.lower() in {'license.txt','license.md','cc0.txt'} else 'dependency'} for v in dependencies]
                     a=item(s['id'],locator,PurePosixPath(path).stem.replace('_',' '),MEDIA[ext],'CC0-1.0',page,'Kenney',[pack,'game',path],[ext],files=bundle,pack=pack,revision=archive+':'+str(i.CRC)+':'+str(i.file_size));rows.append(a)
         if key:
             if not rows:raise ValueError('Original is no longer in the official free pack')
             return rows[0]
         return window(rows,after,limit,f)
-    cursor=json.loads(after) if after else {'page':'https://kenney.nl/assets','after':''};body=http.text(cursor['page']);paths=sorted(set(urlsplit(urljoin(cursor['page'],html.unescape(u))).path for u in re.findall(r'''href=["']([^"']+)''',body) if re.fullmatch('/assets/[a-z0-9-]+',urlsplit(urljoin(cursor['page'],u)).path)));rows=[]
+    start='https://kenney.nl/assets'+('?search='+quote(f['query']) if f.get('query') else '')
+    cursor=json.loads(after) if after else {'page':start,'after':''};body=http.text(cursor['page']);paths=sorted(set(urlsplit(urljoin(cursor['page'],html.unescape(u))).path for u in re.findall(r'''href=["']([^"']+)''',body) if re.fullmatch('/assets/[a-z0-9-]+',urlsplit(urljoin(cursor['page'],u)).path)));rows=[]
     for path in paths:
         slug=path.rsplit('/',1)[-1]
         if slug<=cursor['after']:continue
         page='https://kenney.nl'+path;p=http.text(page)
         if not re.search('CC0|creativecommons.org/publicdomain/zero',p,re.I):continue
-        a=item(s['id'],slug,title(p,slug),'asset-pack','CC0-1.0',page,'Kenney',[slug,'game'],pack=slug);a['member_kind']='model-3d' if '3D' in p else 'sprite';rows.append(a)
+        a=item(s['id'],slug,title(p,slug),'asset-pack','CC0-1.0',page,'Kenney',[slug,'game'],pack=slug);a['member_kind']='model-3d' if '3D' in p else 'sprite'
+        if matches(a,f):rows.append(a)
         if len(rows)>limit:break
     result=window(rows,cursor['after'],limit,f)
     if result['next'] is not None:result['next']=json.dumps({'page':cursor['page'],'after':result['next']})

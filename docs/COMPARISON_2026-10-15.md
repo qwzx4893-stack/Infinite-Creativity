@@ -1,0 +1,22 @@
+# Comparison of related creative-asset MCP projects
+
+Research date: 2026-10-15. Evidence is current upstream project documentation/source scopes. Competitor software was not installed or benchmarked; reported capabilities are their published descriptions, not independently tested pass rates. This is a relevant-project survey, not proof that every existing MCP was found.
+
+| Project | Published focus | Comparison with Infinite Creativity |
+|---|---|---|
+| [3d-asset-server](https://github.com/arielshad/3d-asset-server) | Searches 23 asset sites; selected direct GLTF/BIN/textures/PBR/HDRI/ZIP downloads, per-provider status/ranking. Some sources are metadata/link-only or require login for originals. | Strong focused 3D federation and import-ready bundles. Its 23 sites cannot be directly compared with our 322 routing scopes/repository windows. |
+| [ASSETMCP](https://github.com/evonar543/ASSETMCP) | Public game-asset search, managed local library, ZIP/TAR/7Z, manifests/credits, Blender inspection/renders, sprite sheets and prototype scaffolding. | Deeper local game-production workflow. We follow the requested fresh metadata/no retained asset library design. |
+| [ThreeNative asset MCP](https://github.com/ThreeNativeHQ/threenative-asset-mcp) | Experimental asset federation, owned Unreal/Fab conversion and inspection/audio workflows, mixed public and authenticated provider scopes. | Specialized engine-package conversion exceeds our present native coverage. Authenticated providers are excluded from our required-key-free registry. |
+| [game-asset-mcp](https://github.com/jbcom/game-asset-mcp) | Local GLB/GLTF library, SQLite ingestion/taxonomy/mesh metadata, Poly Haven and Blender thumbnails. | Useful deterministic local catalogue. Our multimodal federation is broader in media families; we intentionally have no persistent asset catalogue. |
+| [Kroma](https://github.com/thatcreativetayo/kromamcp) | Stateless Internet design intelligence/UI search, component/shader/icon synthesis; Serper key required. | Related live-design discovery, with a different dependence on search credentials and a narrower native media-library focus. |
+| [MCP for Blender](https://github.com/ahujasid/mcp-for-blender) | Live DCC control, materials/rig/animation workflows, multi-angle visual inspection, asset imports and model generation. | Stronger interactive Blender creation/editing workflow. Our server is creative-asset discovery/review/access, not a live DCC editor. |
+
+## Honest assessment
+
+Infinite Creativity is a useful, broad **experimental federation**, with UI/code/2D/3D/audio/editing/reference families, exact category IDs, current rights, internal delivery and local selected-original review. v0.7 closes several actual native-format and dependency-access gaps. The configuration currently contains 386 live scopes, 322 selected by default; the 126 media repository scopes retained in v0.6 are connections, not verified counts of unique usable assets. This release adds usable readers/navigation, not a new inflated source total.
+
+There is **no evidence sufficient to call it the largest or best**. We lack a comparable independently verified count of unique usable originals, an all-source availability audit, a shared query/quality/latency benchmark, and proof of complete upstream coverage. Listing many GitHub connections does not establish superiority over a project with fewer but richer direct providers. Browsing costs and conservative review can also reduce the practically visible inventory.
+
+Current quality: good for discovering and accessing selected licensed assets through an agent; incomplete as a universal professional creative library. Specialized editor/engine projects still outperform it in their focused workflows. Remaining gaps include proprietary native editing formats, native simulation caches, semantic/aesthetic quality evaluation, complete site inventory coverage, globally exact deduplication, and avoidance of classifier false positives. Removing accounts/keys also intentionally excludes several large providers.
+
+To justify a future ranking, measure the same representative UI/animation/3D/texture/audio/editing queries across projects: successful current-licence original access, dependency completeness, unique useful results, preview/inspection quality and measured latency. Record source scope and failures instead of multiplying directory/registry totals into an invented asset count. No permanent metadata index is required to run an on-demand benchmark.

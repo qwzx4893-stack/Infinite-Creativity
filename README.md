@@ -23,6 +23,8 @@ infinite-creativity-mcp
 
 These preparations install approximately 617 MiB of pinned, hash-verified local model software. No provider account or API key is required. Basic software browsing can run without the media extra; unreviewable media is withheld in strict mode. No sync, catalog download or snapshot export is needed.
 
+For native BLEND/FBX/USD/BVH originals, install Blender separately or use an existing installation. `IC_BLENDER_PATH` may point to its executable; Windows Blender Foundation installations and `blender` on PATH are detected automatically. No Blender/model asset download is performed by starting MCP.
+
 ```json
 {"mcpServers":{"infinite-creativity":{"command":"/absolute/path/.venv/bin/python","args":["-m","infinite_creativity.server"]}}}
 ```
@@ -40,12 +42,13 @@ Model preparation keeps one verified installation and removes failed temporary d
 5. `asset_files` → `fetch_asset`, `fetch_asset_bundle`, `read_asset_file`, `read_asset_code`: selected original bytes/code and licence notices inside MCP.
 6. `recommend_assets` provides a metadata shortlist; `rank_library_items` compares fresh admitted previews with the requested art direction through local CLIP. Scores are relative visual relevance, not safety/aesthetic probabilities.
 7. `discover_sources` → `open_repository` discovers current public repositories and their actual rights-scoped items. The former dump of 32,938 unselected repository addresses has been removed.
+8. `review_queue` contains **pending metadata only** for large/native originals. Use `candidate_asset_files` → `review_asset_media` for a selected file. ZIP packs also support `open_asset_archive` for internal directory navigation/member selection. The returned signed `asset_id` authorizes only the inspected file/dependencies; use it with `asset_files` and `read_asset_file`. Native conversions can return a screened MCP image in the same response. Progress notifications accompany the selected review.
 
 Public references use `mode="reference"`. Paid/unverified originals remain inaccessible; a reference preview grants no copying rights. Every native preview, including a pack cover, is checked before emission.
 
 ## Source scope
 
-The v0.6 registry has **322 default query scopes**, including **126 newly retained media repository connections**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
+The registry has **322 default query scopes**, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit. The v0.7 change improves usable format coverage and navigation; it does not inflate source counts.
 
 Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKit/Quaternius packs, public creator-linked Drive folders, Fuel, FSD50K recordings, Blender demo subsets, Khronos assets, licensed LUTs, Openverse provider connections, Wikimedia, Uiverse, Motion Primitives, Mapcn, Codrops and current permissive UI/code repositories. Public presentation scopes are detailed in [coverage](docs/LIVE_SOURCE_COVERAGE.md).
 
@@ -55,7 +58,9 @@ Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKi
 
 Filtering happens before cards are emitted and again before exact selected bytes are delivered. It checks explicit/suggestive metadata and source text, available original rasters, rendered static SVG, bounded complete audio plus translated speech, all bounded video/animated-image frames, and supported GLB textures/geometry/skin poses. Exact original/bundle digests and bounded client cursor receipts suppress duplicates during collection. Minimal, pixel and low-poly art is preserved.
 
-Unsupported native projects, large recordings/videos, complex rigs and uncertain media are withheld; a safe thumbnail does not authorize an unreviewed variant. Automatic classifiers can miss contextual innuendo or reject benign material. Technical validity is checked; no subjective aesthetic certification or global/permanent uniqueness guarantee is claimed. With no retained index, neither a verified million-item total nor a perfect all-site inventory is asserted. See [exact admission scopes](docs/LIVE_ADMISSION.md) and [verification](docs/V06_VERIFICATION.md).
+Selected review supports BLEND, FBX, the USD family, BVH bone-motion proxies, scoped GLTF dependencies, OBJ/materials, PLY/STL/OFF/3MF, static Collada, PSD/PSB stored layers and ORA, plus larger supported raster/audio/video originals. Total source bytes are bounded to **512 MiB**, audio to 30 minutes, decoded frames to 18,000, triangles to two million and poses to 4,096; a five-minute processing deadline can impose a tighter practical limit. These are ceilings, not promises that every file below them passes. Ordinary browsing retains smaller budgets. See the [format/scope matrix](docs/V07_FORMAT_SUPPORT.md).
+
+Unsupported native projects, simulation caches, unrendered layers, complex rigs and uncertain media remain withheld. Automatic classifiers can miss contextual innuendo or reject benign material. Technical validity is checked; no subjective aesthetic certification or global/permanent uniqueness guarantee is claimed. With no retained index, neither a verified million-item total nor a perfect all-site inventory is asserted. Signed client digests permit later exact-byte validation; no original or verdict index is saved. A byte-chunk call re-fetches the whole approved original to verify its digest. See [exact admission scopes](docs/LIVE_ADMISSION.md), [v0.7 verification](docs/V07_VERIFICATION.md) and the [comparison with similar MCP projects](docs/COMPARISON_2026-10-15.md).
 
 The optional [WebMCP host adapter](docs/WEBMCP.md) forwards the same completed read tools to a compatible browser host. No human library UI or hosted endpoint is created.
 

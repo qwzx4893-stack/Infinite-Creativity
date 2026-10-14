@@ -45,6 +45,7 @@ class Admission:
         self.report={'examined':0,'admitted':0,'duplicates':0,'blocked_metadata':0,
                      'withheld_media':0,'invalid_media':0,'withheld_reasons':{}}
     def withhold(self, reason):
+        self.last_withhold=reason
         self.report['withheld_media']+=1
         self.report['withheld_reasons'][reason]=self.report['withheld_reasons'].get(reason,0)+1
         return False
