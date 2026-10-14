@@ -1,5 +1,5 @@
 """Local visual relevance. Only model software persists; embeddings never do."""
-import hashlib,io,json,os,shutil
+import hashlib,io,json,os
 from functools import lru_cache
 from pathlib import Path
 MODEL={'repo':'Xenova/clip-vit-base-patch32','revision':'d15189d7028b43f1d3e65039190477f6af591c2a','license':'MIT','files':{
@@ -8,14 +8,11 @@ MODEL={'repo':'Xenova/clip-vit-base-patch32','revision':'d15189d7028b43f1d3e6503
  'tokenizer.json':('tokenizer.json','f7f3b7af117d467b58374797691a6438d3e6b9e9cef800dfd5dced7f697a90cd')}}
 def model_path():return Path(os.environ.get('IC_STYLE_MODEL',str(Path.home()/'.cache/infinite-creativity/clip-style')))
 def prepare(path):
-    from huggingface_hub import hf_hub_download
+    from .model_download import install
     path=Path(path);path.mkdir(parents=True,exist_ok=True)
     for name,(remote,digest) in MODEL['files'].items():
         target=path/name
-        if target.exists() and hashlib.sha256(target.read_bytes()).hexdigest()==digest:continue
-        downloaded=Path(hf_hub_download(MODEL['repo'],remote,revision=MODEL['revision']))
-        if hashlib.sha256(downloaded.read_bytes()).hexdigest()!=digest:raise ValueError('Pinned visual model checksum mismatch')
-        shutil.copyfile(downloaded,target)
+        install(MODEL['repo'],MODEL['revision'],remote,target,digest)
     (path/'provenance.json').write_text(json.dumps(MODEL,indent=2),encoding='utf-8')
 @lru_cache(maxsize=1)
 def model(path):

@@ -29,6 +29,8 @@ These preparations install approximately 617 MiB of pinned, hash-verified local 
 
 On Windows, use `.venv\Scripts\python.exe` with escaped backslashes. Optional `IC_VISION_MODEL`, `IC_SPEECH_MODEL` and `IC_STYLE_MODEL` point to already prepared software folders; they contain no assets. GitHub public API limits still apply; an existing optional `GITHUB_TOKEN` can increase capacity, but browsing public providers does not require it.
 
+Model preparation keeps one verified installation and removes failed temporary downloads; it does not create a second full model cache.
+
 ## Agent workflow
 
 1. `library_overview` → `library_sections`: **12 root families, 80 exclusive leaves, 25 independent style facets**.

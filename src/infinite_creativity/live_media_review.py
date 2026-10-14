@@ -7,7 +7,6 @@ import hashlib
 import io
 import json
 import os
-import shutil
 import tempfile
 import time
 from functools import lru_cache
@@ -20,14 +19,11 @@ SPEECH_MODEL={'repo':'Systran/faster-whisper-base','revision':'ebe41f70d5b6dfa91
 def speech_path():return Path(os.environ.get('IC_SPEECH_MODEL',str(Path.home()/'.cache/infinite-creativity/whisper-base')))
 
 def prepare_speech(path):
-    from huggingface_hub import hf_hub_download
+    from .model_download import install
     path=Path(path);path.mkdir(parents=True,exist_ok=True)
     for name,digest in SPEECH_MODEL['files'].items():
         target=path/name
-        if target.exists() and hashlib.sha256(target.read_bytes()).hexdigest()==digest:continue
-        downloaded=Path(hf_hub_download(SPEECH_MODEL['repo'],name,revision=SPEECH_MODEL['revision']))
-        if hashlib.sha256(downloaded.read_bytes()).hexdigest()!=digest:raise ValueError('Pinned speech model checksum mismatch')
-        shutil.copyfile(downloaded,target)
+        install(SPEECH_MODEL['repo'],SPEECH_MODEL['revision'],name,target,digest)
     (path/'provenance.json').write_text(json.dumps(SPEECH_MODEL,indent=2),encoding='utf-8')
 
 @lru_cache(maxsize=1)

@@ -12,6 +12,13 @@ class HTTP:
     def approve_content(self,url):pass
 
 class PublicAssetsTests(unittest.TestCase):
+    def test_model_install_failure_keeps_old_software_and_leaves_no_duplicate_cache(self):
+        from infinite_creativity.model_download import install
+        with tempfile.TemporaryDirectory() as folder:
+            target=Path(folder)/'model.onnx';target.write_bytes(b'old software')
+            with patch('infinite_creativity.model_download.urlopen',return_value=io.BytesIO(b'wrong model')),self.assertRaisesRegex(ValueError,'checksum'):
+                install('trusted/model','pinned','model.onnx',target,'0'*64)
+            self.assertEqual(target.read_bytes(),b'old software');self.assertEqual([p.name for p in Path(folder).iterdir()],['model.onnx'])
     def test_licence_requires_the_actual_creative_commons_host_and_exact_path(self):
         self.assertEqual(cc_license('https://evil.test/creativecommons.org/licenses/by/4.0/')[0],'unknown')
         self.assertEqual(cc_license('https://creativecommons.org/licenses/by/4.0/fake')[0],'unknown')

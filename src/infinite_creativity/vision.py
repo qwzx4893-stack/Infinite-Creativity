@@ -9,15 +9,11 @@ from .curation import record
 MODEL={'repo':'onnx-community/nsfw-image-detector-ONNX','revision':'6626debca038a8f7aa1729b1eaee3bd4eb929ad6','parent':'LukeJacob2023/nsfw-image-detector','license':'Apache-2.0','license_evidence':'https://huggingface.co/LukeJacob2023/nsfw-image-detector','files':{'model.onnx':{'remote':'onnx/model.onnx','sha256':'2605f68c77b9262e51afa0ff022971c7a8dabcfa51f55c78321b711b889b0e93'},'config.json':{'remote':'config.json','sha256':'3119b49239b1b8ca1c7ff693c6481e58e1d1553e284a70c01db2f9e6f9edf555'},'preprocessor_config.json':{'remote':'preprocessor_config.json','sha256':'b09d2030f83f2a59d12c717d41a9135a3f0c1ba0a2a5df694dbc40f77735daed'}}}
 
 def prepare(path):
-    from huggingface_hub import hf_hub_download
-    import shutil
+    from .model_download import install
     path=Path(path);path.mkdir(parents=True,exist_ok=True)
     for name,f in MODEL['files'].items():
         target=path/name
-        if not target.exists() or hashlib.sha256(target.read_bytes()).hexdigest()!=f['sha256']:
-            downloaded=hf_hub_download(MODEL['repo'],f['remote'],revision=MODEL['revision'])
-            if hashlib.sha256(Path(downloaded).read_bytes()).hexdigest()!=f['sha256']:raise ValueError('Pinned classifier checksum mismatch')
-            shutil.copyfile(downloaded,target)
+        install(MODEL['repo'],MODEL['revision'],f['remote'],target,f['sha256'])
     (path/'provenance.json').write_text(json.dumps(MODEL,indent=2),encoding='utf-8')
 
 class Screener:

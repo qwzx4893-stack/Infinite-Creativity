@@ -12,6 +12,6 @@ Local functional verification uses live source reads, not a downloaded item inde
 | Actual stdio MCP | 30 tools; native image and audio blocks, two fresh materials ranked visually, actual pack member opened and a 3,227-byte original delivered internally; all operations completed without provider credentials |
 | Classifier abstention | Khronos Avocado texture was conservatively withheld by the image risk threshold; it was not marked sexual or silently deleted |
 | Windows stdio | Native numeric libraries are initialized before the IOCP/worker loop to avoid a reproduced NumPy initialization deadlock |
-| Unit/regression checks | 84 Python tests and WebMCP adapter tests; no asset data/model downloads are required by test fixtures |
+| Unit/regression checks | 85 Python tests and WebMCP adapter tests; no asset data/model downloads are required by test fixtures |
 
 The CI suite checks licence-host evidence, provider cursor tails, per-file/pack rights, all-frame checking, speech policy, exact selected variant review, geometry and animation pose evaluation, internal original delivery and account-source removal. Paid references and provider outages are represented explicitly. Continuous full-site availability, all unseen native formats, global uniqueness and subjective quality remain outside the tested claims.
