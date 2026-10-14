@@ -10,3 +10,4 @@ dist/
 state/
 snapshots/
 .cache/
+catalog/published/
