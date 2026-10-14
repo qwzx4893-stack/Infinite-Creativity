@@ -42,4 +42,3 @@ Optional local ONNX inference verifies pinned model/preprocessing hashes and rec
 # Style-query performance
 
 Style-only views obtain candidate row IDs from the existing SQLite FTS5 style postings, then validate exact JSON facet membership and apply rights/curation filters. This avoids repeated per-row FTS joins through a large icon inventory while retaining stable ID cursors. Text searches retain BM25 ordering. Recommendations sample media independently, avoid repeating lexical queries already covered by style facets, and cap source/medium concentration. A local full-catalog `cartoon fantasy forest` shortlist measurement improved from about 19 seconds to 1.8 seconds; timing is workload and hardware dependent.
-
