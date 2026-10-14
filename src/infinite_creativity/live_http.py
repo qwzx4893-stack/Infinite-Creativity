@@ -2,6 +2,7 @@
 import json
 import os
 import time
+import threading
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit, urljoin
 from urllib.request import Request, build_opener
@@ -14,6 +15,18 @@ class LiveHTTP:
         CONTENT_HOSTS.update(self.hosts)
         self.opener=build_opener(NoRedirect());self.requests=0;self.max_requests=max_requests
         self.started=time.monotonic();self.memo={}
+        self.lock=threading.Lock()
+    def approve_content(self,url):
+        """A configured upstream API supplied this URL; public HTTPS is still required."""
+        host=(urlsplit(url).hostname or '').lower()
+        if not host or len(host)>253:raise ValueError('Invalid provider content host')
+        existed=host in CONTENT_HOSTS
+        CONTENT_HOSTS.add(host)
+        try:validate_url(url)
+        except Exception:
+            if not existed:CONTENT_HOSTS.discard(host)
+            raise ValueError('Provider content URL is not public HTTPS') from None
+        self.hosts.add(host)
     def read(self,url,max_bytes=16*1024*1024,accept='*/*'):
         # Memoization exists only inside this one MCP request, never across calls.
         if (url,max_bytes) in self.memo:return self.memo[url,max_bytes]
@@ -24,10 +37,17 @@ class LiveHTTP:
             CONTENT_HOSTS.add(host)
             validate_url(current)
             if self.requests>=self.max_requests or time.monotonic()-self.started>55:raise ValueError('Live request budget exhausted; continue with a narrower source or pack')
-            headers={'User-Agent':'InfiniteCreativity/0.4 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
+            headers={'User-Agent':'InfiniteCreativity/0.5 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
             if host=='api.github.com' and os.environ.get('GITHUB_TOKEN'):headers['Authorization']='Bearer '+os.environ['GITHUB_TOKEN']
             if host in {'www.blendkit.com','www.blenderkit.com'} and os.environ.get('BLENDERKIT_TOKEN'):headers['Authorization']='Bearer '+os.environ['BLENDERKIT_TOKEN']
-            self.requests+=1
+            credentials={'api.openverse.org':('OPENVERSE_TOKEN','Bearer '),'api.sketchfab.com':('SKETCHFAB_TOKEN','Token '),'freesound.org':('FREESOUND_TOKEN','Token '),'api.dribbble.com':('DRIBBBLE_TOKEN','Bearer '),'api.cgtrader.com':('CGTRADER_TOKEN','Bearer ')}
+            if host in credentials:
+                name,prefix=credentials[host]
+                if os.environ.get(name):headers['Authorization']=prefix+os.environ[name]
+            if host=='freesound.org' and os.environ.get('FREESOUND_OAUTH_TOKEN'):headers['Authorization']='Bearer '+os.environ['FREESOUND_OAUTH_TOKEN']
+            with self.lock:
+                if self.requests>=self.max_requests:raise ValueError('Live request budget exhausted')
+                self.requests+=1
             try:
                 with self.opener.open(Request(current,headers=headers),timeout=12) as response:
                     data=response.read(max_bytes+1)

@@ -15,3 +15,7 @@ Browse `mode="reference", source="jitter"` or another public presentation source
 There are no persisted project collections or saved metadata results in live mode. Keep chosen deliverables or project decisions in the client's own project only when requested. Cursors/locators expire after restart or 24 hours; reopen current views rather than relying on old metadata.
 
 Do not present configured-source counts as asset counts, sampled page counts as full inventory totals, or metadata matching as visual/aesthetic certification.
+
+## v0.5 admission and expansion
+
+Admission now occurs before cards are emitted and again on selected-item access. See [current admission policy](LIVE_ADMISSION.md) for the strict classifier/reviewer setup, bounded cursor digest receipts and the exact limits of preview, geometry, temporal and aesthetic coverage. See [connection expansion](V05_CONNECTIONS.md) for checked scope and external account requirements. Batched searches and section routing remain inside MCP; no human frontend or retained item index is added.

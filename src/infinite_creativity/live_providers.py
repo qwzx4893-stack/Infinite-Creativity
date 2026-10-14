@@ -11,10 +11,18 @@ from .organization import classify
 
 def item(source,key,title,kind,license='unknown',license_url='',author='',tags=(),formats=(),files=(),previews=(),description='',pack='',revision='',reference_preview=False):
     tags=list(tags)
-    return {'source':source,'key':key,'title':title,'kind':kind,'license':license,'license_url':license_url,'author':author,'tags':tags,'styles':styles_for(title+' '+' '.join(tags)),'formats':list(formats),'platforms':['web','desktop','mobile','game','film'],'files':list(files),'previews':list(previews),'description':description,'pack':pack,'revision':revision,'reference_preview':reference_preview}
+    text=(title+' '+' '.join(tags)+' '+description).lower()
+    platforms=[]
+    if re.search(r'\b(react|vue|svelte|html|css|web|nextjs|tailwind)\b',text) or set(formats)&{'html','css','tsx','jsx','vue','svelte'}:platforms.append('web')
+    if re.search(r'\b(flutter|react.native|android|ios|swiftui|mobile)\b',text) or set(formats)&{'swift','dart'}:platforms.append('mobile')
+    if re.search(r'\b(avalonia|winui|wpf|desktop|qt|gtk)\b',text) or set(formats)&{'xaml'}:platforms.append('desktop')
+    if re.search(r'\b(godot|unity|unreal|game|tileset|sprite)\b',text):platforms.append('game')
+    if re.search(r'\b(blender|cinematic|film|movie|animation)\b',text):platforms.append('film')
+    return {'source':source,'key':key,'title':title,'kind':kind,'license':license,'license_url':license_url,'author':author,'tags':tags,'styles':styles_for(text),'formats':list(formats),'platforms':platforms,'files':list(files),'previews':list(previews),'description':description,'pack':pack,'revision':revision,'reference_preview':reference_preview}
 
 def matches(a,f):
-    if not acceptable(a['title']+' '+' '.join(a['tags'])) or review_terms(a['title']+' '+' '.join(a['tags'])):return False
+    text=a['title']+' '+' '.join(a['tags'])+' '+a.get('description','')+' '+a['key']
+    if not acceptable(text) or review_terms(text):return False
     usable=(a['license'] in LICENSES or a.get('end_product_only_verified')) and bool(a['license_url'])
     if f.get('mode','usable')=='usable' and not usable:return False
     if f.get('mode')=='reference' and usable:return False
@@ -152,7 +160,7 @@ def github(http,s,f,after,limit,key=None):
             provenance=by_path.get((scope+'/' if scope!='.' else '')+'SOURCE.md')
             if provenance:files.append({'url':raw+quote(provenance['path'],safe='/'),'filename':'SOURCE.md','relative_path':provenance['path'],'sha':provenance['sha'],'bytes':provenance.get('size'),'role':'provenance'})
         a=item(s['id'],path,filename if kind!='font' else family.split('/')[-1],kind,license,('https://github.com/'+repo+'/blob/'+commit+'/'+quote(legal['path'],safe='/')) if legal else '',repo.split('/')[0],s.get('asset_tags',s.get('tags',[]))+path.split('/'),sorted({PurePosixPath(v['path']).suffix.lstrip('.').lower() for v in group}) if kind!='font' else sorted({PurePosixPath(v['filename']).suffix.lstrip('.') for v in files if v['role']!='license'}),files=files,pack=scope,revision=hashlib.sha256(''.join(v['sha'] for v in group).encode()).hexdigest() if len(group)>1 else e['sha'],previews=[{'url':raw+quote(path,safe='/')}] if ext in {'png','jpg','jpeg','webp','svg'} else [])
-        a['platforms']=s.get('platforms',a['platforms'])
+        a['platforms']=s.get('platforms',a['platforms']);a['software_only']=not is_media and kind!='font'
         # License checks are deferred until a matching page candidate, not all files.
         if matches(a,f):rows.append(a)
         if key is None and len(rows)>=limit+1:break
@@ -178,6 +186,7 @@ def codrops(http,s,f,after,limit,key=None):
         if 'permission is hereby granted, free of charge' not in text.lower():raise ValueError('MIT notice is missing')
         selected.sort(key=lambda e:(e['path']!='index.html',e['path']));files=[{'url':raw+quote(e['path'],safe='/'),'filename':PurePosixPath(e['path']).name,'relative_path':e['path'],'sha':e['sha'],'bytes':e.get('size'),'role':'license' if e==notice else 'main' if e==selected[0] else 'dependency'} for e in selected+[notice]]
         result=item(s['id'],key,meta['name'],'template' if re.search('template|layout|portfolio|website',meta['name'],re.I) else 'motion','MIT','https://github.com/'+repo+'/blob/'+commit+'/'+notice['path'],'Codrops',['Codrops',meta.get('description') or ''],sorted({PurePosixPath(v['filename']).suffix.lstrip('.') for v in files}),files=files,description='Original code only; fonts, images and vendor libraries have independent rights.',pack=pack,revision=commit)
+        result['software_only']=True
         if member:
             selected_file=next((v for v in files if v['relative_path']==member and v['role']!='license'),None)
             if not selected_file:raise ValueError('Pack source member no longer exists or is outside its original-code scope')
@@ -189,6 +198,7 @@ def codrops(http,s,f,after,limit,key=None):
         consumed+=1
         if not a.get('fork') and not a.get('private') and (a.get('license') or {}).get('spdx_id')=='MIT':
             candidate=item(s['id'],a['name'],a['name'],'template' if re.search('template|layout|portfolio|website',a['name'],re.I) else 'motion','MIT','https://github.com/'+a['full_name']+'/blob/'+a['default_branch']+'/LICENSE','Codrops',[a.get('description') or ''],['html','js','css'],pack=a['name'],revision=a.get('pushed_at',''))
+            candidate['software_only']=True
             if matches(candidate,f):rows.append(candidate)
         if len(rows)==limit:break
     return {'items':rows,'next':str((page-1)*100+consumed) if consumed<len(data) or len(data)==100 else None,'total':None,'scope':'Current organization page; code notices revalidated when opening a pack'}
@@ -209,6 +219,10 @@ from .live_packs import kenney,quaternius
 from .live_remote import motionsites
 from .live_luts import luts
 from .live_icons import icons
+from .live_catalogs import openverse,commons,artic,sketchfab
+from .live_services import freesound,cgtrader,dribbble,npm_package
+from .live_discovery import github_current
+from .live_21st import twentyfirst
 def repository(http,s,f,after,limit,key=None):
     # Revalidate current per-pack CC0 media scopes or permissive software rights.
     media=f.get('kind') in (set(MEDIA.values())-{'shader'}) or f.get('section','').startswith(('three-d','two-d','surfaces','lighting','audio'))
@@ -219,6 +233,10 @@ def repository(http,s,f,after,limit,key=None):
     return github(http,config,f,after,limit,key)
 
 ADAPTERS={'polyhaven':polyhaven,'ambientcg':ambient,'github-tree':github,'github-assets':github,'codrops':codrops,'aceternity':aceternity,'public-web':public_web,'blendkit':blendkit,'fuel':fuel,'fsd50k':fsd50k,'blender-demos':blender_demos,'khronos':khronos,'kenney-packs':kenney,'quaternius-live':quaternius,'motionsites-mcp':motionsites,'lut-manifest':luts,'iconify':icons,'github-repository':repository}
+ADAPTERS.update({'openverse':openverse,'commons':commons,'artic':artic,'sketchfab':sketchfab})
+ADAPTERS.update({'freesound':freesound,'cgtrader':cgtrader,'dribbble':dribbble,'npm-package':npm_package})
+ADAPTERS['github-current']=github_current
+ADAPTERS['21st-mcp']=twentyfirst
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources

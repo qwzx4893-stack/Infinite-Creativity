@@ -94,7 +94,11 @@ async def read_asset_file(asset_id:str,file_id:str,offset:int=0,length:int=65536
         if offset<0 or not 1<=length<=1024*1024:raise ValueError('Invalid byte window')
         f=next((f for f in l.files(i)['files'] if f['id']==file_id),None)
         if not f:raise ValueError('File changed upstream; request a fresh asset_files manifest')
-        if f.get('archive_entry') or f.get('container_id') or f.get('transport_encoding'):return l.chunk(i,file_id,offset,length)
+        from .library import TEXT_FORMATS
+        if f.get('archive_entry') or f.get('container_id') or f.get('transport_encoding') or f.get('tar_entry'):return l.chunk(i,file_id,offset,length)
+        if f['format'] in TEXT_FORMATS:
+            r=l.file(i,file_id,2*1024*1024);body=Path(r['path']).read_bytes()[offset:offset+length]
+            return {**r,'offset':offset,'encoding':'base64','data':base64.b64encode(body).decode(),'next_offset':offset+len(body) if offset+len(body)<r['bytes'] else None}
         try:
             body,total=l.cache.range(f['url'],offset,length)
             header=body[:32] if offset==0 else l.cache.range(f['url'],0,32)[0]
@@ -190,11 +194,46 @@ async def open_repository(repository_id:str,query:str='',kind:str='',style:str='
 @mcp.tool(annotations=READ)
 async def recommend_assets(art_direction:str,kinds:list[str]|None=None,platform:str='',limit:int=12)->dict[str,Any]:
     """Obtain a live art-direction candidate page. Matching is metadata inference, with no aesthetic guarantee."""
-    return await async_run(lambda l:l.open(query=art_direction,kind=(kinds or [''])[0],platform=platform,limit=limit))
+    from .live_search import recommend
+    return await async_run(lambda l:recommend(l,art_direction,kinds or [],platform,limit))
+
+@mcp.tool(annotations=READ)
+async def catalog_providers(medium:str='images')->dict[str,Any]:
+    """Discover current upstream creative catalog provider connections. Results can be browsed inside MCP; counts are not admitted inventory."""
+    return await async_run(lambda l:l.catalog_sources(medium))
+
+@mcp.tool(annotations=READ)
+def section_sources(section:str)->dict[str,Any]:
+    """Route an exact library category to relevant implemented connectors; actual item access is checked on query."""
+    def query(l):
+        l.sections(section);ids=l.select({'section':section})
+        cards={s['id']:s for s in l.source_cards()}
+        return {'section':section,'sources':[cards[i] for i in ids],'inventory_count':None,'scope':'Current connection capabilities, not a network availability or item-count claim'}
+    return run(query)
+
+@mcp.tool(annotations=READ)
+async def search_library_batch(searches:list[dict[str,Any]],limit_per_search:int=10)->dict[str,Any]:
+    """Complete up to eight medium/category searches in one call, with admission before results and independent continuation cursors."""
+    from .live_search import batch
+    return await async_run(lambda l:batch(l,searches,limit_per_search))
+
+@mcp.tool(annotations=READ)
+async def inspect_library_batch(asset_ids:list[str])->dict[str,Any]:
+    """Revalidate up to eight selected current item records; errors are per item and no saved metadata result is substituted."""
+    if not 1<=len(asset_ids)<=8:raise ValueError('Select 1..8 items')
+    def query(l):
+        rows=[]
+        for aid in asset_ids:
+            try:rows.append({'id':aid,'item':l.item(aid),'status':'fresh'})
+            except ValueError as error:rows.append({'id':aid,'status':'withheld-or-unavailable','reason':str(error)[:800]})
+        return {'items':rows,'storage':'Request-only current metadata'}
+    return await async_run(query)
 
 @mcp.tool(annotations=READ)
 def browse_taxonomy()->dict[str,Any]:
-    return {'primary_sections':[{'id':k,'title':v[0],'title_ar':v[1]} for k,v in LEAVES.items()],'styles':list(STYLE_RULES),'counts':None,'scope':'Configuration, never an asset index'}
+    from .asset_adapters import MEDIA
+    kinds=sorted(set(MEDIA.values())|{'ui-component','ui-asset','icon','template','visual-reference','asset-pack','motion','motion-graphic','motion-composition','particle','mockup','pose-3d','groom-3d','procedural-3d','compositing-project','vector-pack'})
+    return {'roots':[{'id':k,'title':v[0],'title_ar':v[1]} for k,v in ROOTS.items()],'primary_sections':[{'id':k,'title':v[0],'title_ar':v[1]} for k,v in LEAVES.items()],'styles':list(STYLE_RULES),'kinds':kinds,'formats':sorted(MEDIA),'counts':None,'scope':'Configuration, never an asset index; source capability and admission are separate'}
 
 @mcp.tool(annotations=READ)
 def catalog_stats()->dict[str,Any]:

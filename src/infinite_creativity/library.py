@@ -23,6 +23,7 @@ MIMES.update({'wav':'audio/wav','ogg':'audio/ogg','mp3':'audio/mpeg','flac':'aud
 TEXT_FORMATS={'txt','md','json','gltf','html','css','js','ts','jsx','tsx','vue','svelte','svg','xaml','dart','cs','glsl','gd','godot','mtl','obj','sdf','xml'}
 TEXT_FORMATS.update({'cube','3dl','look','clf','ocio','frag','vert'})
 TEXT_FORMATS.update({'py','swift','rs','yaml','yml'})
+TEXT_FORMATS.update({'mjs','cjs','qml','qss','cpp','c','h','hpp','scss'})
 
 class Library:
     def __init__(self,catalog):
@@ -150,6 +151,16 @@ class Library:
                     body=z.read(info)
                 result=self.cache.store(body,r['filename'],r['mime'])
                 receipt.write_text(json.dumps(result),encoding='utf-8')
+        elif r.get('tar_entry'):
+            import io,tarfile
+            self.safe_member(r['tar_entry'])
+            body=self.fetch.read(r['url'],8*1024*1024)
+            with tarfile.open(fileobj=io.BytesIO(body),mode='r:gz') as archive:
+                member=archive.getmember(r['tar_entry'])
+                if not member.isfile() or member.size>max_bytes:raise ValueError('TAR source member exceeds budget or is not a regular file')
+                content=archive.extractfile(member).read(max_bytes+1)
+            if len(content)>max_bytes or r.get('sha256') and hashlib.sha256(content).hexdigest()!=r['sha256']:raise ValueError('Current source member integrity mismatch')
+            result=self.cache.store(content,r['filename'],r['mime'])
         elif source.get('adapter')=='github-tree' and source.get('repo') and r.get('sha') and re.fullmatch('[0-9a-f]{40}',r['sha']):
             blob=self.fetch.json('https://api.github.com/repos/'+source['repo']+'/git/blobs/'+r['sha'])
             if blob.get('size',0)>max_bytes: raise ValueError('Indexed blob exceeds content budget')
@@ -188,6 +199,10 @@ class Library:
             if len(body)>max_bytes or len(body)>max(1,result['bytes'])*500:raise ValueError('Compressed original exceeds safe expanded content budget')
             result=self.cache.store(body,r['filename'],r['mime']);path=Path(result['path'])
         if Path(r['filename']).suffix.lstrip('.').lower() in TEXT_FORMATS:
+            if getattr(self,'live_policy',False) and __import__('os').environ.get('IC_SAFETY_MODE','strict')=='strict':
+                from .policy import review_terms
+                text=path.read_text(encoding='utf-8-sig',errors='replace')
+                if not acceptable(text) or review_terms(text):raise ValueError('Original text withheld by live explicit/suggestive content policy')
             with path.open('rb') as f: header=f.read(4000).decode('utf-8',errors='replace')
             declared=re.search(r'SPDX-License-Identifier:\s*([A-Za-z0-9.+-]+)',header)
             if declared and declared[1]!=a['license']: raise ValueError('File license declaration conflicts with indexed license; review required')

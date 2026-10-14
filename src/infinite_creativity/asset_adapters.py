@@ -10,6 +10,7 @@ from .policy import LICENSES,acceptable
 MEDIA={'glb':'model-3d','gltf':'model-3d','blend':'model-3d','fbx':'model-3d','obj':'model-3d','usd':'scene-3d','usdz':'scene-3d','vdb':'volume-3d','abc':'animation-3d','png':'texture','jpg':'texture','jpeg':'texture','webp':'texture','svg':'illustration','exr':'texture','hdr':'hdri','wav':'audio','ogg':'audio','mp3':'audio','flac':'audio','ttf':'font','otf':'font'}
 MEDIA.update({'woff':'font','woff2':'font','capx':'template','c3p':'template','unitypackage':'template','aseprite':'sprite','ase':'sprite'})
 MEDIA.update({'cube':'lut','3dl':'lut','look':'lut','glsl':'shader','frag':'shader','vert':'shader','riv':'vector-animation','sif':'animation-2d','kra':'illustration','ora':'illustration','kdenlive':'editing-template','mlt':'editing-template','aep':'editing-template','drp':'editing-template','prproj':'editing-template','mp4':'video','webm':'video','mov':'video','gif':'animation-2d'})
+MEDIA.update({'ies':'light-profile','bvh':'mocap','sbsar':'material','sbs':'material','abr':'brush','afbrushes':'brush','vroid':'model-3d','psd':'illustration','afdesign':'illustration','afphoto':'illustration','srt':'video-title','vtt':'video-title','otio':'editing-template','lwo':'model-3d','ma':'scene-3d','mb':'scene-3d','max':'scene-3d','c4d':'scene-3d'})
 FORMAT_DIRS={'glb','gltf','fbx','obj','blend','models','meshes','formats','gltf format','glb format','fbx format','obj format','blend format'}
 
 def complete_tree(fetch,repo,commit,max_requests=2500):

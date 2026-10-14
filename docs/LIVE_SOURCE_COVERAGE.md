@@ -1,4 +1,4 @@
-# Live source coverage — v0.4
+# Live source coverage — v0.5
 
 This describes connector capabilities, not stored item inventories or whole-provider completion. Every item query obtains current upstream data. Counts from v0.3 snapshots are historical and are not used by the default MCP.
 
@@ -21,11 +21,11 @@ This describes connector capabilities, not stored item inventories or whole-prov
 | Screenrove | Current public product-reference pages; visual reference only |
 | Aceternity | Current public free registry metadata. Applicable free original-source redistribution scope unresolved; no blanket MIT assumption |
 | MotionSites | First-party MCP metadata through authorized account OAuth. Local access token configuration required; no copying of paid full prompts |
-| 21st.dev | Automated marketplace collection remains permission-limited under official terms; no scraper or preview mirror |
-| CGTrader | Tested public free listing exposed no supported content response; protected/authenticated access is not bypassed |
-| Dribbble | Tested public listing exposed no supported response; an authorized supported API connector remains needed |
+| 21st.dev | Official account MCP metadata connector using `API_KEY_21ST`; no marketplace scraper, hosted generation or unverified premium code copying |
+| CGTrader | Official developer API for free-price presentations, requiring `CGTRADER_TOKEN`. Current royalty-free/custom original scope remains unresolved; originals withheld |
+| Dribbble | Official API v2 using `DRIBBBLE_TOKEN`; authorized account shots only, not the whole public gallery |
 | Magnific | Supplied app endpoint rejected public access (HTTP 403); no public original-asset inventory established |
-| String Tune | Public tool/documentation surface found; original item API/inventory not integrated |
+| String Tune | Current official `@fiddle-digital/string-tune` package, verified MIT notice and bounded original JS/CJS/MJS members, read inside MCP |
 | SiteReel | Public page did not expose supported item permalinks; dynamic inventory not integrated |
 
 Additional current connectors cover ambientCG, scoped CC0 game/2D/3D repositories, Kenney original ranged ZIP members, supported creator-linked Quaternius Drive folders, Fuel, individually licensed FSD50K recordings, official Blender demo subsets, audited LUT collections and optional Iconify queries.
@@ -35,3 +35,5 @@ Known repository connection addresses are retained as software routing configura
 Rights eligibility and original availability are separate. Upstream deletion, changed licenses, quotas, account restrictions and unsupported formats can affect the next call. Native public preview endpoints may themselves be unavailable or point to a general presentation image; this is never claimed as a full original download.
 
 References: [official Blendkit licenses](https://www.blendkit.com/docs/licenses/), [MotionSites MCP/account limits](https://motionsites.ai/mcp), [21st terms](https://21st.dev/terms), [Aceternity licence](https://ui.aceternity.com/licence).
+
+All rows describe connector scopes. Default v0.5 admission can withhold their items before display. The current Art Institute metadata API worked, but its original image host rejected our verification requests with HTTP 403; these images were withheld. Account connectors above have not been tested with authorized account keys in this workspace. [Admission limits](LIVE_ADMISSION.md) · [New connections](V05_CONNECTIONS.md).

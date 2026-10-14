@@ -69,6 +69,28 @@ LEAVES={
  'other/assets':('Other assets','أصول أخرى'),
 }
 ROOTS={'interface':('Interfaces','الواجهات'),'motion':('Motion','الحركة'),'editing':('Video editing','المونتاج'),'three-d':('3D','ثلاثي الأبعاد'),'two-d':('2D','ثنائي الأبعاد'),'surfaces':('Materials and textures','المواد والخامات'),'lighting':('Lighting','الإضاءة'),'audio':('Audio','الصوت'),'typography':('Typography','الخطوط'),'inspiration':('Visual inspiration','التنمية البصرية'),'discovery':('Discovery','الاكتشاف'),'other':('Other','أخرى')}
+LEAVES.update({
+ 'interface/mockups':('Mockups','نماذج العرض'),
+ 'motion/compositions':('Motion compositions','تركيبات الحركة'),
+ 'editing/titles':('Video titles and captions','عناوين الفيديو والترجمات'),
+ 'editing/compositing':('Compositing and VFX','التركيب البصري والمؤثرات'),
+ 'three-d/characters/hair':('Hair and grooming','الشعر وتجهيزه'),
+ 'three-d/environments/interiors':('Interior environments','البيئات الداخلية'),
+ 'three-d/environments/urban':('Urban environments','البيئات الحضرية'),
+ 'three-d/props/wearables':('Clothing and accessories','الملابس والإكسسوارات'),
+ 'three-d/props/food':('Food and beverages','الأطعمة والمشروبات'),
+ 'three-d/props/instruments':('Musical instruments','الآلات الموسيقية'),
+ 'three-d/props/technology':('Technology props','المجسمات التقنية'),
+ 'three-d/animation/mocap':('Motion capture','التقاط الحركة'),
+ 'three-d/animation/poses':('Pose libraries','مكتبات الوضعيات'),
+ 'three-d/procedural':('Procedural geometry','الهندسة الإجرائية'),
+ 'lighting/profiles':('Photometric light profiles','ملفات الإضاءة الضوئية'),
+ 'audio/music/loops':('Music loops','الحلقات الموسيقية'),
+ 'audio/music/stems':('Music stems','المسارات الموسيقية المنفصلة'),
+ 'audio/music/tracks':('Music tracks','المقطوعات الموسيقية'),
+ 'two-d/vector-packs':('Vector illustration packs','حزم الرسوم المتجهية'),
+})
+LEAVES.pop('audio/music',None)
 
 def initialize(c):
     c.db.executescript('''CREATE TABLE IF NOT EXISTS asset_sections(asset_id TEXT PRIMARY KEY,section_id TEXT NOT NULL,pack_id TEXT NOT NULL,reason TEXT NOT NULL);
@@ -86,6 +108,8 @@ def classify(a):
         return 'inspiration/'+(role if role in {'animation','interface','three-d','motion','illustration'} else 'illustration'),'reference purpose, never an original download'
     direct={'ui-asset':'interface/visual-kits','icon':'interface/icons','font':'typography/fonts','motion':'motion/interface','model-3d':'three-d/props/other','scene-3d':'three-d/scenes','animation-3d':'three-d/animation/clips','volume-3d':'three-d/volumes','sprite':'two-d/sprites','illustration':'two-d/illustrations','image':'two-d/illustrations','animation-2d':'two-d/animation','material':'surfaces/materials','texture':'surfaces/textures','decal':'surfaces/decals','atlas':'surfaces/atlases','terrain':'surfaces/terrain','brush':'surfaces/brushes','hdri':'lighting/hdri','lut':'editing/color-luts','video':'editing/footage','video-transition':'editing/transitions','video-overlay':'editing/overlays','editing-template':'editing/project-templates','motion-graphic':'motion/graphics','vector-animation':'motion/vector-animation','particle':'motion/particles','shader':'motion/shaders','repository':'discovery/repositories','source-reference':'discovery/providers','template':'interface/templates'}
     section=direct.get(kind,'other/assets')
+    direct.update({'mockup':'interface/mockups','motion-composition':'motion/compositions','video-title':'editing/titles','compositing-project':'editing/compositing','groom-3d':'three-d/characters/hair','mocap':'three-d/animation/mocap','pose-3d':'three-d/animation/poses','procedural-3d':'three-d/procedural','light-profile':'lighting/profiles','vector-pack':'two-d/vector-packs'})
+    section=direct.get(kind,section)
     if kind=='volume-3d':section='three-d/volumes'
     def has(words): return bool(re.search(r'\b(?:'+words+r')\b',text.replace('_',' ').replace('-',' ')))
     if kind=='ui-component':
@@ -93,7 +117,7 @@ def classify(a):
         for slug,words in [('navigation','nav|menu|breadcrumb|pagination|tabs?|sidebar|stepper|command'),('forms','form|input|textarea|select|combobox|datepicker|validation|upload'),('feedback','toast|alert|dialog|modal|progress|skeleton|spinner|tooltip|notification'),('data-display','table|chart|avatar|badge|calendar|tree|list|grid'),('layout','container|layout|flex|stack|divider|separator|panel|card'),('controls','button|checkbox|radio|switch|slider|toggle')]:
             if has(words): section='interface/components/'+slug;break
     if kind=='model-3d':
-        for path,words in [('characters/robots','robot|mech|android'),('characters/creatures','animal|creature|monster|dragon|dinosaur|cat|dog|fish|bird|bunny|skeleton|zombie'),('characters/humanoid','character|humanoid|hero|mage|knight|human|woman|man|npc|boy|girl'),('environments/architecture','building|architecture|house|castle|tower|wall|roof|road|bridge'),('environments/nature','tree|plant|grass|rock|flower|bush|terrain'),('props/vehicles','vehicle|car|truck|ship|boat|aircraft|plane|spaceship|train'),('props/furniture','furniture|chair|table|sofa|couch|bed|shelf|cabinet'),('props/equipment','weapon|sword|axe|shield|helmet|tool|equipment')]:
+        for path,words in [('characters/robots','robot|mech|android'),('characters/creatures','animal|creature|monster|dragon|dinosaur|cat|dog|fish|bird|bunny|skeleton|zombie'),('characters/humanoid','character|humanoid|hero|mage|knight|human|woman|man|npc|boy|girl'),('characters/hair','hair|groom|hairstyle'),('environments/interiors','interior|room|kitchen|bathroom'),('environments/urban','city|urban|street|downtown'),('environments/architecture','building|architecture|house|castle|tower|wall|roof|road|bridge'),('environments/nature','tree|plant|grass|rock|flower|bush|terrain'),('props/vehicles','vehicle|car|truck|ship|boat|aircraft|plane|spaceship|train'),('props/furniture','furniture|chair|table|sofa|couch|bed|shelf|cabinet'),('props/wearables','clothing|garment|jacket|dress|trousers|shoes|boots|hat'),('props/food','food|fruit|bread|meal|drink|vegetable|banana|apple'),('props/instruments','guitar|piano|violin|saxophone|musical instrument'),('props/technology','computer|laptop|phone|electronics|monitor|television'),('props/equipment','weapon|sword|axe|shield|helmet|tool|equipment')]:
             if has(words):section='three-d/'+path;break
     if kind=='sprite':
         for slug,words in [('effects','effect|particle|explosion|smoke|fire|vfx'),('characters','character|creature|monster|hero|enemy|npc|animal'),('tilesets','tileset|tilemap|terrain|tiles'),('backgrounds','background|skybox|backdrop|parallax')]:
@@ -102,6 +126,9 @@ def classify(a):
         section='audio/effects/other'
         for path,words in [('voice','speech|voice|dialogue|vocal'),('music','music|jingle|soundtrack|song|melody'),('effects/interface','interface|button|click|notification|ui|bleep'),('effects/environment','ambience|ambient|environment|rain|wind|forest|river|water|thunder'),('effects/foley','foley|footstep|door|cloth|impact|hit|movement')]:
             if has(words):section='audio/'+path;break
+        if section=='audio/music' and has('loop|loops'):section='audio/music/loops'
+        elif section=='audio/music' and has('stem|stems|multitrack'):section='audio/music/stems'
+        elif section=='audio/music':section='audio/music/tracks'
     return section,'kind + ordered semantic roles; exactly one primary leaf, styles are independent facets'
 
 def pack_id(source,scope=''):return hashlib.sha256((source+'|'+scope).encode()).hexdigest()[:24]

@@ -33,6 +33,8 @@ class ContentCache:
         self.root=Path(root)
         self.root.mkdir(parents=True,exist_ok=True)
         self.opener=build_opener(NoRedirect())
+    def request_headers(self,url):
+        return {'User-Agent':'InfiniteCreativity/0.5','Accept':'*/*'}
 
     def range(self,url,start,length):
         """Read a verified HTTP byte range; never silently download a whole archive."""
@@ -41,7 +43,7 @@ class ContentCache:
         for _ in range(6):
             validate_url(current)
             try:
-                response=self.opener.open(Request(current,headers={'User-Agent':'InfiniteCreativity/0.2','Accept-Encoding':'identity','Range':f'bytes={start}-{start+length-1}'}),timeout=45)
+                response=self.opener.open(Request(current,headers={**self.request_headers(current),'Accept-Encoding':'identity','Range':f'bytes={start}-{start+length-1}'}),timeout=12)
             except HTTPError as e:
                 if e.code in (301,302,303,307,308) and e.headers.get('Location'):
                     current=urljoin(current,e.headers['Location']); continue
@@ -89,7 +91,7 @@ class ContentCache:
         for _ in range(6):
             validate_url(current)
             try:
-                response=self.opener.open(Request(current,headers={'User-Agent':'InfiniteCreativity/0.2','Accept':'*/*'}),timeout=45)
+                response=self.opener.open(Request(current,headers=self.request_headers(current)),timeout=12)
                 break
             except HTTPError as e:
                 if e.code in (301,302,303,307,308) and e.headers.get('Location'):

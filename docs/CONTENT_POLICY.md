@@ -6,10 +6,14 @@ Paid and unverified items are references. Where supported, current public presen
 
 Blendkit's verified free royalty-free items are conditional end-product resources. Raw asset resale, redistribution, asset-pack mirroring and competing raw libraries are not permitted by that scope. Licensing state can change at the provider and is rechecked on selection.
 
-Explicit sexual/pornographic/obscene metadata is excluded. Suggestive terms are withheld. This textual policy is not complete visual, geometry, animation-frame or speech certification. There is no saved moderation index or cached verdict in the default live model. No blanket promise of exhaustive removal is made.
+Explicit sexual/pornographic/obscene metadata is excluded. Suggestive terms are withheld. v0.5 additionally screens eligible recorded raster views before display. This remains incomplete geometry, animation-frame, speech and contextual certification. There is no saved moderation index or cached verdict in the default live model. No blanket promise of exhaustive removal is made.
 
-Small, minimal, pixel, outline and low-poly styles are not quality-rejection rules. Recommendations infer metadata/style matches; aesthetic quality is not automatically certified. Format variants may share a current logical model record. Response-local identity deduplication is not a global artwork-similarity audit.
+Small, minimal, pixel, outline and low-poly styles are not quality-rejection rules. Recommendations infer metadata/style matches; aesthetic quality is not automatically certified. Format variants may share a current logical model record. Exact complete known bundle identities and bounded client-cursor digest receipts are not a global artwork-similarity audit.
 
 Original code is untrusted data and never executed. Archive reading is bounded; model parsers do not execute Blender files. Returned binary windows do not assert a full-file checksum without complete original data. Original licensing notices and declared dependencies are retained in selected manifests/bundles.
 
 Metadata and file manifests are held only during one MCP request. Requested preview/parser bytes are transient and deleted after the call. User project deliverables can be saved by the client when explicitly requested; the library itself creates no permanent creative-asset cache.
+
+## v0.5 admission and expansion
+
+Admission now occurs before cards are emitted and again on selected-item access. See [current admission policy](LIVE_ADMISSION.md) for the strict classifier/reviewer setup, bounded cursor digest receipts and the exact limits of preview, geometry, temporal and aesthetic coverage. See [connection expansion](V05_CONNECTIONS.md) for checked scope and external account requirements. Batched searches and section routing remain inside MCP; no human frontend or retained item index is added.

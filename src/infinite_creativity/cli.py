@@ -28,9 +28,15 @@ def main():
     e.add_argument("--out",default="snapshots")
     sub.add_parser('curate')
     sub.add_parser('prepare-vision')
+    pv=sub.add_parser('prepare-live-vision');pv.add_argument('--model-dir',default='')
     v=sub.add_parser('screen-vision');v.add_argument('--limit',type=int,default=500);v.add_argument('--source',default='')
     v=sub.add_parser('apply-reviews');v.add_argument('file')
     a=p.parse_args()
+    if a.command=='prepare-live-vision':
+        from .vision import prepare
+        from .live_admission import model_path
+        target=Path(a.model_dir) if a.model_dir else model_path();prepare(target)
+        print(json.dumps({'prepared':'pinned classifier software only','path':str(target.resolve()),'asset_index':'none'}));return
     if a.db is None and os.environ.get('IC_MODE')!='legacy-indexed':
         from .live import LiveLibrary
         if a.command=='stats':print(json.dumps(LiveLibrary().overview(),ensure_ascii=False,indent=2));return

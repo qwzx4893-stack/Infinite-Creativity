@@ -18,6 +18,10 @@ class Fresh:
         raise AssertionError(url)
 
 class LiveTests(unittest.TestCase):
+    def setUp(self):
+        # These tests exercise transport/storage and parser lifetimes. Admission
+        # itself has dedicated strict-mode tests and does not need remote weights.
+        env=patch.dict(os.environ,{'IC_SAFETY_MODE':'metadata'});env.start();self.addCleanup(env.stop)
     def test_fresh_item_queries_and_no_index_files(self):
         with tempfile.TemporaryDirectory() as td:
             before=set(Path(td).rglob('*'));first=Fresh('First chair');l=LiveLibrary(first,{'polyhaven':POLY})

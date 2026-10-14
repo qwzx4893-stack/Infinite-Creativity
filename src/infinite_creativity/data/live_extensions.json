@@ -1,0 +1,2944 @@
+[
+  {
+    "id": "openverse",
+    "name": "Openverse live creative federation",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "audio"
+    ],
+    "content_hosts": [
+      "api.openverse.org"
+    ],
+    "priority": 0
+  },
+  {
+    "id": "openverse-audio",
+    "name": "Openverse audio",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "audio"
+    ],
+    "media": "audio",
+    "priority": 0
+  },
+  {
+    "id": "wikimedia",
+    "name": "Wikimedia Commons original files",
+    "url": "https://commons.wikimedia.org/",
+    "adapter": "commons",
+    "sections": [
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "content_hosts": [
+      "upload.wikimedia.org"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "artic",
+    "name": "Art Institute of Chicago open access",
+    "url": "https://api.artic.edu/",
+    "adapter": "artic",
+    "sections": [
+      "two-d",
+      "inspiration"
+    ],
+    "content_hosts": [
+      "www.artic.edu"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "sketchfab",
+    "name": "Sketchfab official current models",
+    "url": "https://api.sketchfab.com/",
+    "adapter": "sketchfab",
+    "sections": [
+      "three-d"
+    ],
+    "content_hosts": [
+      "media.sketchfab.com"
+    ],
+    "priority": 2,
+    "live_status": "public-search-originals-require-SKETCHFAB_TOKEN"
+  },
+  {
+    "id": "freesound",
+    "name": "Freesound official audio API",
+    "url": "https://freesound.org/",
+    "adapter": "freesound",
+    "sections": [
+      "audio"
+    ],
+    "live_status": "official-FREESOUND_TOKEN-required"
+  },
+  {
+    "id": "cgtrader",
+    "name": "CGTrader official developer API",
+    "url": "https://api.cgtrader.com/",
+    "adapter": "cgtrader",
+    "sections": [
+      "three-d",
+      "inspiration"
+    ],
+    "live_status": "official-CGTRADER_TOKEN-required",
+    "live_reason": "Developer API implemented; free-price presentations, original licence scope remains unresolved."
+  },
+  {
+    "id": "dribbble",
+    "name": "Dribbble official account API",
+    "url": "https://api.dribbble.com/",
+    "adapter": "dribbble",
+    "sections": [
+      "inspiration"
+    ],
+    "live_status": "official-DRIBBBLE_TOKEN-required",
+    "live_reason": "API v2 exposes authorized account shots, not a public aggregate gallery."
+  },
+  {
+    "id": "string-tune",
+    "name": "StringTune official npm package",
+    "url": "https://string-tune.fiddle.digital/",
+    "adapter": "npm-package",
+    "sections": [
+      "motion",
+      "interface"
+    ],
+    "npm": "@fiddle-digital/string-tune",
+    "content_hosts": [
+      "registry.npmjs.org"
+    ],
+    "live_status": "current-package-licence-check",
+    "priority": 2
+  },
+  {
+    "id": "github-current-media",
+    "name": "Github Current Media",
+    "url": "https://github.com/",
+    "adapter": "github-current",
+    "sections": [
+      "three-d",
+      "two-d",
+      "audio",
+      "surfaces",
+      "lighting",
+      "editing",
+      "motion"
+    ],
+    "search": "game assets",
+    "priority": 3
+  },
+  {
+    "id": "github-current-animation",
+    "name": "Github Current Animation",
+    "url": "https://github.com/",
+    "adapter": "github-current",
+    "sections": [
+      "three-d",
+      "two-d",
+      "motion"
+    ],
+    "search": "animation",
+    "priority": 3
+  },
+  {
+    "id": "github-current-audio",
+    "name": "Github Current Audio",
+    "url": "https://github.com/",
+    "adapter": "github-current",
+    "sections": [
+      "audio"
+    ],
+    "search": "sound effects",
+    "priority": 3
+  },
+  {
+    "id": "github-current-editing",
+    "name": "Github Current Editing",
+    "url": "https://github.com/",
+    "adapter": "github-current",
+    "sections": [
+      "editing"
+    ],
+    "search": "video editing assets",
+    "priority": 3
+  },
+  {
+    "id": "github-current-cartoon",
+    "name": "Github Current Cartoon",
+    "url": "https://github.com/",
+    "adapter": "github-current",
+    "sections": [
+      "three-d",
+      "two-d"
+    ],
+    "search": "stylized characters",
+    "priority": 3
+  },
+  {
+    "id": "openverse:images:wikimedia",
+    "name": "Wikimedia Commons via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "wikimedia",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:animaldiversity",
+    "name": "Animal Diversity Web via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "animaldiversity",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:bio_diversity",
+    "name": "Biodiversity Heritage Library via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "bio_diversity",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:brooklynmuseum",
+    "name": "Brooklyn Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "brooklynmuseum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:clevelandmuseum",
+    "name": "Cleveland Museum of Art via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "clevelandmuseum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:spacex",
+    "name": "SpaceX via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "spacex",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:svgsilh",
+    "name": "SVG Silh via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "svgsilh",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:digitaltmuseum",
+    "name": "Digitalt Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "digitaltmuseum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:thingiverse",
+    "name": "Thingiverse via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "thingiverse",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:WoRMS",
+    "name": "World Register of Marine Species via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "WoRMS",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_air_and_space_museum",
+    "name": "Smithsonian Institution: National Air and Space Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_air_and_space_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_american_art_museum",
+    "name": "Smithsonian Institution: Smithsonian American Art Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_american_art_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_american_history_museum",
+    "name": "Smithsonian Institution: National Museum of American History via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_american_history_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_american_indian_museum",
+    "name": "Smithsonian Institution: National Museum of the American Indian via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_american_indian_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_gardens",
+    "name": "Smithsonian Institution: Smithsonian Gardens via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_gardens",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_anacostia_museum",
+    "name": "Smithsonian Institution: Anacostia Community Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_anacostia_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:geographorguk",
+    "name": "Geograph Britain and Ireland via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "geographorguk",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:met",
+    "name": "Metropolitan Museum of Art via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "met",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:museumsvictoria",
+    "name": "Museums Victoria via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "museumsvictoria",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:nasa",
+    "name": "NASA via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "nasa",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:rawpixel",
+    "name": "Rawpixel via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "rawpixel",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:rijksmuseum",
+    "name": "Rijksmuseum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "rijksmuseum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:sketchfab",
+    "name": "Sketchfab via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "sketchfab",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_libraries",
+    "name": "Smithsonian Institution: Smithsonian Libraries via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_libraries",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_african_american_history_museum",
+    "name": "Smithsonian Institution: National Museum of African American History and Culture via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_african_american_history_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_african_art_museum",
+    "name": "Smithsonian Institution: National Museum of African Art via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_african_art_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_national_museum_of_natural_history",
+    "name": "Smithsonian Institution: National Museum of Natural History via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_national_museum_of_natural_history",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_cooper_hewitt_museum",
+    "name": "Smithsonian Institution: Cooper Hewitt, Smithsonian Design Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_cooper_hewitt_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_freer_gallery_of_art",
+    "name": "Smithsonian Institution: Freer Gallery of Art via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_freer_gallery_of_art",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_hirshhorn_museum",
+    "name": "Smithsonian Institution: Hirshhorn Museum and Sculpture Garden via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_hirshhorn_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_portrait_gallery",
+    "name": "Smithsonian Institution: National Portrait Gallery via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_portrait_gallery",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_postal_museum",
+    "name": "Smithsonian Institution: National Postal Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_postal_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_zoo_and_conservation",
+    "name": "Smithsonian Institution: National Zoo via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_zoo_and_conservation",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smithsonian_institution_archives",
+    "name": "Smithsonian Institution Archives via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smithsonian_institution_archives",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:woc_tech",
+    "name": "WOCinTech Chat via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "woc_tech",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:finnish_heritage_agency",
+    "name": "Finnish Heritage Agency via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "finnish_heritage_agency",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:stocksnap",
+    "name": "StockSnap.io via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "stocksnap",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:wordpress",
+    "name": "WP Photo Directory via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "wordpress",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:smk",
+    "name": "National Gallery of Denmark (SMK) via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "smk",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:finnish_satakunnan_museum",
+    "name": "Finnish Satakunnan Museum via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "finnish_satakunnan_museum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:justtakeitfree",
+    "name": "Just take it free via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "justtakeitfree",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:phylopic",
+    "name": "PhyloPic via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "phylopic",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:national_museum_of_finland",
+    "name": "National Museum of Finland via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "national_museum_of_finland",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:europeana",
+    "name": "Europeana via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "europeana",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:inaturalist",
+    "name": "iNaturalist via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "inaturalist",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:nappy",
+    "name": "Nappy via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "nappy",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:wellcome_collection",
+    "name": "Wellcome Collection via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "wellcome_collection",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:bib_gulbenkian",
+    "name": "Gulbenkian Art Library via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "bib_gulbenkian",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:flickr",
+    "name": "Flickr via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "flickr",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:sciencemuseum",
+    "name": "Science Museum – UK via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "sciencemuseum",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:katmai_nps",
+    "name": "Katmai National Park Service via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "katmai_nps",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:images:nypl",
+    "name": "New York Public Library via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "two-d",
+      "surfaces",
+      "inspiration"
+    ],
+    "media": "images",
+    "provider": "nypl",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:audio:jamendo",
+    "name": "Jamendo via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "audio"
+    ],
+    "media": "audio",
+    "provider": "jamendo",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:audio:wikimedia_audio",
+    "name": "Wikimedia Commons via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "audio"
+    ],
+    "media": "audio",
+    "provider": "wikimedia_audio",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "openverse:audio:freesound",
+    "name": "Freesound via Openverse",
+    "url": "https://api.openverse.org/v1/",
+    "adapter": "openverse",
+    "sections": [
+      "audio"
+    ],
+    "media": "audio",
+    "provider": "freesound",
+    "discovery_only": true,
+    "live_status": "current-aggregator-connection-not-whole-provider-audit"
+  },
+  {
+    "id": "creative-code:saadeghi/daisyui",
+    "name": "saadeghi/daisyui",
+    "url": "https://github.com/saadeghi/daisyui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "saadeghi/daisyui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:themesberg/flowbite-react",
+    "name": "themesberg/flowbite-react",
+    "url": "https://github.com/themesberg/flowbite-react",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "themesberg/flowbite-react",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:themesberg/flowbite-vue",
+    "name": "themesberg/flowbite-vue",
+    "url": "https://github.com/themesberg/flowbite-vue",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "themesberg/flowbite-vue",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:mertJF/tailblocks",
+    "name": "mertJF/tailblocks",
+    "url": "https://github.com/mertJF/tailblocks",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "mertJF/tailblocks",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:tremorlabs/tremor",
+    "name": "tremorlabs/tremor",
+    "url": "https://github.com/tremorlabs/tremor",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "tremorlabs/tremor",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:tremorlabs/tremor-npm",
+    "name": "tremorlabs/tremor-npm",
+    "url": "https://github.com/tremorlabs/tremor-npm",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "tremorlabs/tremor-npm",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:heroui-inc/heroui",
+    "name": "heroui-inc/heroui",
+    "url": "https://github.com/heroui-inc/heroui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "heroui-inc/heroui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:ant-design/ant-design-mobile",
+    "name": "ant-design/ant-design-mobile",
+    "url": "https://github.com/ant-design/ant-design-mobile",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "ant-design/ant-design-mobile",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:element-plus/element-plus",
+    "name": "element-plus/element-plus",
+    "url": "https://github.com/element-plus/element-plus",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "element-plus/element-plus",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:primefaces/primereact",
+    "name": "primefaces/primereact",
+    "url": "https://github.com/primefaces/primereact",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "primefaces/primereact",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:primefaces/primevue",
+    "name": "primefaces/primevue",
+    "url": "https://github.com/primefaces/primevue",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "primefaces/primevue",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:quasarframework/quasar",
+    "name": "quasarframework/quasar",
+    "url": "https://github.com/quasarframework/quasar",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "quasarframework/quasar",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:varletjs/varlet",
+    "name": "varletjs/varlet",
+    "url": "https://github.com/varletjs/varlet",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "varletjs/varlet",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:youzan/vant",
+    "name": "youzan/vant",
+    "url": "https://github.com/youzan/vant",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "youzan/vant",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Tencent/tdesign-react",
+    "name": "Tencent/tdesign-react",
+    "url": "https://github.com/Tencent/tdesign-react",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "Tencent/tdesign-react",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Tencent/tdesign-vue-next",
+    "name": "Tencent/tdesign-vue-next",
+    "url": "https://github.com/Tencent/tdesign-vue-next",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "Tencent/tdesign-vue-next",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:arco-design/arco-design",
+    "name": "arco-design/arco-design",
+    "url": "https://github.com/arco-design/arco-design",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "arco-design/arco-design",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:arco-design/arco-design-vue",
+    "name": "arco-design/arco-design-vue",
+    "url": "https://github.com/arco-design/arco-design-vue",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "arco-design/arco-design-vue",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:palantir/blueprint",
+    "name": "palantir/blueprint",
+    "url": "https://github.com/palantir/blueprint",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "palantir/blueprint",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:rsuite/rsuite",
+    "name": "rsuite/rsuite",
+    "url": "https://github.com/rsuite/rsuite",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "rsuite/rsuite",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:jaredpalmer/formik",
+    "name": "jaredpalmer/formik",
+    "url": "https://github.com/jaredpalmer/formik",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "jaredpalmer/formik",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:react-hook-form/react-hook-form",
+    "name": "react-hook-form/react-hook-form",
+    "url": "https://github.com/react-hook-form/react-hook-form",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "react-hook-form/react-hook-form",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:TanStack/table",
+    "name": "TanStack/table",
+    "url": "https://github.com/TanStack/table",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "TanStack/table",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:TanStack/virtual",
+    "name": "TanStack/virtual",
+    "url": "https://github.com/TanStack/virtual",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "TanStack/virtual",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:recharts/recharts",
+    "name": "recharts/recharts",
+    "url": "https://github.com/recharts/recharts",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "recharts/recharts",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:chartjs/Chart.js",
+    "name": "chartjs/Chart.js",
+    "url": "https://github.com/chartjs/Chart.js",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "chartjs/Chart.js",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:apache/echarts",
+    "name": "apache/echarts",
+    "url": "https://github.com/apache/echarts",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "apache/echarts",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:plotly/plotly.js",
+    "name": "plotly/plotly.js",
+    "url": "https://github.com/plotly/plotly.js",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "plotly/plotly.js",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:visjs/vis-network",
+    "name": "visjs/vis-network",
+    "url": "https://github.com/visjs/vis-network",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "visjs/vis-network",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:xyflow/xyflow",
+    "name": "xyflow/xyflow",
+    "url": "https://github.com/xyflow/xyflow",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "xyflow/xyflow",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:d3/d3",
+    "name": "d3/d3",
+    "url": "https://github.com/d3/d3",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "d3/d3",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pmndrs/react-spring",
+    "name": "pmndrs/react-spring",
+    "url": "https://github.com/pmndrs/react-spring",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "pmndrs/react-spring",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:motiondivision/motion",
+    "name": "motiondivision/motion",
+    "url": "https://github.com/motiondivision/motion",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "motiondivision/motion",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:formkit/auto-animate",
+    "name": "formkit/auto-animate",
+    "url": "https://github.com/formkit/auto-animate",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "formkit/auto-animate",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:juliangarnier/anime",
+    "name": "juliangarnier/anime",
+    "url": "https://github.com/juliangarnier/anime",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "juliangarnier/anime",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:fkhadra/react-toastify",
+    "name": "fkhadra/react-toastify",
+    "url": "https://github.com/fkhadra/react-toastify",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "fkhadra/react-toastify",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:emilkowalski/sonner",
+    "name": "emilkowalski/sonner",
+    "url": "https://github.com/emilkowalski/sonner",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "emilkowalski/sonner",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:emilkowalski/vaul",
+    "name": "emilkowalski/vaul",
+    "url": "https://github.com/emilkowalski/vaul",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "emilkowalski/vaul",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:dip/cmdk",
+    "name": "dip/cmdk",
+    "url": "https://github.com/dip/cmdk",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "dip/cmdk",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:floating-ui/floating-ui",
+    "name": "floating-ui/floating-ui",
+    "url": "https://github.com/floating-ui/floating-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "floating-ui/floating-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:reach/reach-ui",
+    "name": "reach/reach-ui",
+    "url": "https://github.com/reach/reach-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "reach/reach-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:melt-ui/melt-ui",
+    "name": "melt-ui/melt-ui",
+    "url": "https://github.com/melt-ui/melt-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "melt-ui/melt-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:huntabyte/bits-ui",
+    "name": "huntabyte/bits-ui",
+    "url": "https://github.com/huntabyte/bits-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "huntabyte/bits-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:huntabyte/shadcn-svelte",
+    "name": "huntabyte/shadcn-svelte",
+    "url": "https://github.com/huntabyte/shadcn-svelte",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "huntabyte/shadcn-svelte",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:unovue/shadcn-vue",
+    "name": "unovue/shadcn-vue",
+    "url": "https://github.com/unovue/shadcn-vue",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "unovue/shadcn-vue",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:unovue/reka-ui",
+    "name": "unovue/reka-ui",
+    "url": "https://github.com/unovue/reka-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "unovue/reka-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:chakra-ui/ark",
+    "name": "chakra-ui/ark",
+    "url": "https://github.com/chakra-ui/ark",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "chakra-ui/ark",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:chakra-ui/zag",
+    "name": "chakra-ui/zag",
+    "url": "https://github.com/chakra-ui/zag",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "chakra-ui/zag",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:adobe/react-spectrum",
+    "name": "adobe/react-spectrum",
+    "url": "https://github.com/adobe/react-spectrum",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "adobe/react-spectrum",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:patternfly/patternfly",
+    "name": "patternfly/patternfly",
+    "url": "https://github.com/patternfly/patternfly",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "patternfly/patternfly",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:grommet/grommet",
+    "name": "grommet/grommet",
+    "url": "https://github.com/grommet/grommet",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "grommet/grommet",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:wix/react-native-ui-lib",
+    "name": "wix/react-native-ui-lib",
+    "url": "https://github.com/wix/react-native-ui-lib",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "wix/react-native-ui-lib",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Semantic-Org/Semantic-UI",
+    "name": "Semantic-Org/Semantic-UI",
+    "url": "https://github.com/Semantic-Org/Semantic-UI",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "Semantic-Org/Semantic-UI",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Semantic-Org/Semantic-UI-React",
+    "name": "Semantic-Org/Semantic-UI-React",
+    "url": "https://github.com/Semantic-Org/Semantic-UI-React",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "Semantic-Org/Semantic-UI-React",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:picocss/pico",
+    "name": "picocss/pico",
+    "url": "https://github.com/picocss/pico",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "picocss/pico",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:svelteuidev/svelteui",
+    "name": "svelteuidev/svelteui",
+    "url": "https://github.com/svelteuidev/svelteui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "svelteuidev/svelteui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:yewstack/yew",
+    "name": "yewstack/yew",
+    "url": "https://github.com/yewstack/yew",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "yewstack/yew",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:leptos-rs/leptos",
+    "name": "leptos-rs/leptos",
+    "url": "https://github.com/leptos-rs/leptos",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "leptos-rs/leptos",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:DioxusLabs/dioxus",
+    "name": "DioxusLabs/dioxus",
+    "url": "https://github.com/DioxusLabs/dioxus",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "DioxusLabs/dioxus",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "web"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:flutter/packages",
+    "name": "flutter/packages",
+    "url": "https://github.com/flutter/packages",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "flutter/packages",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:ionic-team/ionic-framework",
+    "name": "ionic-team/ionic-framework",
+    "url": "https://github.com/ionic-team/ionic-framework",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "ionic-team/ionic-framework",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:callstack/react-native-pager-view",
+    "name": "callstack/react-native-pager-view",
+    "url": "https://github.com/callstack/react-native-pager-view",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "callstack/react-native-pager-view",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:gorhom/react-native-bottom-sheet",
+    "name": "gorhom/react-native-bottom-sheet",
+    "url": "https://github.com/gorhom/react-native-bottom-sheet",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "gorhom/react-native-bottom-sheet",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:software-mansion/react-native-reanimated",
+    "name": "software-mansion/react-native-reanimated",
+    "url": "https://github.com/software-mansion/react-native-reanimated",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "software-mansion/react-native-reanimated",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:software-mansion/react-native-gesture-handler",
+    "name": "software-mansion/react-native-gesture-handler",
+    "url": "https://github.com/software-mansion/react-native-gesture-handler",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "software-mansion/react-native-gesture-handler",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:wcandillon/react-native-skia",
+    "name": "wcandillon/react-native-skia",
+    "url": "https://github.com/wcandillon/react-native-skia",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "wcandillon/react-native-skia",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:material-components/material-components-android",
+    "name": "material-components/material-components-android",
+    "url": "https://github.com/material-components/material-components-android",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "material-components/material-components-android",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:material-components/material-components-ios",
+    "name": "material-components/material-components-ios",
+    "url": "https://github.com/material-components/material-components-ios",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "material-components/material-components-ios",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:airbnb/lottie-android",
+    "name": "airbnb/lottie-android",
+    "url": "https://github.com/airbnb/lottie-android",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "airbnb/lottie-android",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:airbnb/lottie-ios",
+    "name": "airbnb/lottie-ios",
+    "url": "https://github.com/airbnb/lottie-ios",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "airbnb/lottie-ios",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:airbnb/lottie-web",
+    "name": "airbnb/lottie-web",
+    "url": "https://github.com/airbnb/lottie-web",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "airbnb/lottie-web",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:sparrowcode/AlertKit",
+    "name": "sparrowcode/AlertKit",
+    "url": "https://github.com/sparrowcode/AlertKit",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "sparrowcode/AlertKit",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:exyte/AnimatedTabBar",
+    "name": "exyte/AnimatedTabBar",
+    "url": "https://github.com/exyte/AnimatedTabBar",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "exyte/AnimatedTabBar",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:exyte/PopupView",
+    "name": "exyte/PopupView",
+    "url": "https://github.com/exyte/PopupView",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "exyte/PopupView",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:exyte/AnimatedGradient",
+    "name": "exyte/AnimatedGradient",
+    "url": "https://github.com/exyte/AnimatedGradient",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "exyte/AnimatedGradient",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:SwiftUIX/SwiftUIX",
+    "name": "SwiftUIX/SwiftUIX",
+    "url": "https://github.com/SwiftUIX/SwiftUIX",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "SwiftUIX/SwiftUIX",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:TokamakUI/Tokamak",
+    "name": "TokamakUI/Tokamak",
+    "url": "https://github.com/TokamakUI/Tokamak",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "TokamakUI/Tokamak",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "mobile"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:HandyOrg/HandyControl",
+    "name": "HandyOrg/HandyControl",
+    "url": "https://github.com/HandyOrg/HandyControl",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "HandyOrg/HandyControl",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+    "name": "MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+    "url": "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Kinnara/ModernWpf",
+    "name": "Kinnara/ModernWpf",
+    "url": "https://github.com/Kinnara/ModernWpf",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "Kinnara/ModernWpf",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:lepoco/wpfui",
+    "name": "lepoco/wpfui",
+    "url": "https://github.com/lepoco/wpfui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "lepoco/wpfui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:benruehl/adonis-ui",
+    "name": "benruehl/adonis-ui",
+    "url": "https://github.com/benruehl/adonis-ui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "benruehl/adonis-ui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:MahApps/MahApps.Metro",
+    "name": "MahApps/MahApps.Metro",
+    "url": "https://github.com/MahApps/MahApps.Metro",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "MahApps/MahApps.Metro",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:AvaloniaUI/Avalonia.Samples",
+    "name": "AvaloniaUI/Avalonia.Samples",
+    "url": "https://github.com/AvaloniaUI/Avalonia.Samples",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "AvaloniaUI/Avalonia.Samples",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:rdbende/Sun-Valley-ttk-theme",
+    "name": "rdbende/Sun-Valley-ttk-theme",
+    "url": "https://github.com/rdbende/Sun-Valley-ttk-theme",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "rdbende/Sun-Valley-ttk-theme",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:rdbende/Forest-ttk-theme",
+    "name": "rdbende/Forest-ttk-theme",
+    "url": "https://github.com/rdbende/Forest-ttk-theme",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "rdbende/Forest-ttk-theme",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:rdbende/Azure-ttk-theme",
+    "name": "rdbende/Azure-ttk-theme",
+    "url": "https://github.com/rdbende/Azure-ttk-theme",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "rdbende/Azure-ttk-theme",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:TomSchimansky/CustomTkinter",
+    "name": "TomSchimansky/CustomTkinter",
+    "url": "https://github.com/TomSchimansky/CustomTkinter",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "TomSchimansky/CustomTkinter",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:israel-dryer/ttkbootstrap",
+    "name": "israel-dryer/ttkbootstrap",
+    "url": "https://github.com/israel-dryer/ttkbootstrap",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "israel-dryer/ttkbootstrap",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:ocornut/imgui",
+    "name": "ocornut/imgui",
+    "url": "https://github.com/ocornut/imgui",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "ocornut/imgui",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:epezent/implot",
+    "name": "epezent/implot",
+    "url": "https://github.com/epezent/implot",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "epezent/implot",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:ocornut/imgui_club",
+    "name": "ocornut/imgui_club",
+    "url": "https://github.com/ocornut/imgui_club",
+    "adapter": "github-tree",
+    "sections": [
+      "interface",
+      "motion"
+    ],
+    "repo": "ocornut/imgui_club",
+    "kind": "ui-component",
+    "license_scope_reviewed": true,
+    "platforms": [
+      "desktop"
+    ],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:BabylonJS/Babylon.js",
+    "name": "BabylonJS/Babylon.js",
+    "url": "https://github.com/BabylonJS/Babylon.js",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "BabylonJS/Babylon.js",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pmndrs/react-three-fiber",
+    "name": "pmndrs/react-three-fiber",
+    "url": "https://github.com/pmndrs/react-three-fiber",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "pmndrs/react-three-fiber",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pmndrs/lamina",
+    "name": "pmndrs/lamina",
+    "url": "https://github.com/pmndrs/lamina",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "pmndrs/lamina",
+    "kind": "shader",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pmndrs/math",
+    "name": "pmndrs/math",
+    "url": "https://github.com/pmndrs/math",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "pmndrs/math",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pixijs/pixijs",
+    "name": "pixijs/pixijs",
+    "url": "https://github.com/pixijs/pixijs",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "pixijs/pixijs",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:pixijs/filters",
+    "name": "pixijs/filters",
+    "url": "https://github.com/pixijs/filters",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "pixijs/filters",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:phaserjs/phaser",
+    "name": "phaserjs/phaser",
+    "url": "https://github.com/phaserjs/phaser",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "phaserjs/phaser",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:processing/p5.js-sound",
+    "name": "processing/p5.js-sound",
+    "url": "https://github.com/processing/p5.js-sound",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "processing/p5.js-sound",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:soapyigu/Swift-30-Projects",
+    "name": "soapyigu/Swift-30-Projects",
+    "url": "https://github.com/soapyigu/Swift-30-Projects",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "soapyigu/Swift-30-Projects",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:bevyengine/bevy",
+    "name": "bevyengine/bevy",
+    "url": "https://github.com/bevyengine/bevy",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "bevyengine/bevy",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:godotengine/godot-demo-projects",
+    "name": "godotengine/godot-demo-projects",
+    "url": "https://github.com/godotengine/godot-demo-projects",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "godotengine/godot-demo-projects",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:libgdx/libgdx",
+    "name": "libgdx/libgdx",
+    "url": "https://github.com/libgdx/libgdx",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "libgdx/libgdx",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:kivy/kivy",
+    "name": "kivy/kivy",
+    "url": "https://github.com/kivy/kivy",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "kivy/kivy",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:Tonejs/Tone.js",
+    "name": "Tonejs/Tone.js",
+    "url": "https://github.com/Tonejs/Tone.js",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "Tonejs/Tone.js",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  },
+  {
+    "id": "creative-code:bgrins/TinyColor",
+    "name": "bgrins/TinyColor",
+    "url": "https://github.com/bgrins/TinyColor",
+    "adapter": "github-tree",
+    "sections": [
+      "motion",
+      "three-d",
+      "two-d",
+      "audio",
+      "editing"
+    ],
+    "repo": "bgrins/TinyColor",
+    "kind": "template",
+    "license_scope_reviewed": true,
+    "platforms": [],
+    "path_pattern": "\\.(?:tsx?|jsx?|css|scss|html|vue|svelte|glsl|frag|vert|swift|dart|xaml|py|gd|qml|cpp|h|rs)$",
+    "priority": 5
+  }
+]

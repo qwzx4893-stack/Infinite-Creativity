@@ -1,0 +1,179 @@
+# Source connection expansion — 2026-10-14
+
+The release adds 107 distinct creative-software repository configurations whose existence and supported root software licence were checked through the current GitHub API. This does not automatically license third-party media, guarantee every file is a creative component, or prove every original is available. Actual selected member rights/declared headers are checked again. Some overlap existing source aliases and are excluded from default fan-out. Unknown/nonpermissive/missing repositories were omitted.
+
+It also adds 55 current Openverse provider connections (52 image and 3 audio providers), with fresh discovery through `catalog_providers`. These are aggregator connections, not whole-provider audits. Provider search limits, indexing delays, media-host refusals, attribution and share-alike requirements remain independent. Openverse/Commons/Sketchfab statistics are not this library's admitted asset totals.
+
+New catalogs/services include Openverse images/audio, Wikimedia Commons per-file rights, Art Institute public-domain metadata/images, Sketchfab public models plus official token-based originals, Freesound official account API, CGTrader developer metadata, Dribbble authorized account shots, StringTune's actual current licensed npm members, and the official 21st account MCP. No paid prompt text or generation operation is exposed by the 21st connector.
+
+Fresh CC0 repository federation now searches current repositories for selected media and themes and opens actual scoped members inside MCP. It does not save the search result or call repository addresses an asset library. Supported formats now include additional photometry, mocap, brushes, materials, project and design-file containers; a recognized format is not a native preview/parser guarantee.
+
+## Checked creative-code repository connections
+
+- [saadeghi/daisyui](https://github.com/saadeghi/daisyui)
+- [themesberg/flowbite-react](https://github.com/themesberg/flowbite-react)
+- [themesberg/flowbite-vue](https://github.com/themesberg/flowbite-vue)
+- [mertJF/tailblocks](https://github.com/mertJF/tailblocks)
+- [tremorlabs/tremor](https://github.com/tremorlabs/tremor)
+- [tremorlabs/tremor-npm](https://github.com/tremorlabs/tremor-npm)
+- [heroui-inc/heroui](https://github.com/heroui-inc/heroui)
+- [ant-design/ant-design-mobile](https://github.com/ant-design/ant-design-mobile)
+- [element-plus/element-plus](https://github.com/element-plus/element-plus)
+- [primefaces/primereact](https://github.com/primefaces/primereact)
+- [primefaces/primevue](https://github.com/primefaces/primevue)
+- [quasarframework/quasar](https://github.com/quasarframework/quasar)
+- [varletjs/varlet](https://github.com/varletjs/varlet)
+- [youzan/vant](https://github.com/youzan/vant)
+- [Tencent/tdesign-react](https://github.com/Tencent/tdesign-react)
+- [Tencent/tdesign-vue-next](https://github.com/Tencent/tdesign-vue-next)
+- [arco-design/arco-design](https://github.com/arco-design/arco-design)
+- [arco-design/arco-design-vue](https://github.com/arco-design/arco-design-vue)
+- [palantir/blueprint](https://github.com/palantir/blueprint)
+- [rsuite/rsuite](https://github.com/rsuite/rsuite)
+- [jaredpalmer/formik](https://github.com/jaredpalmer/formik)
+- [react-hook-form/react-hook-form](https://github.com/react-hook-form/react-hook-form)
+- [TanStack/table](https://github.com/TanStack/table)
+- [TanStack/virtual](https://github.com/TanStack/virtual)
+- [recharts/recharts](https://github.com/recharts/recharts)
+- [chartjs/Chart.js](https://github.com/chartjs/Chart.js)
+- [apache/echarts](https://github.com/apache/echarts)
+- [plotly/plotly.js](https://github.com/plotly/plotly.js)
+- [visjs/vis-network](https://github.com/visjs/vis-network)
+- [xyflow/xyflow](https://github.com/xyflow/xyflow)
+- [d3/d3](https://github.com/d3/d3)
+- [pmndrs/react-spring](https://github.com/pmndrs/react-spring)
+- [motiondivision/motion](https://github.com/motiondivision/motion)
+- [formkit/auto-animate](https://github.com/formkit/auto-animate)
+- [juliangarnier/anime](https://github.com/juliangarnier/anime)
+- [fkhadra/react-toastify](https://github.com/fkhadra/react-toastify)
+- [emilkowalski/sonner](https://github.com/emilkowalski/sonner)
+- [emilkowalski/vaul](https://github.com/emilkowalski/vaul)
+- [dip/cmdk](https://github.com/dip/cmdk)
+- [floating-ui/floating-ui](https://github.com/floating-ui/floating-ui)
+- [reach/reach-ui](https://github.com/reach/reach-ui)
+- [melt-ui/melt-ui](https://github.com/melt-ui/melt-ui)
+- [huntabyte/bits-ui](https://github.com/huntabyte/bits-ui)
+- [huntabyte/shadcn-svelte](https://github.com/huntabyte/shadcn-svelte)
+- [unovue/shadcn-vue](https://github.com/unovue/shadcn-vue)
+- [unovue/reka-ui](https://github.com/unovue/reka-ui)
+- [chakra-ui/ark](https://github.com/chakra-ui/ark)
+- [chakra-ui/zag](https://github.com/chakra-ui/zag)
+- [adobe/react-spectrum](https://github.com/adobe/react-spectrum)
+- [patternfly/patternfly](https://github.com/patternfly/patternfly)
+- [grommet/grommet](https://github.com/grommet/grommet)
+- [wix/react-native-ui-lib](https://github.com/wix/react-native-ui-lib)
+- [Semantic-Org/Semantic-UI](https://github.com/Semantic-Org/Semantic-UI)
+- [Semantic-Org/Semantic-UI-React](https://github.com/Semantic-Org/Semantic-UI-React)
+- [picocss/pico](https://github.com/picocss/pico)
+- [svelteuidev/svelteui](https://github.com/svelteuidev/svelteui)
+- [yewstack/yew](https://github.com/yewstack/yew)
+- [leptos-rs/leptos](https://github.com/leptos-rs/leptos)
+- [DioxusLabs/dioxus](https://github.com/DioxusLabs/dioxus)
+- [flutter/packages](https://github.com/flutter/packages)
+- [ionic-team/ionic-framework](https://github.com/ionic-team/ionic-framework)
+- [callstack/react-native-pager-view](https://github.com/callstack/react-native-pager-view)
+- [gorhom/react-native-bottom-sheet](https://github.com/gorhom/react-native-bottom-sheet)
+- [software-mansion/react-native-reanimated](https://github.com/software-mansion/react-native-reanimated)
+- [software-mansion/react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler)
+- [wcandillon/react-native-skia](https://github.com/wcandillon/react-native-skia)
+- [material-components/material-components-android](https://github.com/material-components/material-components-android)
+- [material-components/material-components-ios](https://github.com/material-components/material-components-ios)
+- [airbnb/lottie-android](https://github.com/airbnb/lottie-android)
+- [airbnb/lottie-ios](https://github.com/airbnb/lottie-ios)
+- [airbnb/lottie-web](https://github.com/airbnb/lottie-web)
+- [sparrowcode/AlertKit](https://github.com/sparrowcode/AlertKit)
+- [exyte/AnimatedTabBar](https://github.com/exyte/AnimatedTabBar)
+- [exyte/PopupView](https://github.com/exyte/PopupView)
+- [exyte/AnimatedGradient](https://github.com/exyte/AnimatedGradient)
+- [SwiftUIX/SwiftUIX](https://github.com/SwiftUIX/SwiftUIX)
+- [TokamakUI/Tokamak](https://github.com/TokamakUI/Tokamak)
+- [HandyOrg/HandyControl](https://github.com/HandyOrg/HandyControl)
+- [MaterialDesignInXAML/MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
+- [Kinnara/ModernWpf](https://github.com/Kinnara/ModernWpf)
+- [lepoco/wpfui](https://github.com/lepoco/wpfui)
+- [benruehl/adonis-ui](https://github.com/benruehl/adonis-ui)
+- [MahApps/MahApps.Metro](https://github.com/MahApps/MahApps.Metro)
+- [AvaloniaUI/Avalonia.Samples](https://github.com/AvaloniaUI/Avalonia.Samples)
+- [rdbende/Sun-Valley-ttk-theme](https://github.com/rdbende/Sun-Valley-ttk-theme)
+- [rdbende/Forest-ttk-theme](https://github.com/rdbende/Forest-ttk-theme)
+- [rdbende/Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
+- [TomSchimansky/CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
+- [israel-dryer/ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap)
+- [ocornut/imgui](https://github.com/ocornut/imgui)
+- [epezent/implot](https://github.com/epezent/implot)
+- [ocornut/imgui_club](https://github.com/ocornut/imgui_club)
+- [BabylonJS/Babylon.js](https://github.com/BabylonJS/Babylon.js)
+- [pmndrs/react-three-fiber](https://github.com/pmndrs/react-three-fiber)
+- [pmndrs/lamina](https://github.com/pmndrs/lamina)
+- [pmndrs/math](https://github.com/pmndrs/math)
+- [pixijs/pixijs](https://github.com/pixijs/pixijs)
+- [pixijs/filters](https://github.com/pixijs/filters)
+- [phaserjs/phaser](https://github.com/phaserjs/phaser)
+- [processing/p5.js-sound](https://github.com/processing/p5.js-sound)
+- [soapyigu/Swift-30-Projects](https://github.com/soapyigu/Swift-30-Projects)
+- [bevyengine/bevy](https://github.com/bevyengine/bevy)
+- [godotengine/godot-demo-projects](https://github.com/godotengine/godot-demo-projects)
+- [libgdx/libgdx](https://github.com/libgdx/libgdx)
+- [kivy/kivy](https://github.com/kivy/kivy)
+- [Tonejs/Tone.js](https://github.com/Tonejs/Tone.js)
+- [bgrins/TinyColor](https://github.com/bgrins/TinyColor)
+
+## Current aggregator provider connections
+
+- `openverse:images:wikimedia`
+- `openverse:images:animaldiversity`
+- `openverse:images:bio_diversity`
+- `openverse:images:brooklynmuseum`
+- `openverse:images:clevelandmuseum`
+- `openverse:images:spacex`
+- `openverse:images:svgsilh`
+- `openverse:images:digitaltmuseum`
+- `openverse:images:thingiverse`
+- `openverse:images:WoRMS`
+- `openverse:images:smithsonian_air_and_space_museum`
+- `openverse:images:smithsonian_american_art_museum`
+- `openverse:images:smithsonian_american_history_museum`
+- `openverse:images:smithsonian_american_indian_museum`
+- `openverse:images:smithsonian_gardens`
+- `openverse:images:smithsonian_anacostia_museum`
+- `openverse:images:geographorguk`
+- `openverse:images:met`
+- `openverse:images:museumsvictoria`
+- `openverse:images:nasa`
+- `openverse:images:rawpixel`
+- `openverse:images:rijksmuseum`
+- `openverse:images:sketchfab`
+- `openverse:images:smithsonian_libraries`
+- `openverse:images:smithsonian_african_american_history_museum`
+- `openverse:images:smithsonian_african_art_museum`
+- `openverse:images:smithsonian_national_museum_of_natural_history`
+- `openverse:images:smithsonian_cooper_hewitt_museum`
+- `openverse:images:smithsonian_freer_gallery_of_art`
+- `openverse:images:smithsonian_hirshhorn_museum`
+- `openverse:images:smithsonian_portrait_gallery`
+- `openverse:images:smithsonian_postal_museum`
+- `openverse:images:smithsonian_zoo_and_conservation`
+- `openverse:images:smithsonian_institution_archives`
+- `openverse:images:woc_tech`
+- `openverse:images:finnish_heritage_agency`
+- `openverse:images:stocksnap`
+- `openverse:images:wordpress`
+- `openverse:images:smk`
+- `openverse:images:finnish_satakunnan_museum`
+- `openverse:images:justtakeitfree`
+- `openverse:images:phylopic`
+- `openverse:images:national_museum_of_finland`
+- `openverse:images:europeana`
+- `openverse:images:inaturalist`
+- `openverse:images:nappy`
+- `openverse:images:wellcome_collection`
+- `openverse:images:bib_gulbenkian`
+- `openverse:images:flickr`
+- `openverse:images:sciencemuseum`
+- `openverse:images:katmai_nps`
+- `openverse:images:nypl`
+- `openverse:audio:jamendo`
+- `openverse:audio:wikimedia_audio`
+- `openverse:audio:freesound`
+
+Primary integration references: [Openverse API](https://api.openverse.org/v1/), [Commons imageinfo](https://www.mediawiki.org/wiki/API:Imageinfo), [Art Institute API](https://api.artic.edu/docs/), [Sketchfab download API](https://sketchfab.com/developers/download-api), [Freesound API](https://freesound.org/docs/api/overview.html), [CGTrader developers](https://www.cgtrader.com/developers), [Dribbble API changes](https://developer.dribbble.com/changes/), [official 21st MCP](https://github.com/21st-dev/magic-mcp).
