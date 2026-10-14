@@ -29,7 +29,10 @@ def resolve(c, asset_id):
     elif asset['source']=='google-fonts' and asset['kind']=='font':
         family=asset['upstream_id'].rsplit('/',1)[0]
         data=Fetcher(c.path.parent/'http').json('https://api.github.com/repos/google/fonts/contents/'+family)
-        result['links']=[{'url':entry['download_url'],'filename':entry['name'],'bytes':entry.get('size'),'sha':entry.get('sha')} for entry in data if entry.get('download_url') and entry['name'].lower().endswith(('.ttf','.otf','.woff','.woff2','.txt'))][:100]
+        result['links']=[{'url':entry['download_url'],'filename':entry['name'],'relative_path':family+'/'+entry['name'],'bytes':entry.get('size'),'sha':entry.get('sha'),'role':'license' if entry['name'].lower().endswith('.txt') else 'variant'} for entry in data if entry.get('download_url') and entry['name'].lower().endswith(('.ttf','.otf','.woff','.woff2','.txt'))][:100]
+        first=next((f for f in result['links'] if f['role']=='variant'),None)
+        if first: first['role']='main'
+        result['links'].sort(key=lambda f:f['role']!='main')
     else:
         result["links"] = [{"url":asset["access_url"],"kind":"download-manifest" if asset["source"] == "ambientcg" else "upstream-file"}]
     return result

@@ -56,7 +56,7 @@ class Library:
     def files(self,aid):
         a=self.require(aid,True)
         cached=self.runtime.db.execute('SELECT revision,data FROM manifests WHERE asset_id=?',(aid,)).fetchone()
-        cache_revision='content-v2:'+a['revision']
+        cache_revision='content-v3:'+a['revision']
         if cached and cached['revision']==cache_revision: return json.loads(cached['data'])
         d=self.c.details(aid)
         records=d.get('files',[])
@@ -64,7 +64,7 @@ class Library:
             resolved=resolve(self.c,aid)
             records=resolved['links']
             if self.c.source_info(a['source']).get('adapter')=='github-tree' and re.fullmatch('[0-9a-f]{40}',a['revision']):
-                records=[{**r,'sha':a['revision'],'role':'main'} for r in records]
+                records=[{**r,'sha':a['revision'],'role':'main','relative_path':a['upstream_id']} for r in records]
             if a['source']=='ambientcg':
                 payload=self.fetch.json(a['access_url'])
                 records=[]

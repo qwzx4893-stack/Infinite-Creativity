@@ -121,6 +121,21 @@ class LibraryTests(unittest.TestCase):
         with patch.object(self.l,'file',side_effect=lambda a,f,b:{'file_id':f,'bytes':5}):
             bundle=self.l.bundle(aid)
         self.assertEqual(len(bundle['files']),2)
+    def test_font_default_bundle_keeps_license_and_preferred_original(self):
+        aid=self.asset(kind='font')
+        self.c.db.execute("UPDATE assets SET source='google-fonts',upstream_id='ofl/family/METADATA.pb' WHERE id=?",(aid,)); self.c.db.commit()
+        payload=[{'name':name,'download_url':'https://raw.githubusercontent.com/google/fonts/main/ofl/family/'+name,'sha':'a'*40} for name in ('OFL.txt','Regular.ttf','Bold.ttf')]
+        with patch('infinite_creativity.service.Fetcher.json',return_value=payload):
+            manifest=self.l.files(aid)
+        self.assertEqual(manifest['files'][0]['filename'],'Regular.ttf')
+        with patch.object(self.l,'file',side_effect=lambda a,f,b:{'file_id':f,'bytes':5}): bundle=self.l.bundle(aid)
+        ids={f['file_id'] for f in bundle['files']}
+        self.assertEqual({f['filename'] for f in manifest['files'] if f['id'] in ids},{'Regular.ttf','OFL.txt'})
+    def test_component_manifest_keeps_original_repository_path(self):
+        aid=self.asset(kind='ui-component')
+        self.c.source({'id':'fixture','repo':'a/b','adapter':'github-tree'})
+        self.c.db.execute("UPDATE assets SET upstream_id='src/ui/button.tsx',revision=?,access_url='https://raw.githubusercontent.com/a/b/main/src/ui/button.tsx' WHERE id=?",('a'*40,aid));self.c.db.commit()
+        self.assertEqual(self.l.files(aid)['files'][0]['relative_path'],'src/ui/button.tsx')
 
 class TransportTests(unittest.TestCase):
     def test_urls_cannot_access_private_network_or_credentials(self):
