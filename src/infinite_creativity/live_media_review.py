@@ -186,11 +186,6 @@ def review_geometry(body,classifier,directory):
         if not np.isfinite(geometry.vertices).all():raise ValueError('Non-finite original geometry')
         triangles+=len(geometry.faces)
         if triangles>limits()['triangles']:raise ValueError('Geometry exceeds full rendering budget')
-        material=getattr(geometry.visual,'material',None)
-        for name in ('image','baseColorTexture','emissiveTexture'):
-            texture=getattr(material,name,None)
-            if texture is not None and hasattr(texture,'size'):
-                risks.append(image_check(texture.convert('RGBA'),classifier,directory,texture_count));texture_count+=1
     instanced=sum(len(scene.geometry[name].faces) for node in scene.graph.nodes_geometry for _,name in [scene.graph[node]])
     if instanced>limits()['triangles']:raise ValueError('Instanced geometry exceeds rendering budget')
     mesh=scene.to_mesh()
