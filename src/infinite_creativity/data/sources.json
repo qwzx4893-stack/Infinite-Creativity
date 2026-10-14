@@ -1920,7 +1920,7 @@
       "name": "KhronosGroup/glTF-Sample-Assets",
       "url": "https://github.com/KhronosGroup/glTF-Sample-Assets",
       "repo": "KhronosGroup/glTF-Sample-Assets",
-      "adapter": "github-tree",
+      "adapter": "reference",
       "kind": "model-3d",
       "path_pattern": "^Models/[^/]+/README\\.md$",
       "tags": [
@@ -1933,7 +1933,7 @@
         "mobile"
       ],
       "license_scope_reviewed": false,
-      "status": "reference-until-reviewed"
+      "status": "Individual models now indexed by khronos-assets using each model's component legal metadata."
     },
     {
       "id": "animate-css",

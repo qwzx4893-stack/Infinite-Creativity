@@ -72,6 +72,12 @@ def index_pack(c,cache,pack_url,metadata,run):
     c.source({'id':sid,'name':'Kenney / '+title,'url':pack_url,'adapter':'kenney-packs','status':data.get('license_evidence','archive-cc0'),'license':'CC0-1.0','media':[category],'distribution':archive})
     groups=defaultdict(list)
     entries=data['entries']
+    by_parent=defaultdict(list); atlases=[]
+    license_entries=[e for e in entries if e['path'] in data['license_files']]
+    for e in entries:
+        p=PurePosixPath(e['path']); ext=p.suffix.lower()
+        if ext in {'.bin','.mtl'}: by_parent[str(p.parent)].append(e)
+        if '/textures/' in ('/'+e['path'].lower()) and ext in {'.png','.jpg','.jpeg'}: atlases.append(e)
     for e in entries:
         path=e['path']; p=PurePosixPath(path); ext=p.suffix.lower().lstrip('.')
         if ext not in MEDIA or not acceptable(path) or '..' in p.parts or p.is_absolute(): continue
@@ -89,11 +95,10 @@ def index_pack(c,cache,pack_url,metadata,run):
         lp=data['license_files'][0] if data['license_files'] else ''
         if not c.upsert(sid,files[0]['path'],stem.replace('_',' ').replace('-',' '),kind,canonical,license='CC0-1.0',license_url=pack_url,author='Kenney',tags=['kenney','game',title,kind,logical,'low-poly' if category=='3d' else category],platforms=['web','desktop','mobile','game','film'],formats=sorted({PurePosixPath(e['path']).suffix.lstrip('.').lower() for e in files}),access_url=archive,revision=hashlib.sha256((archive+json.dumps(files,sort_keys=True)).encode()).hexdigest(),run=run): continue
         parents={str(PurePosixPath(e['path']).parent) for e in files}
-        dependencies=[e for e in entries if str(PurePosixPath(e['path']).parent) in parents and PurePosixPath(e['path']).suffix.lower() in {'.bin','.mtl'}]
+        dependencies=[e for parent in parents for e in by_parent[parent]]
         if kind in {'model-3d','animation-3d','scene-3d'}:
-            atlases=[e for e in entries if '/textures/' in ('/'+e['path'].lower()) and PurePosixPath(e['path']).suffix.lower() in {'.png','.jpg','.jpeg'}]
             if len(atlases)<=32: dependencies+=atlases
-        selected={e['path']:e for e in files+dependencies+[e for e in entries if e['path']==lp]}
+        selected={e['path']:e for e in files+dependencies+license_entries}
         bundle=[{'url':archive,'archive_entry':path,'filename':PurePosixPath(path).name,'relative_path':path,'bytes':e['bytes'],'crc32':e['crc32'],'role':'main' if e==files[0] else 'variant' if e in files else 'license' if path==lp else 'dependency'} for path,e in selected.items()]
         c.set_details(aid,{'files':bundle,'features':{'pack':title,'archive_license_entry':lp,'distribution':'official free individual pack','access':'selected ZIP members via HTTPS ranges; CRC32 verified; local SHA256 after retrieval','format_variants':len(files)}})
         count+=1

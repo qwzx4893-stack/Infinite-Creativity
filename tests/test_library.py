@@ -147,6 +147,19 @@ class TransportTests(unittest.TestCase):
                 result=inventory(cache,'https://kenney.nl/media/a.zip',Path(td))
             self.assertEqual(len(result['entries']),3); self.assertEqual(result['license_files'],['License.txt'])
             self.assertLess(sum(requested),10000)
+    def test_legacy_archive_requires_explicit_creator_page_dedication(self):
+        body=io.BytesIO()
+        with zipfile.ZipFile(body,'w') as z:
+            z.writestr('readme.txt','You may use these graphics in personal and commercial projects.')
+            z.writestr('road.png',b'original')
+        archive=body.getvalue()
+        with tempfile.TemporaryDirectory() as td:
+            cache=ContentCache(td)
+            with patch.object(cache,'range',side_effect=lambda url,start,length:(archive[start:start+length],len(archive))):
+                with self.assertRaisesRegex(ValueError,'explicit CC0'): inventory(cache,'https://kenney.nl/media/legacy.zip',Path(td))
+                result=inventory(cache,'https://kenney.nl/media/legacy.zip',Path(td),license_page_cc0=True)
+            self.assertEqual(result['license_evidence'],'official-pack-page-cc0')
+            self.assertEqual(result['license_files'],[])
     def test_fetch_stream_budget_cleans_partial_file(self):
         class Response(io.BytesIO):
             def __init__(self):

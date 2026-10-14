@@ -23,9 +23,11 @@ class Runtime:
                 with secret_path.open('xb') as f: f.write(secrets.token_bytes(32))
             except FileExistsError: pass
         self.secret=secret_path.read_bytes()
+        if len(self.secret)!=32: raise ValueError('Cursor secret is incomplete or corrupted; retry initialization')
     def close(self): self.db.close()
     def session(self,filters):
         sid=uuid.uuid4().hex
+        self.db.execute('DELETE FROM sessions WHERE created<?',(time.time()-86400,))
         self.db.execute('INSERT INTO sessions VALUES (?,?,?)',(sid,json.dumps(filters),time.time())); self.db.commit()
         return sid
     def filters(self,sid):
