@@ -51,9 +51,27 @@ def original_bytes(http,a,f,max_bytes=32*1024*1024):
                 if entry.file_size>max_bytes or entry.file_size>max(1,entry.compress_size)*500:raise ValueError('Archive member exceeds review budget')
                 body=z.read(entry)
     else:body=http.read(f['url'],max_bytes)
+    if f.get('sha') and not f.get('archive_entry'):
+        if hashlib.sha1(('blob '+str(len(body))+'\0').encode()+body).hexdigest()!=f['sha']:raise ValueError('Original Git blob integrity mismatch during review')
+        if body.startswith(b'version https://git-lfs.github.com/spec/v1') and f['url'].startswith('https://raw.githubusercontent.com/'):
+            import re
+            pointer=re.search(rb'\noid sha256:([0-9a-f]{64})\nsize (\d+)',body)
+            if not pointer or int(pointer[2])>max_bytes:raise ValueError('Git LFS original exceeds review budget or has an invalid pointer')
+            body=http.read(f['url'].replace('raw.githubusercontent.com/','media.githubusercontent.com/media/',1),max_bytes)
+            if len(body)!=int(pointer[2]) or hashlib.sha256(body).hexdigest()!=pointer[1].decode():raise ValueError('Git LFS original integrity mismatch during review')
     if f.get('sha256') and hashlib.sha256(body).hexdigest()!=f['sha256']:raise ValueError('Original SHA256 mismatch during review')
     if f.get('md5') and hashlib.md5(body).hexdigest()!=f['md5']:raise ValueError('Original checksum mismatch during review')
     return body
+
+class RequestScreener:
+    """Reuse exact pixel-file verdicts only inside one geometry inspection."""
+    def __init__(self,classifier):self.classifier=classifier;self.seen={}
+    def image(self,path):
+        digest=hashlib.sha256(Path(path).read_bytes()).digest()
+        if digest not in self.seen:
+            if len(self.seen)>=512:self.seen.pop(next(iter(self.seen)))
+            self.seen[digest]=self.classifier.image(path)
+        return self.seen[digest]
 
 def image_check(image,classifier,directory,index):
     from PIL import Image
@@ -149,6 +167,9 @@ def face_colors(mesh):
 
 def review_geometry(body,classifier,directory):
     """Inspect self-contained static GLB geometry, textures and six camera views."""
+    from .meshopt_review import decode_glb
+    body=decode_glb(body)
+    classifier=RequestScreener(classifier)
     import numpy as np
     import trimesh
     from PIL import Image,ImageDraw
@@ -267,6 +288,8 @@ def check_delivery(a,file,path):
 
 def render_glb_preview(body):
     """Internal CPU preview of a previously reviewed original, with no UI."""
+    from .meshopt_review import decode_glb
+    body=decode_glb(body)
     import numpy as np
     import trimesh
     from PIL import Image,ImageDraw

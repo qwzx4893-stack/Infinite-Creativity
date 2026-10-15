@@ -24,6 +24,7 @@ def screener(path):
 
 def identities(a):
     result = ['item:' + hashlib.sha256((a['source']+'|'+a['key']+'|'+a.get('revision','')+'|'+a['license']).encode()).hexdigest()]
+    if a.get('origin_identity'):result.append('origin-product:'+hashlib.sha256(a['origin_identity'].encode()).hexdigest())
     signatures=[]
     for f in a.get('files', []):
         if f.get('role') not in {'main', 'variant','dependency'}: continue
@@ -122,6 +123,9 @@ class Admission:
                                 selected=archive.getinfo(a['files'][0]['archive_entry'])
                                 if selected.file_size>5*1024*1024 or selected.file_size>max(1,selected.compress_size)*500:raise ValueError('Original raster member exceeds review budget')
                                 data=archive.read(selected)
+                    elif raster:
+                        from .live_media_review import original_bytes
+                        data=original_bytes(self.http,a,a['files'][0],5*1024*1024)
                     else:data=self.http.read(url,5*1024*1024)
                     if data.lstrip().startswith((b'<svg',b'<?xml')):
                         if not acceptable(data.decode(errors='replace')) or review_terms(data.decode(errors='replace')):return self.withhold('vector-content-policy')

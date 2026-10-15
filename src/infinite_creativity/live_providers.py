@@ -142,6 +142,7 @@ def github(http,s,f,after,limit,key=None):
             if scope not in dedications:dedications[scope]=read_notice(legal['path']).lower()
             text=dedications[scope]
             license='CC0-1.0' if any(x in text for x in ['creativecommons.org/publicdomain/zero/1.0','cc0 1.0 universal','creative commons zero v1.0']) else 'unknown'
+            if license=='unknown' and s.get('media_license_scope')=='pack-license' and 'permission is hereby granted, free of charge' in text and 'the software is provided "as is"' in text:license='MIT'
             kind=MEDIA[ext]
             if kind=='texture' and ext in {'png','jpg','jpeg','webp'} and re.search(r'(?:sprite|tileset|tilemap|pixel[-_ ]?art|2d[-_ ]?assets|characters?/[a-z])',repo+'/'+path,re.I) and not re.search(r'(?:^|/)(?:3d|textures?|materials?)(?:/|$)',path.lower()):kind='sprite'
             if kind=='texture' and s.get('image_kind') and not re.search(r'(?:^|/)(?:3d|textures?|materials?)(?:/|$)',path.lower()):kind=s['image_kind']
@@ -237,6 +238,8 @@ ADAPTERS.update({'openverse':openverse,'commons':commons,'artic':artic})
 ADAPTERS['npm-package']=npm_package
 ADAPTERS['github-current']=github_current
 ADAPTERS.update({'lazytextures':lazytextures,'opengameart':opengameart,'internet-archive':internet_archive})
+from .live_collections import descriptor_catalog,pack_library,open_asset_archive
+ADAPTERS.update({'asset-descriptor-catalog':descriptor_catalog,'github-pack-library':pack_library,'open-assets-catalog':open_asset_archive})
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources

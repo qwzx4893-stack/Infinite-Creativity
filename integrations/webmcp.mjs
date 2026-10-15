@@ -8,6 +8,7 @@ const allowed = new Set([
   'catalog_providers', 'search_library_batch', 'inspect_library_batch',
   'recommend_assets', 'rank_library_items', 'section_sources',
   'candidate_asset_files', 'open_asset_archive', 'review_asset_media',
+  'build_creative_kit', 'assess_asset_fit', 'review_library_board',
 ]);
 
 const hosts = new WeakMap();

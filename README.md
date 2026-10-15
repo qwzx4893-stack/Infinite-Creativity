@@ -35,7 +35,7 @@ Model preparation keeps one verified installation and removes failed temporary d
 
 ## Agent workflow
 
-1. `library_overview` → `library_sections`: **12 root families, 80 exclusive leaves, 25 independent style facets**.
+1. `library_overview` → `library_sections`: **12 root families, 81 exclusive leaves, 25 independent style facets**.
 2. `section_sources` → `open_library`: current item cards, per-item rights and signed continuation cursors.
 3. `library_packs` → `get_library_pack`: actual thematic pack members; no external page navigation is required.
 4. `get_library_item` → `preview_asset`, `preview_audio_asset`, `inspect_3d_asset`: current native media and structure.
@@ -43,12 +43,15 @@ Model preparation keeps one verified installation and removes failed temporary d
 6. `recommend_assets` provides a metadata shortlist; `rank_library_items` compares fresh admitted previews with the requested art direction through local CLIP. Scores are relative visual relevance, not safety/aesthetic probabilities.
 7. `discover_sources` → `open_repository` discovers current public repositories and their actual rights-scoped items. The former dump of 32,938 unselected repository addresses has been removed.
 8. `review_queue` contains **pending metadata only** for large/native originals. Use `candidate_asset_files` → `review_asset_media` for a selected file. ZIP packs also support `open_asset_archive` for internal directory navigation/member selection. The returned signed `asset_id` authorizes only the inspected file/dependencies; use it with `asset_files` and `read_asset_file`. Native conversions can return a screened MCP image in the same response. Progress notifications accompany the selected review.
+9. `build_creative_kit` selects diverse current candidates for up to six named needs with exact category/kind filters; `assess_asset_fit` distinguishes declared compatibility, mismatch and unknown evidence. `review_library_board` returns a numbered native MCP image of selected current previews for the agent's visual judgment. No human frontend, saved kit or image gallery is created.
 
 Public references use `mode="reference"`. Paid/unverified originals remain inaccessible; a reference preview grants no copying rights. Every native preview, including a pack cover, is checked before emission.
 
 ## Source scope
 
-The registry has **322 default query scopes**, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit. The v0.7 change improves usable format coverage and navigation; it does not inflate source counts.
+The registry has **389 configured definitions and 324 default query scopes** after routing/alias rules, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
+
+v0.8 connects **Jam-Ready Assets, Generated Assets and Open Assets** through pack/item licence contracts, current source descriptors and original-file manifests. Large pack trees are traversed incrementally; Git LFS originals and Meshopt models are handled locally. Publisher catalogue totals are not added together as a unique usable inventory. See the [review of comparable asset libraries and implemented changes](docs/LIBRARY_DONOR_REVIEW.md) and [live verification](docs/V08_VERIFICATION.md).
 
 Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKit/Quaternius packs, public creator-linked Drive folders, Fuel, FSD50K recordings, Blender demo subsets, Khronos assets, licensed LUTs, Openverse provider connections, Wikimedia, Uiverse, Motion Primitives, Mapcn, Codrops and current permissive UI/code repositories. Public presentation scopes are detailed in [coverage](docs/LIVE_SOURCE_COVERAGE.md).
 

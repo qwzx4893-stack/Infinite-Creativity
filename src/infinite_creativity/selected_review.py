@@ -69,6 +69,10 @@ def review(library,aid,file_id='',callback=None):
     with library.content(aid,selected_review=True) as (lib,local,a):
         usable(a);manifest=lib.files(local)['files']
         candidates=[f for f in manifest if f['format'] in SUPPORTED and f.get('role') in {'main','variant'}]
+        previous=unseal(aid,'asset').get('review')
+        if previous and not file_id:
+            library.get(aid)
+            candidates=[f for f in candidates if f['_review_key'] in previous['files']]
         main=next((f for f in candidates if f['id']==file_id),None) if file_id else min(candidates,key=lambda f:(f['format'] not in {'glb','gltf'},f.get('bytes') or 512*1024*1024),default=None)
         if not main:raise ValueError('Choose a supported original ID from candidate_asset_files; ZIP packs use open_asset_archive first')
         bundle=main.get('bundle_key')
@@ -77,6 +81,7 @@ def review(library,aid,file_id='',callback=None):
         with tempfile.TemporaryDirectory(prefix='infinite-creativity-selected-review-') as directory,profile('extended',callback):
             root=Path(directory);staged={};receipts={};total=0
             for f in scope:
+                progress(total,limits()['bytes'],'Fetching scoped original/dependency '+f['filename'][:100])
                 relative=member_path(f.get('relative_path') or f['filename']);target=(root/relative).resolve()
                 if not target.is_relative_to(root.resolve()):raise ValueError('Dependency leaves scoped staging')
                 if relative in staged:raise ValueError('Ambiguous duplicate dependency destination')
@@ -101,6 +106,7 @@ def review(library,aid,file_id='',callback=None):
                             name=line.split()[-1];dep=(target.parent/member_path(name)).resolve()
                             if str(dep) not in {str(v[0]) for v in staged.values()}:raise ValueError('MTL texture dependency is not in the current licensed manifest')
             from .live_admission import screener,model_path
+            progress(total,total,'Decoding and inspecting selected original '+main['filename'][:100])
             classifier=None if main['format'] in {'wav','ogg','mp3','flac','m4a','aac','aiff','aif','opus'} else screener(str(model_path()))
             evidence=review_path(path,main['format'],classifier,directory)
             converted=evidence.pop('_converted_glb',None)

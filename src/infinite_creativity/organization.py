@@ -69,6 +69,7 @@ LEAVES={
  'other/assets':('Other assets','أصول أخرى'),
 }
 ROOTS={'interface':('Interfaces','الواجهات'),'motion':('Motion','الحركة'),'editing':('Video editing','المونتاج'),'three-d':('3D','ثلاثي الأبعاد'),'two-d':('2D','ثنائي الأبعاد'),'surfaces':('Materials and textures','المواد والخامات'),'lighting':('Lighting','الإضاءة'),'audio':('Audio','الصوت'),'typography':('Typography','الخطوط'),'inspiration':('Visual inspiration','التنمية البصرية'),'discovery':('Discovery','الاكتشاف'),'other':('Other','أخرى')}
+LEAVES['discovery/collections']=('Curated collection folders','مجموعات الأصول المنتقاة')
 LEAVES.update({
  'interface/mockups':('Mockups','نماذج العرض'),
  'motion/compositions':('Motion compositions','تركيبات الحركة'),
@@ -106,6 +107,7 @@ def classify(a):
     if kind=='visual-reference':
         role=a.get('reference_category','')
         return 'inspiration/'+(role if role in {'animation','interface','three-d','motion','illustration'} else 'illustration'),'reference purpose, never an original download'
+    if kind=='collection-folder':return 'discovery/collections','Collection navigation only; members have their own rights and primary sections'
     direct={'ui-asset':'interface/visual-kits','icon':'interface/icons','font':'typography/fonts','motion':'motion/interface','model-3d':'three-d/props/other','scene-3d':'three-d/scenes','animation-3d':'three-d/animation/clips','volume-3d':'three-d/volumes','sprite':'two-d/sprites','illustration':'two-d/illustrations','image':'two-d/illustrations','animation-2d':'two-d/animation','material':'surfaces/materials','texture':'surfaces/textures','decal':'surfaces/decals','atlas':'surfaces/atlases','terrain':'surfaces/terrain','brush':'surfaces/brushes','hdri':'lighting/hdri','lut':'editing/color-luts','video':'editing/footage','video-transition':'editing/transitions','video-overlay':'editing/overlays','editing-template':'editing/project-templates','motion-graphic':'motion/graphics','vector-animation':'motion/vector-animation','particle':'motion/particles','shader':'motion/shaders','repository':'discovery/repositories','source-reference':'discovery/providers','template':'interface/templates'}
     section=direct.get(kind,'other/assets')
     direct.update({'mockup':'interface/mockups','motion-composition':'motion/compositions','video-title':'editing/titles','compositing-project':'editing/compositing','groom-3d':'three-d/characters/hair','mocap':'three-d/animation/mocap','pose-3d':'three-d/animation/poses','procedural-3d':'three-d/procedural','light-profile':'lighting/profiles','vector-pack':'two-d/vector-packs'})

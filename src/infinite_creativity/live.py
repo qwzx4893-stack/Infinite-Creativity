@@ -59,6 +59,9 @@ def source_configs():
     media_connections=files('infinite_creativity').joinpath('data/live_media_connections.json')
     if media_connections.is_file():
         for s in json.loads(media_connections.read_text(encoding='utf-8')):configs[s['id']]=s
+    collections=files('infinite_creativity').joinpath('data/live_collections.json')
+    if collections.is_file():
+        for s in json.loads(collections.read_text(encoding='utf-8')):configs[s['id']]=s
     if overlays.is_file():
         for sid,values in json.loads(overlays.read_text(encoding='utf-8')).items():
             if sid in configs:configs[sid].update(values)
@@ -103,6 +106,7 @@ class LiveLibrary:
     def card(self,a):
         aid=seal('asset',{'source':a['source'],'key':a['key']});usable=(a['license'] in LICENSES or a.get('end_product_only_verified')) and bool(a['license_url'])
         section=classify({'kind':a.get('member_kind',a['kind']),'title':a['title'],'tags':a['tags'],'upstream_id':a['key'],'reference_category':a.get('reference_category','')})[0]
+        if a.get('origin_identity'):a.setdefault('admission',{})['dedup_identity']='origin-product:'+hashlib.sha256(a['origin_identity'].encode()).hexdigest()
         actions=['get_library_item']
         if a['kind']=='asset-pack':actions.append('get_library_pack')
         elif usable:
@@ -116,7 +120,7 @@ class LiveLibrary:
         elif a.get('reference_preview'):actions.append('preview_asset')
         if 'required-for-originals' in a.get('original_access',''):
             actions=[v for v in actions if v not in {'asset_files','read_asset_file','fetch_asset_bundle','inspect_3d_asset','preview_audio_asset'}]
-        return {k:a[k] for k in ['title','kind','source','styles','formats','platforms','license','license_url','author','description']}|{'id':aid,'section_id':section,'pack_id':seal('pack',{'source':a['source'],'key':a['pack']}) if a.get('pack') else None,'access':'licensed-original-auth-required' if 'required-for-originals' in a.get('original_access','') else 'usable-for-end-product' if usable and a.get('end_product_only_verified') else 'usable' if usable else 'reference','reuse_scope':a.get('reuse_scope','Original asset license applies.'),'original_access':a.get('original_access','current-manifest-on-selection'),'provider_credit':'Powered by Poly Haven' if a['source']=='polyhaven' else self.sources[a['source']].get('name',a['source']),'metadata_fetched_at':now(),'resource_uri':'creativity://asset/'+aid,'actions':actions,'admission':a.get('admission',{}),'safety_scope':'Recorded admission scope only; no blanket certification of unseen content','platform_evidence':'Declared source platform or inferred text/file format; empty means unknown'}
+        return {k:a[k] for k in ['title','kind','source','styles','formats','platforms','license','license_url','author','description']}|{'id':aid,'section_id':section,'pack_id':seal('pack',{'source':a['source'],'key':a['pack']}) if a.get('pack') else None,'access':'pack-navigation-only' if a.get('navigation_only') else 'licensed-original-auth-required' if 'required-for-originals' in a.get('original_access','') else 'usable-for-end-product' if usable and a.get('end_product_only_verified') else 'usable' if usable else 'reference','reuse_scope':a.get('reuse_scope','Original asset license applies.'),'original_access':a.get('original_access','current-manifest-on-selection'),'provider_credit':'Powered by Poly Haven' if a['source']=='polyhaven' else self.sources[a['source']].get('name',a['source']),'metadata_fetched_at':now(),'resource_uri':'creativity://asset/'+aid,'actions':actions,'admission':a.get('admission',{}),'safety_scope':'Recorded admission scope only; no blanket certification of unseen content','platform_evidence':'Declared source platform or inferred text/file format; empty means unknown'}
     def select(self,f):
         if f.get('source'):
             if f['source'] not in self.sources:
@@ -266,7 +270,10 @@ class LiveLibrary:
                     if hashlib.sha1(('blob '+str(len(body))+'\0').encode()+body).hexdigest()!=original['sha']:raise ValueError('Git LFS pointer integrity mismatch')
                     oid=re.search(rb'\noid sha256:([0-9a-f]{64})\nsize (\d+)',body)
                     if not oid:raise ValueError('Unsupported Git LFS pointer')
+                    previous_url=original['url']
                     original.update(url=original['url'].replace('raw.githubusercontent.com/','media.githubusercontent.com/media/',1),sha256=oid[1].decode(),bytes=int(oid[2]));original.pop('sha',None)
+                    for preview in a.get('previews',[]):
+                        if preview.get('url')==previous_url:preview['url']=original['url']
         # SQLite metadata and runtime manifests are in RAM. Only explicitly
         # requested original bytes get temporary files for existing safe parsers.
         with tempfile.TemporaryDirectory(prefix='infinite-creativity-request-') as directory:

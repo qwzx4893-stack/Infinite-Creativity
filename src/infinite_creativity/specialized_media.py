@@ -155,24 +155,32 @@ def review_path(path,extension,classifier,directory):
             with Image.open(texture) as image:image_check(image.convert('RGBA'),classifier,directory,'native-texture-'+str(i))
         return {**result,'native':report,'_converted_glb':str(converted),'scope':'current native '+extension.upper()+' read with scripts disabled, packed/staged textures and converted geometry/animation; '+result['scope']}
     if extension in MESH:return review_mesh(path,extension,classifier,directory)
-    if extension=='gltf':
+    if extension=='gltf' or extension=='glb':
         # All external relative buffers/textures must already be explicitly
         # licence-scoped and staged by selected_review. Never fetch from JSON.
         import trimesh
-        document=json.loads(Path(path).read_text(encoding='utf-8'))
+        if extension=='gltf':document=json.loads(Path(path).read_text(encoding='utf-8'))
+        else:
+            import struct
+            body=Path(path).read_bytes()
+            if len(body)<20 or body[:4]!=b'glTF':raise ValueError('Invalid original GLB')
+            length=struct.unpack_from('<I',body,12)[0]
+            if length>16*1024*1024 or 20+length>len(body):raise ValueError('Invalid GLB JSON extent')
+            document=json.loads(body[20:20+length])
+            if not any(e.get('uri') for name in ('buffers','images') for e in document.get(name,[])):return review_geometry(body,classifier,directory)
         for name in ('buffers','images'):
             for entry in document.get(name,[]):
                 uri=entry.get('uri','')
-                if uri.startswith('data:'):continue
+                if not uri or uri.startswith('data:'):continue
                 if ':' in uri or uri.startswith(('/','\\')):raise ValueError('GLTF may only use explicitly staged relative dependencies')
                 referenced=(Path(path).parent/uri).resolve()
                 if not referenced.is_relative_to(Path(directory).resolve()) or not referenced.is_file():raise ValueError('GLTF dependency is missing or leaves the scoped staging directory')
-        if document.get('animations'):
+        if document.get('animations') or any(p.get('targets') for mesh in document.get('meshes',[]) for p in mesh.get('primitives',[])):
             converted,report,_=native_convert(path,directory);body=converted.read_bytes()
         else:body=trimesh.load(path,force='scene',process=False).export(file_type='glb');report=None
         result=review_geometry(body,classifier,directory)
         target=Path(directory)/'converted-gltf.glb';target.write_bytes(body)
-        return {**result,'native':report,'_converted_glb':str(target),'scope':'original GLTF plus explicitly scoped staged buffers/textures; '+result['scope']}
+        return {**result,'native':report,'_converted_glb':str(target),'scope':'original '+extension.upper()+' plus explicitly scoped staged buffers/textures; '+result['scope']}
     if extension in {'wav','ogg','mp3','flac','m4a','aac','aiff','aif','opus'}:return review_audio(path)
     if extension in {'png','jpg','jpeg','bmp','tif','tiff','dds'}:
         from PIL import Image
@@ -189,7 +197,6 @@ def review_path(path,extension,classifier,directory):
                 if preview is None:preview=pixels.copy()
             preview.thumbnail((512,512));image_check(preview,classifier,directory,'raster-preview');body=io.BytesIO();preview.save(body,format='PNG')
             return {'scope':'all decoded original raster pages/frames','frames':count,'maximum_risk':max(risks),'_preview_bytes':body.getvalue()}
-    if extension=='glb':return review_geometry(Path(path).read_bytes(),classifier,directory)
     if extension=='svg':return review_vector(Path(path).read_bytes(),classifier,directory)
     if extension in {'mp4','webm','mov','mkv','avi','gif','webp','apng','exr','hdr'}:return review_frames(path,extension,classifier,directory)
     raise ValueError('No complete local original reviewer for '+extension)

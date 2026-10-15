@@ -78,7 +78,8 @@ def kenney(http,s,f,after,limit,key=None):
                     if MEDIA[ext] in {'model-3d','animation-3d','scene-3d'} and len(atlases)<=16:
                         dependencies=list({v.filename:v for v in dependencies+atlases}.values())
                     bundle=[original]+[{'url':archive,'archive_entry':v.filename,'filename':PurePosixPath(v.filename).name,'relative_path':v.filename,'bytes':v.file_size,'crc32':v.CRC,'role':'license' if PurePosixPath(v.filename).name.lower() in {'license.txt','license.md','cc0.txt'} else 'dependency'} for v in dependencies]
-                    a=item(s['id'],locator,PurePosixPath(path).stem.replace('_',' '),MEDIA[ext],'CC0-1.0',page,'Kenney',[pack,'game',path],[ext],files=bundle,pack=pack,revision=archive+':'+str(i.CRC)+':'+str(i.file_size));rows.append(a)
+                    a=item(s['id'],locator,PurePosixPath(path).stem.replace('_',' '),MEDIA[ext],'CC0-1.0',page,'Kenney',[pack,'game',path],[ext],files=bundle,pack=pack,revision=archive+':'+str(i.CRC)+':'+str(i.file_size))
+                    a['origin_identity']=page+'|'+re.sub('[^a-z0-9]+','-',PurePosixPath(path).stem.lower()).strip('-');rows.append(a)
         if key:
             if not rows:raise ValueError('Original is no longer in the official free pack')
             return rows[0]
