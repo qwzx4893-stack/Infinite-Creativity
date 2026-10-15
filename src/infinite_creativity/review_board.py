@@ -1,5 +1,6 @@
 """One temporary native MCP image for an agent's visual curation decision."""
 import base64,io,math
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from .live import unseal
 from .live_media_review import check_delivery,image_check
@@ -8,21 +9,30 @@ def board(library,asset_ids):
     if not 1<=len(asset_ids)<=8 or len(set(asset_ids))!=len(asset_ids):raise ValueError('Choose 1..8 distinct current asset locators')
     from PIL import Image,ImageOps,ImageDraw
     tiles=[];items=[];failures=[]
-    for aid in asset_ids:
+    def load(aid):
+        owned=hasattr(library,'sources');local=type(library)(configs=library.sources) if owned else library
         try:
             if unseal(aid,'asset').get('review'):
-                from .selected_review import review
-                library.get(aid);result=review(library,aid);pixels=result.get('_preview_png')
+                from .selected_review import preview as selected_preview
+                result=selected_preview(local,aid);pixels=result.get('_preview_png')
                 if not pixels:raise ValueError('Selected original has no generated raster preview')
-                body=base64.b64decode(pixels);item=library.item(aid)
+                body=base64.b64decode(pixels);item=local.item(aid)
             else:
-                with library.content(aid,allow_reference_preview=True) as (lib,local,a):
-                    preview=lib.preview(local);body=Path(preview['path']).read_bytes();vector=body.lstrip().startswith((b'<svg',b'<?xml'))
+                with local.content(aid,allow_reference_preview=True) as (lib,key,a):
+                    preview=lib.preview(key);body=Path(preview['path']).read_bytes();vector=body.lstrip().startswith((b'<svg',b'<?xml'))
                     check_delivery({**a,'software_only':False},{'filename':'preview.svg' if vector else 'preview.png','role':'main','url':'current-preview'},preview['path'])
                     if vector:
                         import cairosvg
                         body=cairosvg.svg2png(bytestring=body,output_width=512,output_height=512)
-                    item=library.card(a)|{'id':aid}
+                    item=local.card(a)|{'id':aid}
+            return body,item,None
+        except Exception as e:return None,None,{'asset_id':aid,'reason':str(e)[:250]}
+        finally:
+            if owned:local.close()
+    with ThreadPoolExecutor(max_workers=3) as pool:loaded=list(pool.map(load,asset_ids))
+    for aid,(body,item,error) in zip(asset_ids,loaded):
+        if error:failures.append(error);continue
+        try:
             with Image.open(io.BytesIO(body)) as image:
                 pixels=image.convert('RGBA');tile=Image.new('RGB',(384,280),'#eeeeee');pixels=ImageOps.contain(pixels,(368,236));tile.paste(pixels,((384-pixels.width)//2,(244-pixels.height)//2),pixels)
                 number=len(tiles)+1;ImageDraw.Draw(tile).text((12,255),'#'+str(number),fill='#111111');tiles.append(tile)

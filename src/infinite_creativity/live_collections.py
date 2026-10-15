@@ -2,7 +2,7 @@
 import hashlib,json,re
 from pathlib import PurePosixPath
 from urllib.parse import quote,urlsplit
-from .policy import acceptable,review_terms
+from .policy import acceptable,review_terms,LICENSE_NAMES
 from .asset_adapters import MEDIA,complete_tree
 
 def safe_path(value):
@@ -85,7 +85,7 @@ def pack_library(http,s,f,after,limit,key=None):
     entries=[{**e,'path':pack+'/'+e['path']} for e in scoped if e['type']=='blob']
     # A platform-only outer licence must not be overridden by a copied nested
     # CC0 notice. Inspect all licence files in this selected pack first.
-    notices=[e for e in entries if PurePosixPath(e['path']).name.lower() in {'license','license.txt','license.md','copying','cc0.txt'}]
+    notices=[e for e in entries if PurePosixPath(e['path']).name.lower() in LICENSE_NAMES]
     if not notices or len(notices)>16:raise ValueError('Selected pack has no bounded complete licence scope')
     for notice in notices:
         text=http.text(raw+quote(notice['path'],safe='/'),256*1024).lower()

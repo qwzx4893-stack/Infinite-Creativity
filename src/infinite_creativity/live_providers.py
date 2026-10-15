@@ -6,7 +6,7 @@ from pathlib import PurePosixPath
 from urllib.parse import quote,urljoin,urlsplit
 from .asset_adapters import MEDIA,FORMAT_DIRS,complete_tree
 from .codrops import code_entries
-from .policy import LICENSES,acceptable,review_terms,styles_for,normalize_query
+from .policy import LICENSES,LICENSE_NAMES,acceptable,review_terms,styles_for,normalize_query
 from .organization import classify
 
 def item(source,key,title,kind,license='unknown',license_url='',author='',tags=(),formats=(),files=(),previews=(),description='',pack='',revision='',reference_preview=False):
@@ -107,8 +107,8 @@ def github(http,s,f,after,limit,key=None):
     def read_notice(path):return http.text(raw+quote(path,safe='/'),256*1024)
     if is_media:
         for e in entries:
-            if PurePosixPath(e['path']).name.lower() in {'license','license.txt','license.md','copying','cc0.txt'} and re.search(s.get('license_pattern','.*'),e['path']):notices[str(PurePosixPath(e['path']).parent)]=e
-    root_notice=next((e for e in entries if e['path'].upper() in {'LICENSE','LICENSE.MD','LICENSE.TXT','COPYING'}),None)
+            if PurePosixPath(e['path']).name.lower() in LICENSE_NAMES and re.search(s.get('license_pattern','.*'),e['path']):notices[str(PurePosixPath(e['path']).parent)]=e
+    root_notice=next((e for e in entries if '/' not in e['path'] and e['path'].lower() in LICENSE_NAMES),None)
     lic=(meta.get('license') or {}).get('spdx_id','unknown')
     variants={};candidates=entries
     if is_media:
@@ -141,6 +141,7 @@ def github(http,s,f,after,limit,key=None):
             legal=notices[scope]
             if scope not in dedications:dedications[scope]=read_notice(legal['path']).lower()
             text=dedications[scope]
+            if any(term in text for term in ('run repository supplemental license','run projects only','personal use only','non-commercial use only','noncommercial use only')):continue
             license='CC0-1.0' if any(x in text for x in ['creativecommons.org/publicdomain/zero/1.0','cc0 1.0 universal','creative commons zero v1.0']) else 'unknown'
             if license=='unknown' and s.get('media_license_scope')=='pack-license' and 'permission is hereby granted, free of charge' in text and 'the software is provided "as is"' in text:license='MIT'
             kind=MEDIA[ext]
@@ -240,15 +241,23 @@ ADAPTERS['github-current']=github_current
 ADAPTERS.update({'lazytextures':lazytextures,'opengameart':opengameart,'internet-archive':internet_archive})
 from .live_collections import descriptor_catalog,pack_library,open_asset_archive
 ADAPTERS.update({'asset-descriptor-catalog':descriptor_catalog,'github-pack-library':pack_library,'open-assets-catalog':open_asset_archive})
+from .live_online import poly_pizza,texturecan,museum,incompetech
+ADAPTERS.update({'poly-pizza':poly_pizza,'texturecan':texturecan,'met-open-access':museum,'cleveland-open-access':museum,'incompetech':incompetech})
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources
+    def config(self,sid):
+        source=self.sources[sid];canonical=self.sources.get(source.get('live_alias_of'),{})
+        # An older generic connection must not bypass a specialized collection
+        # licence/tree contract. Other intentionally different repo scopes keep
+        # their own filters and are not widened through this rule.
+        return canonical if canonical.get('live_adapter',canonical.get('adapter')) in {'github-pack-library','asset-descriptor-catalog','open-assets-catalog'} else source
     def page(self,sid,filters,after='',limit=20):
-        s=self.sources[sid];adapter=s.get('live_adapter',s['adapter'])
+        s=self.config(sid);adapter=s.get('live_adapter',s['adapter'])
         if adapter not in ADAPTERS:raise ValueError(s.get('live_reason','No permitted live inventory connector implemented for this source'))
         return ADAPTERS[adapter](self.http,s,filters,after,limit)
     def get(self,sid,key):
-        s=self.sources[sid];adapter=s.get('live_adapter',s['adapter'])
+        s=self.config(sid);adapter=s.get('live_adapter',s['adapter'])
         if adapter not in ADAPTERS:raise ValueError(s.get('live_reason','No live item connector'))
         filters={'mode':'all'}
         if adapter=='github-repository' and PurePosixPath(key).suffix.lstrip('.').lower() in MEDIA and MEDIA[PurePosixPath(key).suffix.lstrip('.').lower()]!='shader':filters['kind']=MEDIA[PurePosixPath(key).suffix.lstrip('.').lower()]

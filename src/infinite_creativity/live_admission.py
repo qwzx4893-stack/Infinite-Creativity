@@ -76,6 +76,8 @@ class Admission:
         if self.seen.intersection(keys):self.report['duplicates']+=1;return False
         evidence={'state':'metadata-screened','scope':'title,description,tags,filenames; no visual certification'}
         if self.mode=='strict' and not a.get('software_only') and a['kind'] not in {'font','asset-pack'}:
+            duration=a.get('features',{}).get('declared_technical',{}).get('duration')
+            if a['kind']=='audio' and isinstance(duration,(int,float)) and duration>90:return self.withhold('declared-duration-exceeds-browse-budget; use selected original review')
             try: reviewed=self.review_backend(a)
             except Exception: return self.withhold('local-reviewer-unavailable')
             if reviewed:
@@ -98,6 +100,11 @@ class Admission:
                     original_key='original-media:'+builtin['sha256']
                     if original_key in self.seen:self.report['duplicates']+=1;return False
                     keys.append(original_key)
+                    structured=builtin.get('evidence',{}).get('structured_content_sha256')
+                    if structured:
+                        structured_key='structured-glb:'+structured
+                        if structured_key in self.seen:self.report['duplicates']+=1;return False
+                        keys.append(structured_key)
                 # Speech, video frames, project files and geometry without a
                 # preview require an actual reviewer; a cover image is insufficient.
                 if not builtin and a['kind'] in {'audio','video','animation-2d','animation-3d','editing-template','volume-3d','vector-animation','mocap','pose-3d','groom-3d','procedural-3d','compositing-project'}:
@@ -143,6 +150,10 @@ class Admission:
                             pixel_key='original-raster:'+evidence['sha256']
                             if pixel_key in self.seen:self.report['duplicates']+=1;return False
                             keys.append(pixel_key);evidence['scope']='original-raster'
+                            if evidence.get('decoded_pixel_sha256'):
+                                decoded_key='decoded-pixels:'+evidence['decoded_pixel_sha256']
+                                if decoded_key in self.seen:self.report['duplicates']+=1;return False
+                                keys.append(decoded_key)
                 except Exception as e:
                     if type(e).__name__ in {'UnidentifiedImageError','DecompressionBombError','DecompressionBombWarning'}:self.report['invalid_media']+=1
                     reason='classifier-unavailable' if isinstance(e,ImportError) or not (model_path()/'model.onnx').exists() else 'preview-invalid-or-unavailable'

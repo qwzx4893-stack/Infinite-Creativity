@@ -1,17 +1,25 @@
 """Bounded batched exploration and explainable metadata relevance ranking."""
 import re
+from concurrent.futures import ThreadPoolExecutor
 from .policy import normalize_query,styles_for
 
 
 def batch(l,searches,limit=10):
     if not 1<=len(searches)<=8 or not 1<=limit<=30:raise ValueError('Choose 1..8 searches, each 1..30 results')
     allowed={'query','kind','style','platform','format','mode','source','section','pack','license'}
-    rows=[]
     for filters in searches:
         if not isinstance(filters,dict) or set(filters)-allowed or not all(isinstance(v,str) for v in filters.values()):raise ValueError('Invalid search filters')
-        try:rows.append({'filters':filters,'view':l.open(limit=limit,**filters)})
-        except ValueError as e:rows.append({'filters':filters,'error':str(e)[:400]})
-    return {'searches':rows,'storage':'No saved results; current reads share one bounded request budget','continuation':'Continue each successful view with its own next_cursor'}
+    def query(filters):
+        owned=hasattr(l,'sources');local=type(l)(configs=l.sources) if owned else l
+        try:
+            view=local.open(limit=limit,**filters)
+            if hasattr(local,'http') and hasattr(local.http,'metrics'):view['performance']=local.http.metrics()
+            return {'filters':filters,'view':view}
+        except ValueError as e:return {'filters':filters,'error':str(e)[:400]}
+        finally:
+            if owned:local.close()
+    with ThreadPoolExecutor(max_workers=3) as pool:rows=list(pool.map(query,searches))
+    return {'searches':rows,'storage':'No saved results; independent bounded live scopes execute with concurrency <=3','continuation':'Continue each successful view with its own next_cursor'}
 
 
 def recommend(l,direction,kinds,platform,limit):

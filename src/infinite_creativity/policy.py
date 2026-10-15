@@ -1,18 +1,28 @@
 """Conservative metadata admission, not a visual moderation model."""
 import re
 import json
+import unicodedata
 from importlib.resources import files
 from urllib.parse import urlsplit
 
 LICENSES = {"MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "CC0-1.0", "CC-BY-4.0", "CC-BY-3.0", "OFL-1.1", "Unlicense", "0BSD", "Zlib"}
 LICENSES.update({'CC-BY-1.0','CC-BY-2.0','CC-BY-2.5','CC-BY-SA-3.0','CC-BY-SA-4.0'})
+LICENSE_NAMES={'license','license.txt','license.md','license.rst','licence','licence.txt','licence.md','licence.rst','copying','copying.txt','copying.md','cc0.txt','unlicense','unlicense.txt','unlicense.md'}
 EXCLUSIONS=json.loads(files("infinite_creativity").joinpath("data/exclusions.json").read_text(encoding="utf-8"))
 BLOCKED_URLS=set(EXCLUSIONS["blocked_urls"])
 BLOCKED_SOURCES=set(EXCLUSIONS["blocked_sources"])
 DENIED = re.compile(r"(?i)(?:\b(?:nsfw|porn\w*|xxx|hentai|erotic\w*|nude|nudes|nudity|sex|sexual\w*|sexy|fetish\w*|penis|vagina|dildo|vibrator|genital\w*|orgasm\w*|breasts?|boobs?|fuck\w*|shit|bitch|middle[-_ ]finger)\b|إباح|اباح|جنسي|عاري)")
 REVIEW = re.compile(r'(?i)\b(?:lewd|ecchi|ahegao|pinup|pin up|seductive|suggestive|boudoir|lingerie|striptease|undress|adult only)\b|إيحاء جنسي|اغراء|إغراء')
 
-def review_terms(text):return bool(REVIEW.search(text.replace('_',' ').replace('-',' ')))
+def policy_text(text):
+    value=''.join(c for c in unicodedata.normalize('NFKD',str(text)) if unicodedata.category(c) not in {'Cf','Mn'})
+    value=value.translate(str.maketrans({'а':'a','е':'e','о':'o','р':'p','с':'c','х':'x','і':'i','у':'y','А':'A','Е':'E','О':'O','Р':'P','С':'C','Х':'X','І':'I'}))
+    def deobfuscate(match):
+        token=match[0];decoded=token.translate(str.maketrans({'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','@':'a','$':'s'}))
+        return decoded if DENIED.search(decoded.replace('_',' ')) or REVIEW.search(decoded.replace('_',' ')) else token
+    return re.sub(r'[\w@$]+',deobfuscate,value).replace('_',' ').replace('-',' ')
+
+def review_terms(text):return bool(REVIEW.search(policy_text(text)))
 STYLE_RULES = {
     "minimal": ["minimal", "simple", "clean", "lucide", "feather"],
     "glassmorphism": ["glass", "frosted", "blur"],
@@ -53,7 +63,7 @@ def styles_for(text):
 
 def acceptable(text):
     text=re.sub(r'(?<=[a-z])(?=[A-Z])',' ',text)
-    return not DENIED.search(text.replace("_", " ").replace("-", " "))
+    return not DENIED.search(policy_text(text))
 
 def public_https(url):
     p = urlsplit(url)

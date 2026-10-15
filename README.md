@@ -44,14 +44,18 @@ Model preparation keeps one verified installation and removes failed temporary d
 7. `discover_sources` → `open_repository` discovers current public repositories and their actual rights-scoped items. The former dump of 32,938 unselected repository addresses has been removed.
 8. `review_queue` contains **pending metadata only** for large/native originals. Use `candidate_asset_files` → `review_asset_media` for a selected file. ZIP packs also support `open_asset_archive` for internal directory navigation/member selection. The returned signed `asset_id` authorizes only the inspected file/dependencies; use it with `asset_files` and `read_asset_file`. Native conversions can return a screened MCP image in the same response. Progress notifications accompany the selected review.
 9. `build_creative_kit` selects diverse current candidates for up to six named needs with exact category/kind filters; `assess_asset_fit` distinguishes declared compatibility, mismatch and unknown evidence. `review_library_board` returns a numbered native MCP image of selected current previews for the agent's visual judgment. No human frontend, saved kit or image gallery is created.
+10. Prefer **`open_asset_package`** after selection: one RPC returns current rights, complete selected-file review, a scoped manifest, bounded licence notices, a native preview/listening excerpt where supported, and initial exact original bytes. Small source files can arrive completely. `next_offset` continues larger originals through `read_asset_file`.
+11. `probe_library_sources` checks actual current samples and separates navigation, pending originals, screened previews, admitted originals and failures. Use `library_page` with `resume_cursor` and `retry_sources` to retry failed providers without discarding their positions. Transient failures get one automatic fresh-page retry.
 
 Public references use `mode="reference"`. Paid/unverified originals remain inaccessible; a reference preview grants no copying rights. Every native preview, including a pack cover, is checked before emission.
 
 ## Source scope
 
-The registry has **389 configured definitions and 324 default query scopes** after routing/alias rules, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
+The registry has **394 configured definitions and 329 default query scopes** after routing/alias rules, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
 
 v0.8 connects **Jam-Ready Assets, Generated Assets and Open Assets** through pack/item licence contracts, current source descriptors and original-file manifests. Large pack trees are traversed incrementally; Git LFS originals and Meshopt models are handled locally. Publisher catalogue totals are not added together as a unique usable inventory. See the [review of comparable asset libraries and implemented changes](docs/LIBRARY_DONOR_REVIEW.md) and [live verification](docs/V08_VERIFICATION.md).
+
+v0.9 adds **five verified original-access sources**: Poly Pizza models, TextureCan CC0 material packs/maps, Met public-domain images, Cleveland CC0 images and Incompetech free attributed music/collections. It restores Motion Primitives access through `LICENCE.md`, improves request transport and preview/selection latency, strengthens duplicate/text filtering, and exposes **38 MCP tools**. See [changes, measured workflows and remaining limits](docs/V09_CHANGES_AND_VERIFICATION.md). FreePD was found closed; ccMixter originals returned HTTP 403 and were excluded from the configured library.
 
 Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKit/Quaternius packs, public creator-linked Drive folders, Fuel, FSD50K recordings, Blender demo subsets, Khronos assets, licensed LUTs, Openverse provider connections, Wikimedia, Uiverse, Motion Primitives, Mapcn, Codrops and current permissive UI/code repositories. Public presentation scopes are detailed in [coverage](docs/LIVE_SOURCE_COVERAGE.md).
 
@@ -60,6 +64,8 @@ Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKi
 ## Admission and practical limits
 
 Filtering happens before cards are emitted and again before exact selected bytes are delivered. It checks explicit/suggestive metadata and source text, available original rasters, rendered static SVG, bounded complete audio plus translated speech, all bounded video/animated-image frames, and supported GLB textures/geometry/skin poses. Exact original/bundle digests and bounded client cursor receipts suppress duplicates during collection. Minimal, pixel and low-poly art is preserved.
+
+Additional duplicate checks cover decoded raster pixels across lossless container/metadata changes (while preserving ICC colour-profile variants), and normalized GLB JSON/generator formatting with complete binary payloads preserved. Cover-image similarity never merges distinct original models. Text checks normalize common Unicode/diacritic/confusable/zero-width and leetspeak obfuscation. These remain bounded checks, not global visual-similarity or universal content guarantees.
 
 Selected review supports BLEND, FBX, the USD family, BVH bone-motion proxies, scoped GLTF dependencies, OBJ/materials, PLY/STL/OFF/3MF, static Collada, PSD/PSB stored layers and ORA, plus larger supported raster/audio/video originals. Total source bytes are bounded to **512 MiB**, audio to 30 minutes, decoded frames to 18,000, triangles to two million and poses to 4,096; a five-minute processing deadline can impose a tighter practical limit. These are ceilings, not promises that every file below them passes. Ordinary browsing retains smaller budgets. See the [format/scope matrix](docs/V07_FORMAT_SUPPORT.md).
 
@@ -70,4 +76,6 @@ The optional [WebMCP host adapter](docs/WEBMCP.md) forwards the same completed r
 ```bash
 python -m unittest discover -s tests -v
 node tests/webmcp.test.mjs
+# Optional real online acceptance checks; prints metrics, saves no originals:
+python scripts/verify_live_workflows.py --probe
 ```

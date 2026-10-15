@@ -12,7 +12,7 @@ import time
 from functools import lru_cache
 from pathlib import Path
 from .policy import acceptable,review_terms
-from .review_limits import limits,progress
+from .review_limits import limits,progress,profile
 
 def media_input(body):
     return str(body) if isinstance(body,(Path,str)) else io.BytesIO(body)
@@ -99,6 +99,7 @@ def review_audio(body):
     frames=[];count=0;resampler=AudioResampler(format='fltp',layout='mono',rate=16000)
     with av.open(media_input(body)) as container:
         if not container.streams.audio:raise ValueError('Original has no audio stream')
+        source_stream=container.streams.audio[0];source_audio={'sample_rate':source_stream.codec_context.sample_rate,'channels':len(source_stream.codec_context.layout.channels),'bit_rate':source_stream.bit_rate,'codec':source_stream.codec_context.name}
         for frame in container.decode(audio=0):
             for converted in resampler.resample(frame):
                 block=converted.to_ndarray().reshape(-1);count+=len(block)
@@ -117,8 +118,35 @@ def review_audio(body):
         transcript.append(segment.text)
         progress(getattr(segment,'end',len(samples)/16000), len(samples)/16000,'Reviewing original audio speech')
     return {'scope':'entire decoded audio and multilingual speech translated to English; lexical sexual/suggestive screening','duration':len(samples)/16000,
-            'speech_segments':len(transcript),'language':info.language,'rms':rms,'clipping_fraction':clipping,'model_revision':SPEECH_MODEL['revision'],
+            'speech_segments':len(transcript),'language':info.language,'rms':rms,'clipping_fraction':clipping,'original_audio':source_audio,'model_revision':SPEECH_MODEL['revision'],
             'limits':'Speech recognition can miss words, music lyrics and nonverbal contextual innuendo; no transcript is retained or returned.'}
+
+def audio_excerpt(path,start=0,seconds=12):
+    """Bounded native MCP listening excerpt from an already authorized original."""
+    import math,wave,av
+    import numpy as np
+    if isinstance(start,bool) or isinstance(seconds,bool) or not isinstance(start,(int,float)) or not isinstance(seconds,(int,float)) or not math.isfinite(start) or not math.isfinite(seconds) or not 0<=start<=1800 or not 0<seconds<=30:raise ValueError('Choose a finite excerpt start 0..1800 seconds and duration >0..30')
+    rate=22050;begin=int(start*rate);end=begin+int(seconds*rate);position=0;parts=[]
+    resampler=av.audio.resampler.AudioResampler(format='fltp',layout='mono',rate=rate)
+    with av.open(str(path)) as container:
+        if not container.streams.audio:raise ValueError('Original has no audio stream')
+        for frame in container.decode(audio=0):
+            for converted in resampler.resample(frame):
+                block=converted.to_ndarray().reshape(-1);stop=position+len(block)
+                if stop>begin and position<end:parts.append(block[max(0,begin-position):min(len(block),end-position)].copy())
+                position=stop
+            if position>=end:break
+            progress(position/rate,start+seconds,'Preparing current bounded audio listening excerpt')
+        if position<end:
+            for converted in resampler.resample(None):
+                block=converted.to_ndarray().reshape(-1);stop=position+len(block)
+                if stop>begin and position<end:parts.append(block[max(0,begin-position):min(len(block),end-position)].copy())
+                position=stop
+    samples=np.concatenate(parts) if parts else np.array([],dtype=np.float32)
+    if not len(samples) or not np.isfinite(samples).all():raise ValueError('Requested excerpt is empty or invalid')
+    output=io.BytesIO()
+    with wave.open(output,'wb') as writer:writer.setnchannels(1);writer.setsampwidth(2);writer.setframerate(rate);writer.writeframes((np.clip(samples,-1,1)*32767).astype('<i2').tobytes())
+    return output.getvalue(),{'start_seconds':start,'duration_seconds':len(samples)/rate,'sample_rate':rate,'channels':1,'scope':'Listening excerpt only. Production original bytes, resolution and channels remain unchanged; the full original must have passed its delivery guard.'}
 
 def review_frames(body,extension,classifier,directory):
     from PIL import Image
@@ -248,11 +276,20 @@ def review_original(http,a,classifier):
     # receive only files whose bytes are re-reviewed at delivery.
     f=min(files,key=lambda v:v.get('bytes') or 12*1024*1024);ext=Path(f['filename']).suffix.lstrip('.').lower()
     body=original_bytes(http,a,f)
-    with tempfile.TemporaryDirectory(prefix='infinite-creativity-original-review-') as directory:
+    with tempfile.TemporaryDirectory(prefix='infinite-creativity-original-review-') as directory,profile('fast'):
         if ext in {'wav','ogg','mp3','flac','m4a'}:result=review_audio(body)
         elif ext=='svg':result=review_vector(body,classifier,directory)
         elif ext=='glb':result=review_geometry(body,classifier,directory)
         else:result=review_frames(body,ext,classifier,directory)
+        progress(1,1,'Completed bounded current original review')
+    if ext=='glb':
+        from .meshopt_review import decode_glb
+        import struct
+        expanded=decode_glb(body);length=struct.unpack_from('<I',expanded,12)[0];document=json.loads(expanded[20:20+length])
+        if isinstance(document.get('asset'),dict):document['asset'].pop('generator',None)
+        fingerprint=hashlib.sha256(json.dumps(document,sort_keys=True,separators=(',',':')).encode());fingerprint.update(expanded[20+length:])
+        result['structured_content_sha256']=fingerprint.hexdigest()
+        result['structured_dedup_scope']='GLB JSON formatting/generator normalized; complete binary chunks and geometry/material/animation declarations preserved. Not a near-shape similarity guarantee.'
     return {'state':'original-media-screened','scope':result['scope'],'evidence':result,'sha256':hashlib.sha256(body).hexdigest(),
             'file_identity':f.get('archive_entry') or f['url'],'checks':['sexual','suggestive','technical-quality'],'quality':{'state':'decoded-and-structurally-valid','limits':'No subjective aesthetic quality certification; intentional minimal/pixel/low-poly styles are preserved.'}}
 

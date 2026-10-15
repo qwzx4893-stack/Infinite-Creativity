@@ -62,6 +62,9 @@ def source_configs():
     collections=files('infinite_creativity').joinpath('data/live_collections.json')
     if collections.is_file():
         for s in json.loads(collections.read_text(encoding='utf-8')):configs[s['id']]=s
+    online=files('infinite_creativity').joinpath('data/live_online_sources.json')
+    if online.is_file():
+        for s in json.loads(online.read_text(encoding='utf-8')):configs[s['id']]=s
     if overlays.is_file():
         for sid,values in json.loads(overlays.read_text(encoding='utf-8')).items():
             if sid in configs:configs[sid].update(values)
@@ -96,6 +99,11 @@ class LiveLibrary:
         hosts.update(h for s in self.sources.values() for h in s.get('content_hosts',[]))
         self.http=http or LiveHTTP(hosts=hosts- {None})
         self.providers=Providers(self.http,self.sources)
+    def close(self):
+        close=getattr(self.http,'close',None)
+        if close:close()
+    def __enter__(self):return self
+    def __exit__(self,*args):self.close()
     def supported(self,s):return s.get('live_adapter',s.get('adapter')) in ADAPTERS
     def source_cards(self):
         return [{'id':s['id'],'name':s.get('name',s['id']),'connector_implemented':self.supported(s),'inventory_availability':'not-probed','adapter':s.get('live_adapter',s.get('adapter')),'status':s.get('live_status','live-on-demand'),'reason':s.get('live_reason','Fresh upstream metadata on each request'),'authentication':'none-required','alias_of':s.get('live_alias_of'),'source_uri':'creativity://source/'+quote(s['id'],safe='')} for s in self.sources.values()]
@@ -123,6 +131,7 @@ class LiveLibrary:
         elif a.get('reference_preview'):actions.append('preview_asset')
         if 'required-for-originals' in a.get('original_access',''):
             actions=[v for v in actions if v not in {'asset_files','read_asset_file','fetch_asset_bundle','inspect_3d_asset','preview_audio_asset'}]
+        if usable and 'zip' in a.get('formats',[]):actions+=['candidate_asset_files','open_asset_archive']
         return {k:a[k] for k in ['title','kind','source','styles','formats','platforms','license','license_url','author','description']}|{'id':aid,'section_id':section,'pack_id':seal('pack',{'source':a['source'],'key':a['pack']}) if a.get('pack') else None,'access':'pack-navigation-only' if a.get('navigation_only') else 'licensed-original-auth-required' if 'required-for-originals' in a.get('original_access','') else 'usable-for-end-product' if usable and a.get('end_product_only_verified') else 'usable' if usable else 'reference','reuse_scope':a.get('reuse_scope','Original asset license applies.'),'original_access':a.get('original_access','current-manifest-on-selection'),'provider_credit':'Powered by Poly Haven' if a['source']=='polyhaven' else self.sources[a['source']].get('name',a['source']),'metadata_fetched_at':now(),'resource_uri':'creativity://asset/'+aid,'actions':actions,'admission':a.get('admission',{}),'safety_scope':'Recorded admission scope only; no blanket certification of unseen content','platform_evidence':'Declared source platform or inferred text/file format; empty means unknown'}
     def select(self,f):
         if f.get('source'):
@@ -162,9 +171,14 @@ class LiveLibrary:
         if filters.get('pack'):
             p=unseal(filters['pack'],'pack');filters['source']=p['source'];filters['_pack_key']=p['key']
         return self.page(seal('view',{'filters':filters,'positions':{},'done':[],'turn':0,'receipts':[]}),limit)
-    def page(self,token,limit=30):
+    def page(self,token,limit=30,retry_sources=None):
         if not 1<=limit<=100:raise ValueError('Page size must be 1..100')
         state=unseal(token,'view');f=state['filters'];ids=self.select(f)
+        if retry_sources is not None and (not isinstance(retry_sources,list) or len(retry_sources)>8 or any(not isinstance(s,str) for s in retry_sources)):raise ValueError('Choose at most eight failed source IDs to retry')
+        failures=state.setdefault('failures',{})
+        for sid in retry_sources or []:
+            if sid not in ids or sid not in failures:raise ValueError('Only a failed source in this current view can be retried')
+            state['done']=[s for s in state['done'] if s!=sid];failures.pop(sid,None)
         active=[s for s in ids if s not in state['done']]
         if not active:return {'items':[],'next_cursor':None,'complete':True,'records':None}
         start=state['turn']%len(active);chosen=(active[start:]+active[:start])[:min(8,limit)]
@@ -177,8 +191,13 @@ class LiveLibrary:
         with ThreadPoolExecutor(max_workers=8) as pool:
             for sid,data,error in pool.map(fetch,zip(chosen,quotas)):
                 if error:
-                    statuses.append({'source':sid,'status':'unavailable','reason':error,'snapshot_fallback':False});state['done'].append(sid);continue
-                statuses.append({'source':sid,'status':'fresh','scope':data.get('scope'),'total':None,**({'provider_notice':data['provider_notice']} if data.get('provider_notice') else {}),**({'repository_errors':data['repository_errors']} if data.get('repository_errors') else {})})
+                    failures[sid]=failures.get(sid,0)+1
+                    retryable=any(word in error.lower() for word in ('transport','timeout','rate limit','budget exhausted','http 50'))
+                    retry=retryable and failures[sid]<2
+                    statuses.append({'source':sid,'status':'unavailable','reason':error,'snapshot_fallback':False,'retry_on_next_page':retry,'attempt':failures[sid]})
+                    if not retry:state['done'].append(sid)
+                    continue
+                statuses.append({'source':sid,'status':'fresh','scope':data.get('scope'),'total':None,**({'provider_notice':data['provider_notice']} if data.get('provider_notice') else {}),**({'repository_errors':data['repository_errors']} if data.get('repository_errors') else {}),**({'item_errors':data['item_errors'][:12],'item_errors_omitted':max(0,len(data['item_errors'])-12)} if data.get('item_errors') else {})})
                 for a in data['items']:
                     if not a.get('files') and a['kind'] in {'audio','video','animation-2d','icon','vector-pack'}:
                         try:a=self.providers.get(sid,a['key'])
@@ -192,14 +211,20 @@ class LiveLibrary:
                         # A risk decision never becomes a route around screening.
                         if not any(t in reason.lower() for t in ('sexual','suggestive','content policy','content-policy','classifier','reviewer-incomplete-or-rejected')):
                             card=self.card(a);card.update(access='pending-original-review',actions=['candidate_asset_files','review_asset_media'],admission={'state':'pending','reason':reason},original_access='withheld-until-selected-review')
+                            card['actions'].append('open_asset_package')
+                            if 'zip' in a.get('formats',[]):card['actions'].append('open_asset_archive')
                             queue.append(card)
                 if data.get('next') is None:state['done'].append(sid)
                 else:state['positions'][sid]=data['next']
         state['turn']+=len(chosen)
         state['receipts']=admission.receipts()
         remaining=[sid for sid in ids if sid not in state['done']]
-        next_token=seal('view',state) if remaining else None
-        return {'items':results,'review_queue':queue,'session_id':token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor.'}
+        current_token=seal('view',state)
+        while len(current_token)>23500 and state['receipts']:
+            state['receipts']=state['receipts'][64:];current_token=seal('view',state)
+        if len(current_token)>24000:raise ValueError('View position cursor exceeds bounded client transport; choose a narrower source/category')
+        next_token=current_token if remaining else None
+        return {'items':results,'review_queue':queue,'session_id':current_token,'resume_cursor':current_token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor. Transient failures get one fresh-page retry; retry_sources with resume_cursor explicitly retries exhausted failures without losing source positions.'}
     def raw_get(self,aid):
         loc=unseal(aid,'asset')
         if loc['source'] not in self.sources:

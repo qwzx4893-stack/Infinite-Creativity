@@ -86,7 +86,7 @@ class KitTests(unittest.TestCase):
         result,_=ranked([{'items':rows}],'cartoon forest',4,2)
         self.assertEqual(len(result),3);self.assertEqual(sum(a['source']=='one' for a in result),2)
     def test_exact_original_and_canonical_publisher_product_dedup_cross_sources(self):
-        a=self.card('first','one',admission={'safety':{'sha256':'a'*64}});b=self.card('mirror','two',admission={'safety':{'sha256':'a'*64}})
+        a=self.card('first','one',admission={'safety':{'state':'original-media-screened','sha256':'a'*64}});b=self.card('mirror','two',admission={'safety':{'state':'original-media-screened','sha256':'a'*64}})
         result,count=ranked([{'items':[a,b]}],'cartoon',8,8);self.assertEqual(len(result),1);self.assertEqual(count,1)
         a['admission']['dedup_identity']='same-product';b['admission']={'dedup_identity':'same-product','safety':{'sha256':'different'}}
         self.assertEqual(len(ranked([{'items':[a,b]}],'cartoon',8,8)[0]),1)
@@ -96,9 +96,13 @@ class KitTests(unittest.TestCase):
         self.assertEqual(fit(a,{'rig_target':'rig-b'})['state'],'incompatible')
         self.assertEqual(fit(a,{'animated':True})['state'],'unverified')
     def test_original_digest_dedup_also_applies_when_publishers_have_different_product_ids(self):
-        a=self.card('first','one',admission={'dedup_identity':'product-one','safety':{'sha256':'x'}})
-        b=self.card('mirror','two',admission={'dedup_identity':'product-two','safety':{'sha256':'x'}})
+        a=self.card('first','one',admission={'dedup_identity':'product-one','safety':{'state':'original-media-screened','sha256':'x'}})
+        b=self.card('mirror','two',admission={'dedup_identity':'product-two','safety':{'state':'original-media-screened','sha256':'x'}})
         self.assertEqual(len(ranked([{'items':[a,b]}],'cartoon',8,8)[0]),1)
+    def test_shared_cover_image_does_not_merge_distinct_original_models(self):
+        a=self.card('first','one',admission={'safety':{'scope':'preview-raster','sha256':'same-cover','decoded_pixel_sha256':'same-pixels'}})
+        b=self.card('second','two',admission={'safety':{'scope':'preview-raster','sha256':'same-cover','decoded_pixel_sha256':'same-pixels'}})
+        self.assertEqual(len(ranked([{'items':[a,b]}],'cartoon',8,8)[0]),2)
     def test_preview_dimensions_are_never_treated_as_original_dimensions(self):
         a={'formats':['png'],'admission':{'safety':{'state':'preview-screened','dimensions':[4096,4096],'scope':'preview-raster'}}}
         self.assertEqual(fit(a,{'min_width':2048})['state'],'unverified')

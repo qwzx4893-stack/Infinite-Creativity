@@ -39,12 +39,19 @@ def fit(a,requested):
     state='incompatible' if any(c['state']=='mismatch' for c in checks) else 'unverified' if not checks or any(c['state']=='unknown' for c in checks) else 'declared-compatible' if any(c['basis'].startswith('current publisher') for c in checks) else 'verified-selected-scope'
     return {'state':state,'checks':checks,'limits':'No automatic rig retargeting, unit conversion or artistic quality certification. Preview dimensions never satisfy original-size requirements.'}
 
+def original_digest(a):
+    safety=a.get('admission',{}).get('safety',{})
+    return safety.get('sha256') if safety.get('state')=='original-media-screened' or safety.get('scope')=='original-raster' else None
+
 def identity_keys(a):
     from .live import unseal
     loc=unseal(a['id'],'asset');keys={('item',loc['source'],loc['key'])}
-    digest=a.get('admission',{}).get('safety',{}).get('sha256');product=a.get('admission',{}).get('dedup_identity')
+    digest=original_digest(a);product=a.get('admission',{}).get('dedup_identity')
     if digest:keys.add(('original',digest))
     if product:keys.add(('product',product))
+    safety=a.get('admission',{}).get('safety',{})
+    if safety.get('scope')=='original-raster' and safety.get('decoded_pixel_sha256'):keys.add(('pixels',safety['decoded_pixel_sha256']))
+    if safety.get('evidence',{}).get('structured_content_sha256'):keys.add(('structured-glb',safety['evidence']['structured_content_sha256']))
     return keys
 
 def ranked(windows,brief,limit=4,max_per_source=2):
@@ -53,7 +60,7 @@ def ranked(windows,brief,limit=4,max_per_source=2):
     for window_index,view in enumerate(windows):
         for position,a in enumerate(view.get('items',[])):
             if a.get('access') not in {'usable','usable-for-end-product'} or a.get('kind')=='asset-pack':continue
-            loc=unseal(a['id'],'asset');proof=a.get('admission',{}).get('safety',{});digest=proof.get('sha256')
+            loc=unseal(a['id'],'asset');digest=original_digest(a)
             product=a.get('admission',{}).get('dedup_identity');identity=('product',product) if product else ('original',digest) if digest else (loc['source'],loc['key'])
             text=(a['title']+' '+a.get('description','')+' '+' '.join(a.get('styles',[]))).lower()
             if identity not in records:records[identity]={'item':a,'rrf':0,'styles':sorted(styles&set(a.get('styles',[]))),'terms':sorted(w for w in words if len(w)>2 and w in text),'windows':set()}
@@ -90,12 +97,14 @@ def build(library,brief,needs,limit_per_need=4,max_per_source=2):
             items,duplicates=ranked(views,brief,limit_per_need,max_per_source)
             fitted=[]
             for a in items:
-                original=local.get(a['id']) if need.get('requirements') else None
+                original=local.raw_get(a['id']) if need.get('requirements') else None
                 decision=fit(original,need['requirements']) if original else None
                 if decision and decision['state']=='incompatible':continue
                 fitted.append(a|({'fit':decision} if decision else {}))
             return {'label':need['label'],'filters':filters,'items':fitted,'review_queue':[a for v in views for a in v.get('review_queue',[])],'next_cursor':views[-1].get('next_cursor'),'sources':[s for v in views for s in v.get('sources',[])],'duplicates_removed':duplicates,'state':'candidates' if fitted else 'no-admitted-match-in-this-window'}
         except Exception as e:return {'label':need['label'],'items':[],'state':'unavailable','reason':str(e)[:300]}
+        finally:
+            if hasattr(local,'close'):local.close()
     with ThreadPoolExecutor(max_workers=3) as pool:groups=list(pool.map(query,needs))
     encountered=set()
     for group in groups:
