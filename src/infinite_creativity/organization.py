@@ -92,6 +92,8 @@ LEAVES.update({
  'two-d/vector-packs':('Vector illustration packs','حزم الرسوم المتجهية'),
 })
 LEAVES.pop('audio/music',None)
+LEAVES['audio/instruments']=('Instrument multisamples','عينات الآلات الموسيقية')
+LEAVES['two-d/photography']=('Photography','الصور الفوتوغرافية')
 
 def initialize(c):
     c.db.executescript('''CREATE TABLE IF NOT EXISTS asset_sections(asset_id TEXT PRIMARY KEY,section_id TEXT NOT NULL,pack_id TEXT NOT NULL,reason TEXT NOT NULL);
@@ -112,6 +114,7 @@ def classify(a):
     section=direct.get(kind,'other/assets')
     direct.update({'mockup':'interface/mockups','motion-composition':'motion/compositions','video-title':'editing/titles','compositing-project':'editing/compositing','groom-3d':'three-d/characters/hair','mocap':'three-d/animation/mocap','pose-3d':'three-d/animation/poses','procedural-3d':'three-d/procedural','light-profile':'lighting/profiles','vector-pack':'two-d/vector-packs'})
     section=direct.get(kind,section)
+    if kind=='image' and re.search(r'\bphotography\b',text):section='two-d/photography'
     if kind=='volume-3d':section='three-d/volumes'
     def has(words): return bool(re.search(r'\b(?:'+words+r')\b',text.replace('_',' ').replace('-',' ')))
     if kind=='ui-component':
@@ -126,7 +129,7 @@ def classify(a):
             if has(words):section='two-d/'+slug;break
     if kind=='audio':
         section='audio/effects/other'
-        for path,words in [('voice','speech|voice|dialogue|vocal'),('music','music|jingle|soundtrack|song|melody'),('effects/interface','interface|button|click|notification|ui|bleep'),('effects/environment','ambience|ambient|environment|rain|wind|forest|river|water|thunder'),('effects/foley','foley|footstep|door|cloth|impact|hit|movement')]:
+        for path,words in [('instruments','instrument multisample|instrument sample|multisampled'),('voice','speech|voice|dialogue|vocal'),('music','music|jingle|soundtrack|song|melody'),('effects/interface','interface|button|click|notification|ui|bleep'),('effects/environment','ambience|ambient|environment|rain|wind|forest|river|water|thunder'),('effects/foley','foley|footstep|door|cloth|impact|hit|movement')]:
             if has(words):section='audio/'+path;break
         if section=='audio/music' and has('loop|loops'):section='audio/music/loops'
         elif section=='audio/music' and has('stem|stems|multitrack'):section='audio/music/stems'

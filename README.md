@@ -35,7 +35,7 @@ Model preparation keeps one verified installation and removes failed temporary d
 
 ## Agent workflow
 
-1. `library_overview` → `library_sections`: **12 root families, 81 exclusive leaves, 25 independent style facets**.
+1. `library_overview` → `library_sections`: **12 root families, 83 exclusive leaves, 25 independent style facets**.
 2. `section_sources` → `open_library`: current item cards, per-item rights and signed continuation cursors.
 3. `library_packs` → `get_library_pack`: actual thematic pack members; no external page navigation is required.
 4. `get_library_item` → `preview_asset`, `preview_audio_asset`, `inspect_3d_asset`: current native media and structure.
@@ -46,20 +46,23 @@ Model preparation keeps one verified installation and removes failed temporary d
 9. `build_creative_kit` selects diverse current candidates for up to six named needs with exact category/kind filters; `assess_asset_fit` distinguishes declared compatibility, mismatch and unknown evidence. `review_library_board` returns a numbered native MCP image of selected current previews for the agent's visual judgment. No human frontend, saved kit or image gallery is created.
 10. Prefer **`open_asset_package`** after selection: one RPC returns current rights, complete selected-file review, a scoped manifest, bounded licence notices, a native preview/listening excerpt where supported, and initial exact original bytes. Small source files can arrive completely. `next_offset` continues larger originals through `read_asset_file`.
 11. `probe_library_sources` checks actual current samples and separates navigation, pending originals, screened previews, admitted originals and failures. Use `library_page` with `resume_cursor` and `retry_sources` to retry failed providers without discarding their positions. Transient failures get one automatic fresh-page retry.
+12. `browse_asset_catalog(source="pd3m", offset=2000000, limit=3)` jumps directly into a publisher-curated million-scale image collection. `source="objaverse-curated"` accepts `partition` plus an offset inside that current metadata partition. Continue with `library_page`; query/style/section filters cover the current window/partition. Upstream totals and exclusions are explicit and are never labeled admitted unique counts. Source and item cards expose the available quality evidence.
 
 Public references use `mode="reference"`. Paid/unverified originals remain inaccessible; a reference preview grants no copying rights. Every native preview, including a pack cover, is checked before emission.
 
 ## Source scope
 
-The registry has **394 configured definitions and 329 default query scopes** after routing/alias rules, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
+The registry has **399 configured definitions and 334 default query scopes** after routing/alias rules, including **126 media repository connections retained in v0.6**, public OpenGameArt originals/ZIP members, Lazytextures CC0 models/materials/HDRIs/textures, and individually licensed Internet Archive audio/video/image originals. Scopes are not counts of sites or admitted assets. Metadata is refreshed for each request; outages and provider limits remain explicit.
 
 v0.8 connects **Jam-Ready Assets, Generated Assets and Open Assets** through pack/item licence contracts, current source descriptors and original-file manifests. Large pack trees are traversed incrementally; Git LFS originals and Meshopt models are handled locally. Publisher catalogue totals are not added together as a unique usable inventory. See the [review of comparable asset libraries and implemented changes](docs/LIBRARY_DONOR_REVIEW.md) and [live verification](docs/V08_VERIFICATION.md).
 
 v0.9 adds **five verified original-access sources**: Poly Pizza models, TextureCan CC0 material packs/maps, Met public-domain images, Cleveland CC0 images and Incompetech free attributed music/collections. It restores Motion Primitives access through `LICENCE.md`, improves request transport and preview/selection latency, strengthens duplicate/text filtering, and exposes **38 MCP tools**. See [changes, measured workflows and remaining limits](docs/V09_CHANGES_AND_VERIFICATION.md). FreePD was found closed; ccMixter originals returned HTTP 403 and were excluded from the configured library.
 
+v0.10 adds **PD3M, curated Objaverse originals, Meta Open Sound instrument packs, GL Transitions shaders and official Manim motion examples**, with **39 MCP tools**. The current PD3M API reports **3,301,062 publisher-curated image records**; this is a directly navigable upstream row extent, not millions of independently reviewed/unique approved assets. The instrument collection exposes **1,075 real OGG samples in three named packs**. Models require current per-object source rights and a curation signal; transition shaders require individual MIT declarations. See [million-scale access, quality gates, actual delivery tests and limitations](docs/V010_LARGE_CATALOGS.md).
+
 Existing integrations include Poly Haven, ambientCG, creator-scoped Kenney/KayKit/Quaternius packs, public creator-linked Drive folders, Fuel, FSD50K recordings, Blender demo subsets, Khronos assets, licensed LUTs, Openverse provider connections, Wikimedia, Uiverse, Motion Primitives, Mapcn, Codrops and current permissive UI/code repositories. Public presentation scopes are detailed in [coverage](docs/LIVE_SOURCE_COVERAGE.md).
 
-**Account/key-required connectors have been removed**, including 21st, MotionSites, CGTrader, Dribbble, Freesound and Sketchfab. Other nonworking placeholders are absent from live routing. No provider key onboarding is part of this library.
+**Account/key-required connectors have been removed**, including 21st, MotionSites, CGTrader, Dribbble, Freesound and authenticated Sketchfab downloads. The Objaverse adapter uses public AllenAI GLB mirrors and anonymous source-model metadata for current rights checks; it never requests a Sketchfab download token. Other nonworking placeholders are absent from live routing. No provider key onboarding is part of this library.
 
 ## Admission and practical limits
 
@@ -78,4 +81,6 @@ python -m unittest discover -s tests -v
 node tests/webmcp.test.mjs
 # Optional real online acceptance checks; prints metrics, saves no originals:
 python scripts/verify_live_workflows.py --probe
+# New large-catalog and non-image delivery cases, also without provider keys:
+python scripts/verify_live_workflows.py --case millionth-art --case curated-model --case instrument --case transition --case motion-code
 ```

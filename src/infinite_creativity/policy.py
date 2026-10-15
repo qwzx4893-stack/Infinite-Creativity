@@ -7,6 +7,9 @@ from urllib.parse import urlsplit
 
 LICENSES = {"MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "CC0-1.0", "CC-BY-4.0", "CC-BY-3.0", "OFL-1.1", "Unlicense", "0BSD", "Zlib"}
 LICENSES.update({'CC-BY-1.0','CC-BY-2.0','CC-BY-2.5','CC-BY-SA-3.0','CC-BY-SA-4.0'})
+# A public-domain designation is kept distinct from a copyright licence/CC0.
+# Only an adapter with explicit per-image designation evidence emits this ID.
+LICENSES.add('LicenseRef-Public-Domain-Mark-1.0')
 LICENSE_NAMES={'license','license.txt','license.md','license.rst','licence','licence.txt','licence.md','licence.rst','copying','copying.txt','copying.md','cc0.txt','unlicense','unlicense.txt','unlicense.md'}
 EXCLUSIONS=json.loads(files("infinite_creativity").joinpath("data/exclusions.json").read_text(encoding="utf-8"))
 BLOCKED_URLS=set(EXCLUSIONS["blocked_urls"])

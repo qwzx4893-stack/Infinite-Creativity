@@ -9,7 +9,9 @@ from mcp import ClientSession,StdioServerParameters
 from mcp.client.stdio import stdio_client
 from infinite_creativity.live import source_configs
 
-CASES={'model':('polypizza','tree'),'material':('texturecan','wood'),'met':('met-open-access','landscape'),'cleveland':('cleveland-open-access','landscape'),'audio':('incompetech','Discovery Hit'),'interface':('','accordion')}
+CASES={'model':('polypizza','tree'),'material':('texturecan','wood'),'met':('met-open-access','landscape'),'cleveland':('cleveland-open-access','landscape'),'audio':('incompetech','Discovery Hit'),'interface':('','accordion'),
+       'millionth-art':('pd3m',''),'curated-model':('objaverse-curated','fisherman'),'instrument':('meta-open-sound','piano'),
+       'transition':('gl-transitions','Bounce'),'motion-code':('manim-motion-examples','basic')}
 
 async def verify(cases,probe_sources=False):
     params=StdioServerParameters(command=sys.executable,args=['-m','infinite_creativity.server'],env=dict(os.environ))
@@ -25,16 +27,17 @@ async def verify(cases,probe_sources=False):
             try:
                 source,query=CASES[name]
                 if name=='interface':source=next(s['id'] for s in source_configs().values() if s.get('repo','').lower()=='ibelick/motion-primitives')
-                view=(await call('open_library',{'source':source,'query':query,'limit':1})).structuredContent
+                view=(await call('browse_asset_catalog',{'source':source,'offset':2000000,'limit':1}) if name=='millionth-art' else await call('open_library',{'source':source,'query':query,'limit':1})).structuredContent
                 candidates=view['items']+view.get('review_queue',[])
                 for _ in range(2):
                     if candidates or not view.get('next_cursor'):break
                     view=(await call('library_page',{'cursor':view['next_cursor'],'limit':1})).structuredContent;candidates=view['items']+view.get('review_queue',[])
-                if not candidates:raise ValueError('No admitted/pending candidate in bounded current windows: '+json.dumps(view.get('sources',[]))[:300])
+                if not candidates:raise ValueError('No admitted/pending candidate: '+json.dumps({'withheld':view.get('admission',{}).get('withheld_reasons',{}),'source_errors':[s.get('reason') or s.get('item_errors') for s in view.get('sources',[]) if s.get('reason') or s.get('item_errors')]})[:350])
                 selected=candidates[0]
-                if name=='material':
+                if name in {'material','instrument'}:
                     pack=(await call('get_library_pack',{'pack_id':selected['pack_id'],'limit':2})).structuredContent['view'];members=pack['items']+pack.get('review_queue',[])
                     if not members:raise ValueError('Current pack has no reviewable map in this window')
+                    if name=='instrument' and pack['sources'][0].get('catalog',{}).get('collections_in_scope')!=['meta-piano']:raise ValueError('Instrument pack includes unrelated collection members')
                     selected=members[0]
                 progress=[]
                 async def update(value,total,message):progress.append(value)
@@ -44,10 +47,10 @@ async def verify(cases,probe_sources=False):
                 if not body or full and hashlib.sha256(body).hexdigest()!=original['sha256']:raise ValueError('Inline original integrity/window failure')
                 if not all(a<b for a,b in zip(progress,progress[1:])):raise ValueError('Non-monotonic MCP review progress')
                 native=[block.type for block in result.content]
-                if name=='audio' and 'audio' not in native:raise ValueError('Listening excerpt missing from reviewed music package')
-                if name not in {'audio','interface'} and 'image' not in native:raise ValueError('Screened native preview missing')
+                if name in {'audio','instrument'} and 'audio' not in native:raise ValueError('Listening excerpt missing from reviewed sound package')
+                if name not in {'audio','instrument','interface','transition','motion-code'} and 'image' not in native:raise ValueError('Screened native preview missing')
                 print(json.dumps({'case':name,'status':'passed','seconds':round(time.monotonic()-started,3),'format':data['format'],'reviewed_files':data['reviewed_files'],'reviewed_bytes':data['reviewed_bytes'],'inline_bytes':len(body),'complete_inline_original':full,'native_blocks':native,'progress_notifications':len(progress),'metadata_http':data.get('performance',{})}),flush=True)
-                if name=='audio':
+                if name in {'audio','instrument'}:
                     listening=await call('preview_audio_asset',{'asset_id':data['asset_id'],'file_id':data['selected_file_id'],'start_seconds':1,'duration_seconds':1})
                     if not any(b.type=='audio' for b in listening.content):raise ValueError('Fresh digest-verified listening preview missing')
                     print(json.dumps({'case':'audio-revalidation','status':'passed','start_seconds':1,'duration_seconds':1,'native_blocks':[b.type for b in listening.content]}),flush=True)

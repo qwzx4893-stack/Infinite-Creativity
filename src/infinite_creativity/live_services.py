@@ -25,16 +25,27 @@ def npm_package(http,s,f,after,limit,key=None):
         notice=archive.extractfile(legal).read().decode(errors='replace')
         if licence=='MIT' and 'permission is hereby granted, free of charge' not in notice.lower():raise ValueError('MIT notice does not match package licence')
         if key=='@package':
-            a=item(s['id'],key,package+' '+version,'asset-pack',licence,'https://www.npmjs.com/package/'+package,str(v.get('author','')),['javascript','motion'],['js'],pack='@package',revision=version);a['software_only']=True;a['member_kind']='motion';return a
+            a=item(s['id'],key,package+' '+version,'asset-pack',licence,'https://www.npmjs.com/package/'+package,str(v.get('author','')),s.get('asset_tags',['javascript','motion']),[v.lstrip('.') for v in s.get('member_extensions',['.js'])],pack='@package',revision=version);a['software_only']=True;a['member_kind']=s.get('member_kind','motion');return a
+        extensions=tuple(s.get('member_extensions',['.js','.mjs','.cjs','.ts','.css']))
+        member_kind=s.get('member_kind','motion')
         for member in members:
-            if not member.name.endswith(('.js','.mjs','.cjs','.ts','.css')) or member.name.endswith('.d.ts'):continue
+            if not member.name.endswith(extensions) or member.name.endswith('.d.ts'):continue
             if key and key!=member.name:continue
             content=archive.extractfile(member).read()
+            if s.get('required_member_license'):
+                declarations=re.findall(r'^\s*//\s*License:\s*(\S+)\s*$',content.decode('utf-8').replace('\r',''),re.M|re.I)
+                if declarations!=[s['required_member_license']]:continue
+            author=str(v.get('author',''));description='';tags=s.get('asset_tags',['javascript','motion','web'])+[package]
+            if s.get('required_member_license') and member.name.endswith('.glsl'):
+                headers={k.lower():value.strip() for k,value in re.findall(r'^\s*//\s*(Author|Description|Tags):\s*(.*)$',content.decode('utf-8').replace('\r',''),re.M|re.I)}
+                author=headers.get('author') or author;description=headers.get('description','')
+                tags=tags+[t.strip() for t in headers.get('tags','').split(',') if t.strip()]
             # Library's inline-original support stores bytes only in RAM until
             # an explicitly selected read creates its short-lived parser file.
             files=[{'url':url,'filename':PurePosixPath(member.name).name,'relative_path':member.name,'tar_entry':member.name,'sha256':hashlib.sha256(content).hexdigest(),'bytes':len(content),'role':'main'},
                    {'url':url,'filename':PurePosixPath(legal.name).name,'relative_path':legal.name,'tar_entry':legal.name,'sha256':hashlib.sha256(notice.encode()).hexdigest(),'bytes':len(notice.encode()),'role':'license'}]
-            a=item(s['id'],member.name,package+' / '+PurePosixPath(member.name).name,'motion',licence,'https://www.npmjs.com/package/'+package,str(v.get('author','')),['javascript','motion','web',package],[PurePosixPath(member.name).suffix.lstrip('.')],files=files,pack='@package',revision=version)
+            a=item(s['id'],member.name,package+' / '+PurePosixPath(member.name).name,member_kind,licence,'https://www.npmjs.com/package/'+package,author,tags,[PurePosixPath(member.name).suffix.lstrip('.')],files=files,pack='@package',revision=version,description=description)
+            if s.get('quality_policy'):a['features']={'quality_evidence':{'provider':package,'basis':s['quality_policy'],'scope':'Original source code only; no artistic certification of an executed result.'}}
             a['software_only']=True;rows.append(a)
     if key:
         if not rows:raise ValueError('Current package member unavailable')

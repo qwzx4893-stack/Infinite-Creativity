@@ -164,6 +164,7 @@ def github(http,s,f,after,limit,key=None):
             if provenance:files.append({'url':raw+quote(provenance['path'],safe='/'),'filename':'SOURCE.md','relative_path':provenance['path'],'sha':provenance['sha'],'bytes':provenance.get('size'),'role':'provenance'})
         a=item(s['id'],path,filename if kind!='font' else family.split('/')[-1],kind,license,('https://github.com/'+repo+'/blob/'+commit+'/'+quote(legal['path'],safe='/')) if legal else '',repo.split('/')[0],s.get('asset_tags',s.get('tags',[]))+path.split('/'),sorted({PurePosixPath(v['path']).suffix.lstrip('.').lower() for v in group}) if kind!='font' else sorted({PurePosixPath(v['filename']).suffix.lstrip('.') for v in files if v['role']!='license'}),files=files,pack=scope,revision=hashlib.sha256(''.join(v['sha'] for v in group).encode()).hexdigest() if len(group)>1 else e['sha'],previews=[{'url':raw+quote(path,safe='/')}] if ext in {'png','jpg','jpeg','webp','svg'} else [])
         a['platforms']=s.get('platforms',a['platforms']);a['software_only']=not is_media and kind!='font'
+        if s.get('quality_policy'):a['features']={**a.get('features',{}),'quality_evidence':{'provider':repo,'basis':s['quality_policy'],'scope':'Publisher/source evidence; independent artistic quality is not certified.'}}
         # License checks are deferred until a matching page candidate, not all files.
         if matches(a,f):rows.append(a)
         if key is None and len(rows)>=limit+1:break
@@ -243,6 +244,9 @@ from .live_collections import descriptor_catalog,pack_library,open_asset_archive
 ADAPTERS.update({'asset-descriptor-catalog':descriptor_catalog,'github-pack-library':pack_library,'open-assets-catalog':open_asset_archive})
 from .live_online import poly_pizza,texturecan,museum,incompetech
 ADAPTERS.update({'poly-pizza':poly_pizza,'texturecan':texturecan,'met-open-access':museum,'cleveland-open-access':museum,'incompetech':incompetech})
+from .live_bulk import pd3m,objaverse
+from .live_instruments import instruments
+ADAPTERS.update({'pd3m':pd3m,'objaverse-curated':objaverse,'meta-open-sound':instruments})
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources

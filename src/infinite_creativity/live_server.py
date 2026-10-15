@@ -20,6 +20,7 @@ mcp=FastMCP('Infinite Creativity',instructions=(
     'Use candidate_asset_files, optionally open_asset_archive, then review_asset_media for large/native selections. '
     'Prefer open_asset_package to combine current rights, complete selected review, scoped manifest, native preview and initial exact original bytes in one RPC. '
     'Use probe_library_sources for current sample evidence; source registration and a safe cover never imply full original coverage. '
+    'Use browse_asset_catalog to jump offsets in PD3M or annotation partitions in curated Objaverse. Their query filters cover the returned window/partition, not a full global search. '
     'Transient source failures can retry on the next page; retry_sources with resume_cursor resumes exhausted sources at their last positions. '
     'Use the returned asset_id for current manifests and internal byte delivery; unreviewed variants remain withheld. '
     'Open previews, source code, file manifests, chunks and model inspection internally. Source failures and rights limitations are explicit. '
@@ -66,6 +67,18 @@ def list_sources(offset:int=0,limit:int=50)->dict[str,Any]:
 async def open_library(query:str='',kind:str='',style:str='',platform:str='',format:str='',mode:str='usable',source:str='',section:str='',pack:str='',limit:int=30)->dict[str,Any]:
     """Fetch live provider windows and return unified item cards. No metadata is retained; signed cursors contain only filters/positions."""
     return await async_run(lambda l:l.open(query=query,kind=kind,style=style,platform=platform,format=format,mode=mode,source=source,section=section,pack=pack,limit=limit))
+
+@mcp.tool(annotations=READ)
+async def browse_asset_catalog(source:str,offset:int=0,partition:int=0,query:str='',kind:str='',style:str='',section:str='',limit:int=6)->dict[str,Any]:
+    """Jump into a large live catalog without walking earlier pages. PD3M uses global row offsets; Objaverse uses current annotation partitions and within-partition offsets. Query/style/category filters apply only inside the returned bounded window/partition. Returns current upstream extent and exclusions, never an admitted-million count. Continue with library_page."""
+    from .live_bulk import position
+    offset=position(offset);partition=position(partition)
+    if not 1<=limit<=12:raise ValueError('Choose 1..12 selected candidates for a large catalog window')
+    def browse(l):
+        if source not in l.sources or l.sources[source].get('adapter') not in {'pd3m','objaverse-curated'}:raise ValueError('Choose a source with catalog_navigation from list_sources')
+        if l.sources[source]['adapter']=='pd3m' and partition:raise ValueError('PD3M uses a single row sequence; partition must be zero')
+        return l.open(source=source,catalog_offset=offset,catalog_partition=partition,query=query,kind=kind,style=style,section=section,limit=limit)
+    return await async_run(browse)
 
 @mcp.tool(annotations=READ)
 async def library_page(session_id:str='',cursor:str='',limit:int=30,retry_sources:list[str]|None=None)->dict[str,Any]:
