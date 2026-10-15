@@ -74,7 +74,10 @@ def source_configs():
         elif adapter=='codrops':s['sections']=['interface','motion','editing']
         elif adapter in {'kenney-packs','quaternius-live','blender-demos'}:s['sections']=['three-d','two-d','audio','interface','motion','editing']
     canonical={}
-    for s in configs.values():
+    scoped_collections={'github-pack-library','asset-descriptor-catalog','open-assets-catalog'}
+    # Prefer a collection's bounded item/rights contract to an older generic
+    # connection for the same repository. Keep the latter as a visible alias.
+    for s in sorted(configs.values(),key=lambda s:s.get('live_adapter',s.get('adapter')) not in scoped_collections):
         if s.get('repo') and not s.get('discovery_only') and not s.get('live_alias_of'):
             repo=s['repo'].lower()
             if repo in canonical:s['live_alias_of']=canonical[repo]

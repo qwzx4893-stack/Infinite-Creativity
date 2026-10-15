@@ -2,7 +2,7 @@ import base64,copy,hashlib,io,json,os,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 from PIL import Image
-from infinite_creativity.live import LiveLibrary,seal,unseal
+from infinite_creativity.live import LiveLibrary,seal,unseal,source_configs
 from infinite_creativity.live_providers import item
 from infinite_creativity.live_collections import descriptor_catalog,pack_library,open_asset_archive,safe_path
 from infinite_creativity.creative_kit import fit,ranked,build
@@ -10,6 +10,11 @@ from infinite_creativity.live_admission import Admission
 from infinite_creativity.organization import classify
 
 class CollectionsTests(unittest.TestCase):
+    def test_default_routing_prefers_scoped_collection_over_older_generic_repo_alias(self):
+        configs=source_configs();library=LiveLibrary(configs=configs)
+        self.assertIsNone(configs['collection:jam-ready'].get('live_alias_of'))
+        self.assertIn('collection:jam-ready',library.select({'kind':'sprite'}))
+        self.assertEqual(configs['media:series-ai/jam-ready-assets']['live_alias_of'],'collection:jam-ready')
     def descriptor(self,**changes):
         return dict({'schemaVersion':1,'id':'forest/tree','name':'Forest Tree','kind':'model','collection':'forest','creator':{'name':'Artist'},'license':'CC-BY-4.0','licenseUrl':'https://creativecommons.org/licenses/by/4.0/','attribution':'Tree by Artist, CC BY 4.0','file':'assets/tree.glb','preview':'thumbnails/tree.png','bytes':100,'sha256':'a'*64,'technical':{'triangles':120},'usage':{'rigTarget':'forest/humanoid','upAxis':'Y'},'tags':['cartoon']},**changes)
     def http(self,descriptors):

@@ -27,7 +27,7 @@ Observed live calls depended on the network and local CPU: approximately 5–28 
 
 ## Regression coverage
 
-Final local run: **121 Python tests passed** in 13.1 seconds; **WebMCP adapter tests passed**; `git diff --check` passed. These are local regression results, not a claim of exhaustive live-source health.
+The v0.8.0 local run passed 121 Python tests and WebMCP tests; its [GitHub Actions run](https://github.com/qwzx4893-stack/Infinite-Creativity/actions/runs/38792896105) also passed. v0.8.1 passed **122 Python tests** in 13.5 seconds and adds a regression check that default routing prefers a specialized collection contract to an older generic alias for the same repository. WebMCP tests and `git diff --check` passed. These are regression results, not a claim of exhaustive live-source health.
 
 The Python suite covers current licence/schema/attribution changes, restricted RUN packs, incomplete giant-root avoidance, nested pack rights, unknown mirror creators, unsafe paths, same-product and exact-byte duplicate suppression, diverse selection, unsupported compatibility evidence, preview/original-size distinction, local native comparison, and temporary-file cleanup.
 
