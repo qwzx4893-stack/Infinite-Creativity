@@ -6,6 +6,8 @@ Local stdio MCP with live provider federation, exact categories, internal origin
 
 ## Install
 
+v0.11 adds **public author registries and request-time quality filtering**: Agent Elements (21st's independent MIT project), Magic UI and shadcn/ui now deliver scoped original component/dependency/license bundles inside MCP. `curate_library` separates estimated photographic aesthetics from unverified UI/3D/audio craft; `assess_asset_quality` reports typed evidence without storing scores. **41 MCP tools**, 402 configured connections / 335 default non-alias, non-discovery scopes; these are configuration counts, not approved assets. The main 21st marketplace is not integrated. See [actual access, automated quality research and limitations](docs/V011_PUBLIC_REGISTRIES_AND_QUALITY.md).
+
 Python 3.11+:
 
 ```bash
@@ -14,7 +16,7 @@ cd Infinite-Creativity
 python -m venv .venv
 # PowerShell: .\.venv\Scripts\Activate.ps1
 # Unix: source .venv/bin/activate
-python -m pip install -e ".[media]"
+python -m pip install -e ".[media,quality]"
 infinite-creativity prepare-live-vision
 infinite-creativity prepare-live-media
 infinite-creativity prepare-live-style

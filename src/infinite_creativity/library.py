@@ -116,7 +116,7 @@ class Library:
             if not url: continue
             filename=r.get('filename') or Path(urlsplit(url).path).name or 'asset.bin'
             ext=Path(filename).suffix.lower().lstrip('.')
-            identity=json.dumps([r.get('sha'),r.get('sha256'),r.get('md5'),r.get('crc32'),r.get('bytes')],separators=(',',':'))
+            identity=json.dumps([r.get('sha'),r.get('sha256'),r.get('md5'),r.get('crc32'),r.get('bytes'),*([r['json_content_path']] if r.get('json_content_path') else [])],separators=(',',':'))
             fid=hashlib.sha256((url+'|'+filename+'|'+r.get('archive_entry','')+'|'+a['revision']+'|'+identity).encode()).hexdigest()[:24]
             normalized.append({**r,'id':fid,'filename':filename,'format':r.get('format') or ext,'mime':MIMES.get(ext) or mimetypes.guess_type(filename)[0] or 'application/octet-stream','resource_uri':f'creativity://asset/{aid}/file/{fid}'})
         result={'asset_id':aid,'license':a['license'],'license_url':a['license_url'],'author':a['author'],'files':normalized,'notice':'Files are fetched internally into a bounded content cache. Prices and unreviewed licenses are never bypassed.'}
@@ -151,6 +151,13 @@ class Library:
                     body=z.read(info)
                 result=self.cache.store(body,r['filename'],r['mime'])
                 receipt.write_text(json.dumps(result),encoding='utf-8')
+        elif r.get('json_content_path'):
+            payload=json.loads(self.fetch.read(r['url'],8*1024*1024))
+            candidates=[v for v in payload.get('files',[]) if isinstance(v,dict) and v.get('path')==r['json_content_path']]
+            if len(candidates)!=1 or not isinstance(candidates[0].get('content'),str):raise ValueError('Current registry source member is missing or ambiguous')
+            body=candidates[0]['content'].encode('utf-8')
+            if len(body)>max_bytes or hashlib.sha256(body).hexdigest()!=r.get('sha256'):raise ValueError('Current registry source integrity/window mismatch')
+            result=self.cache.store(body,r['filename'],r['mime'])
         elif r.get('tar_entry'):
             import io,tarfile
             self.safe_member(r['tar_entry'])

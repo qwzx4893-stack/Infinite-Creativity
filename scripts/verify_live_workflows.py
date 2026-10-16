@@ -11,7 +11,8 @@ from infinite_creativity.live import source_configs
 
 CASES={'model':('polypizza','tree'),'material':('texturecan','wood'),'met':('met-open-access','landscape'),'cleveland':('cleveland-open-access','landscape'),'audio':('incompetech','Discovery Hit'),'interface':('','accordion'),
        'millionth-art':('pd3m',''),'curated-model':('objaverse-curated','fisherman'),'instrument':('meta-open-sound','piano'),
-       'transition':('gl-transitions','Bounce'),'motion-code':('manim-motion-examples','basic')}
+       'transition':('gl-transitions','Bounce'),'motion-code':('manim-motion-examples','basic'),
+       'agent-elements':('registry:agent-elements','tool-group'),'magicui':('registry:magicui','aurora-text'),'shadcn':('registry:shadcn','button'),'photo-quality':('pd3m','photo')}
 
 async def verify(cases,probe_sources=False):
     params=StdioServerParameters(command=sys.executable,args=['-m','infinite_creativity.server'],env=dict(os.environ))
@@ -48,8 +49,29 @@ async def verify(cases,probe_sources=False):
                 if not all(a<b for a,b in zip(progress,progress[1:])):raise ValueError('Non-monotonic MCP review progress')
                 native=[block.type for block in result.content]
                 if name in {'audio','instrument'} and 'audio' not in native:raise ValueError('Listening excerpt missing from reviewed sound package')
-                if name not in {'audio','instrument','interface','transition','motion-code'} and 'image' not in native:raise ValueError('Screened native preview missing')
+                if name not in {'audio','instrument','interface','transition','motion-code','agent-elements','magicui','shadcn'} and 'image' not in native:raise ValueError('Screened native preview missing')
+                if name in {'agent-elements','magicui','shadcn'}:
+                    bundle=(await call('fetch_asset_bundle',{'asset_id':selected['id']})).structuredContent
+                    if not any(f['role']=='license' for f in bundle['files']):raise ValueError('Original author MIT notice missing')
+                    for f in bundle['files']:
+                        if hashlib.sha256(base64.b64decode(f['data'])).hexdigest()!=f['sha256']:raise ValueError('Dependency/notice bundle digest mismatch')
+                    quality=(await call('assess_asset_quality',{'asset_id':selected['id']})).structuredContent
+                    if quality['technical']['state']!='syntax-checked' or quality['aesthetics']['state']!='unverified':raise ValueError('Incorrect source/visual quality evidence')
+                    strict=(await call('curate_library',{'source':source,'query':query,'limit':1})).structuredContent
+                    if strict['items'] or not strict['quality_queue']:raise ValueError('Unrendered UI was falsely certified or lost')
+                    relaxed=(await call('curate_library',{'source':source,'query':query,'limit':1,'require_visual_score':False})).structuredContent
+                    if not relaxed['items']:raise ValueError('Explicitly unverified source candidate is inaccessible')
+                    print(json.dumps({'case':name+'-dependencies-quality','status':'passed','files_with_notices':len(bundle['files']),'bundle_bytes':bundle['total_bytes'],'parsed_files':quality['technical']['parsed_source_files'],'strict_visual_queue':len(strict['quality_queue']),'relaxed_unverified_items':len(relaxed['items'])}),flush=True)
                 print(json.dumps({'case':name,'status':'passed','seconds':round(time.monotonic()-started,3),'format':data['format'],'reviewed_files':data['reviewed_files'],'reviewed_bytes':data['reviewed_bytes'],'inline_bytes':len(body),'complete_inline_original':full,'native_blocks':native,'progress_notifications':len(progress),'metadata_http':data.get('performance',{})}),flush=True)
+                if name=='photo-quality':
+                    assessment=(await call('assess_asset_quality',{'asset_id':selected['id'],'min_aesthetic':0})).structuredContent
+                    if assessment['aesthetics']['state']!='estimated' or assessment['professional_guarantee']:raise ValueError('Original photographic score unavailable/misstated: '+json.dumps(assessment['aesthetics']))
+                    low=(await call('curate_library',{'source':source,'query':query,'limit':1,'min_aesthetic':0})).structuredContent
+                    high=(await call('curate_library',{'source':source,'query':query,'limit':1,'min_aesthetic':10})).structuredContent
+                    if not low['items'] or high['items'] or high['quality']['excluded']!=1:
+                        evidence=[{'quality':v.get('quality'),'admission':v.get('admission'),'source_errors':[s.get('reason') for s in v.get('sources',[]) if s.get('reason')],'unscored':[x['quality_assessment'].get('aesthetics') for x in v.get('quality_queue',[])]} for v in (low,high)]
+                        raise ValueError('Photo threshold check failed or original temporarily unavailable: '+json.dumps(evidence))
+                    print(json.dumps({'case':'photo-aesthetic-filter','status':'passed','raw_regression_score':assessment['aesthetics']['score'],'score_milliseconds':assessment['aesthetics']['milliseconds'],'threshold_0_selected':len(low['items']),'threshold_10_excluded':high['quality']['excluded'],'professional_guarantee':False}),flush=True)
                 if name in {'audio','instrument'}:
                     listening=await call('preview_audio_asset',{'asset_id':data['asset_id'],'file_id':data['selected_file_id'],'start_seconds':1,'duration_seconds':1})
                     if not any(b.type=='audio' for b in listening.content):raise ValueError('Fresh digest-verified listening preview missing')

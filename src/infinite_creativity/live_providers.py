@@ -247,6 +247,8 @@ ADAPTERS.update({'poly-pizza':poly_pizza,'texturecan':texturecan,'met-open-acces
 from .live_bulk import pd3m,objaverse
 from .live_instruments import instruments
 ADAPTERS.update({'pd3m':pd3m,'objaverse-curated':objaverse,'meta-open-sound':instruments})
+from .live_registry import public_registry
+ADAPTERS['public-registry']=public_registry
 
 class Providers:
     def __init__(self,http,sources):self.http=http;self.sources=sources
@@ -255,7 +257,7 @@ class Providers:
         # An older generic connection must not bypass a specialized collection
         # licence/tree contract. Other intentionally different repo scopes keep
         # their own filters and are not widened through this rule.
-        return canonical if canonical.get('live_adapter',canonical.get('adapter')) in {'github-pack-library','asset-descriptor-catalog','open-assets-catalog'} else source
+        return canonical if canonical.get('live_adapter',canonical.get('adapter')) in {'github-pack-library','asset-descriptor-catalog','open-assets-catalog','public-registry'} else source
     def page(self,sid,filters,after='',limit=20):
         s=self.config(sid);adapter=s.get('live_adapter',s['adapter'])
         if adapter not in ADAPTERS:raise ValueError(s.get('live_reason','No permitted live inventory connector implemented for this source'))

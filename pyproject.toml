@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "infinite-creativity-mcp"
-version = "0.10.0"
+version = "0.11.0"
 description = "License-aware federated creative asset catalog and agent MCP server"
 requires-python = ">=3.11"
 license = "MIT"
 dependencies = ["mcp>=1.28,<2", "ijson>=3.4,<4", "httpx>=0.28,<1"]
 
 [project.optional-dependencies]
+quality = ["tree-sitter>=0.25,<0.26", "tree-sitter-typescript>=0.23,<0.24"]
 vision = ["onnxruntime>=1.22,<2", "numpy>=2,<3", "Pillow>=11,<13", "huggingface_hub>=0.33,<3"]
 media = ["onnxruntime>=1.22,<2", "numpy>=2,<3", "Pillow>=11,<13", "huggingface_hub>=0.33,<3", "av>=15,<20", "faster-whisper>=1.2,<2", "trimesh>=4.9,<6", "CairoSVG>=2.8,<3", "tokenizers>=0.22,<1", "psd-tools[composite]>=1.11,<2", "pycollada>=0.9,<1", "defusedxml>=0.7,<1", "meshoptimizer==0.2.30a0"]
 
@@ -22,4 +23,4 @@ infinite-creativity-mcp = "infinite_creativity.server:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-infinite_creativity = ["data/*.json"]
+infinite_creativity = ["data/*.json", "data/*.txt"]

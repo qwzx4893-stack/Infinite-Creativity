@@ -65,6 +65,9 @@ def source_configs():
     online=files('infinite_creativity').joinpath('data/live_online_sources.json')
     if online.is_file():
         for s in json.loads(online.read_text(encoding='utf-8')):configs[s['id']]=s
+    registries=files('infinite_creativity').joinpath('data/live_registries.json')
+    if registries.is_file():
+        for s in json.loads(registries.read_text(encoding='utf-8')):configs[s['id']]=s
     if overlays.is_file():
         for sid,values in json.loads(overlays.read_text(encoding='utf-8')).items():
             if sid in configs:configs[sid].update(values)
@@ -77,7 +80,7 @@ def source_configs():
         elif adapter=='codrops':s['sections']=['interface','motion','editing']
         elif adapter in {'kenney-packs','quaternius-live','blender-demos'}:s['sections']=['three-d','two-d','audio','interface','motion','editing']
     canonical={}
-    scoped_collections={'github-pack-library','asset-descriptor-catalog','open-assets-catalog'}
+    scoped_collections={'github-pack-library','asset-descriptor-catalog','open-assets-catalog','public-registry'}
     # Prefer a collection's bounded item/rights contract to an older generic
     # connection for the same repository. Keep the latter as a visible alias.
     for s in sorted(configs.values(),key=lambda s:s.get('live_adapter',s.get('adapter')) not in scoped_collections):
@@ -174,6 +177,7 @@ class LiveLibrary:
     def page(self,token,limit=30,retry_sources=None):
         if not 1<=limit<=100:raise ValueError('Page size must be 1..100')
         state=unseal(token,'view');f=state['filters'];ids=self.select(f)
+        if f.get('_quality_filter'):limit=min(limit,6)
         if retry_sources is not None and (not isinstance(retry_sources,list) or len(retry_sources)>8 or any(not isinstance(s,str) for s in retry_sources)):raise ValueError('Choose at most eight failed source IDs to retry')
         failures=state.setdefault('failures',{})
         for sid in retry_sources or []:
@@ -187,7 +191,8 @@ class LiveLibrary:
             sid,quota=pair
             try:return sid,self.providers.page(sid,f,state['positions'].get(sid,''),quota),None
             except Exception as e:return sid,None,str(e)[:400]
-        results=[];queue=[];statuses=[];admission=Admission(self.http,state.get('receipts',[]))
+        results=[];queue=[];quality_queue=[];statuses=[];admission=Admission(self.http,state.get('receipts',[]))
+        quality={'evaluated':0,'selected':0,'excluded':0,'visually_unverified':0,'scope':'This fresh bounded page only; not the entire upstream catalog. Photo score is an estimate, not professional certification.'}
         with ThreadPoolExecutor(max_workers=8) as pool:
             for sid,data,error in pool.map(fetch,zip(chosen,quotas)):
                 if error:
@@ -204,7 +209,14 @@ class LiveLibrary:
                         except ValueError:
                             admission.withhold('current-original-manifest-unavailable');continue
                     admission.last_withhold=None
-                    if admission.accept(a):results.append(self.card(a))
+                    if admission.accept(a):
+                        card=self.card(a)
+                        if f.get('_quality_filter'):
+                            from .live_quality import collect_quality
+                            selection=collect_quality(self,a,card,f,quality)
+                            if selection=='queue':quality_queue.append(card);continue
+                            if selection=='excluded':continue
+                        results.append(card)
                     elif admission.last_withhold and a.get('files'):
                         reason=admission.last_withhold
                         # Pending metadata is separate from admitted usable items.
@@ -224,7 +236,7 @@ class LiveLibrary:
             state['receipts']=state['receipts'][64:];current_token=seal('view',state)
         if len(current_token)>24000:raise ValueError('View position cursor exceeds bounded client transport; choose a narrower source/category')
         next_token=current_token if remaining else None
-        return {'items':results,'review_queue':queue,'session_id':current_token,'resume_cursor':current_token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor. Transient failures get one fresh-page retry; retry_sources with resume_cursor explicitly retries exhausted failures without losing source positions.'}
+        return {'items':results,'review_queue':queue,**({'quality_queue':quality_queue,'quality':quality} if f.get('_quality_filter') else {}),'session_id':current_token,'resume_cursor':current_token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor. Transient failures get one fresh-page retry; retry_sources with resume_cursor explicitly retries exhausted failures without losing source positions.'}
     def raw_get(self,aid):
         loc=unseal(aid,'asset')
         if loc['source'] not in self.sources:

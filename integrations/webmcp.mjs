@@ -10,6 +10,7 @@ const allowed = new Set([
   'candidate_asset_files', 'open_asset_archive', 'review_asset_media',
   'build_creative_kit', 'assess_asset_fit', 'review_library_board',
   'open_asset_package', 'probe_library_sources', 'browse_asset_catalog',
+  'curate_library', 'assess_asset_quality',
 ]);
 
 const hosts = new WeakMap();

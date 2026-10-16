@@ -15,6 +15,9 @@ mcp=FastMCP('Infinite Creativity',instructions=(
     'Choose exact library_sections/source IDs, open_library and continue next_cursor, including after empty windows. '
     'Metadata is fetched from upstream for each call. items are admitted cards; review_queue is pending metadata only. '
     'Collection folders are navigation, never licensed originals. Use library_packs/get_library_pack for actual members. '
+    'Use curate_library for request-time quality filtering and assess_asset_quality for typed original evidence. '
+    'Only photographic originals receive the local learned aesthetic estimate; unscored UI/3D/audio craft is explicit in quality_queue, never a fabricated universal score. '
+    'Public author registries deliver complete scoped component source/dependency/license bundles internally; this is not authenticated 21st marketplace access. '
     'Use build_creative_kit for up to six named category/kind needs, assess_asset_fit for declared/unknown compatibility, '
     'and review_library_board for native comparison images. Judge artistic craft and coherence from actual previews; no aesthetic certification is claimed. '
     'Use candidate_asset_files, optionally open_asset_archive, then review_asset_media for large/native selections. '
@@ -67,6 +70,19 @@ def list_sources(offset:int=0,limit:int=50)->dict[str,Any]:
 async def open_library(query:str='',kind:str='',style:str='',platform:str='',format:str='',mode:str='usable',source:str='',section:str='',pack:str='',limit:int=30)->dict[str,Any]:
     """Fetch live provider windows and return unified item cards. No metadata is retained; signed cursors contain only filters/positions."""
     return await async_run(lambda l:l.open(query=query,kind=kind,style=style,platform=platform,format=format,mode=mode,source=source,section=section,pack=pack,limit=limit))
+
+@mcp.tool(annotations=READ)
+async def curate_library(query:str='',source:str='',section:str='',kind:str='',style:str='',min_aesthetic:float=5.5,require_visual_score:bool=True,limit:int=4)->dict[str,Any]:
+    """Filter during collection using fresh original evidence, up to six candidates per page. Photographic originals use a local learned aesthetic estimate (0..10 threshold, not a probability); other domains have explicit unverified visual quality. With require_visual_score=True, unscored candidates appear only in quality_queue. False allows technically admitted candidates with their honest uncertainty. Existing safety/rights gates always run first. Continue library_page even after empty selected windows. No item scores or catalog are saved."""
+    import math
+    if not math.isfinite(min_aesthetic) or not 0<=min_aesthetic<=10 or not 1<=limit<=6:raise ValueError('Choose threshold 0..10 and page size 1..6')
+    return await async_run(lambda l:l.open(query=query,source=source,section=section,kind=kind,style=style,limit=limit,_quality_filter=True,_min_aesthetic=min_aesthetic,_require_visual_score=require_visual_score))
+
+@mcp.tool(annotations=READ)
+async def assess_asset_quality(asset_id:str,min_aesthetic:float=5.5)->dict[str,Any]:
+    """Inspect fresh complete original evidence automatically: parse source bundles or estimate photographic aesthetics with installed local CLIP software and pinned MIT LAION head. Technical validity, publisher curation and aesthetic estimation are separate. No universal professional-quality certification; UI source is not a rendered UI. Models are software; item scores and embeddings are never retained."""
+    from .live_quality import assess
+    return await async_run(lambda l:assess(l,asset_id,min_aesthetic))
 
 @mcp.tool(annotations=READ)
 async def browse_asset_catalog(source:str,offset:int=0,partition:int=0,query:str='',kind:str='',style:str='',section:str='',limit:int=6)->dict[str,Any]:
