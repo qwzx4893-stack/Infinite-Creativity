@@ -44,7 +44,7 @@ jobs:
       - run: python -m pip install uv==0.13.4
       - run: uv sync --frozen --all-extras --python python
       - if: runner.os == 'Windows'
-        run: uv run --frozen --all-extras python -c "import cairosvg; assert cairosvg.svg2png(bytestring=b'<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"8\"><rect width=\"8\" height=\"8\"/></svg>').startswith(b'\x89PNG')"
+        run: uv run --frozen --all-extras python scripts/verify_svg_renderer.py
       - run: uv run --frozen --all-extras python -B -m unittest discover -s tests -v
       - run: uv run --frozen --all-extras python -m infinite_creativity.cli doctor
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
