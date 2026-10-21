@@ -11,6 +11,7 @@ const allowed = new Set([
   'build_creative_kit', 'assess_asset_fit', 'review_library_board',
   'open_asset_package', 'probe_library_sources', 'browse_asset_catalog',
   'curate_library', 'assess_asset_quality',
+  'library_diagnostics', 'curation_policy', 'open_component_reference',
 ]);
 
 const hosts = new WeakMap();

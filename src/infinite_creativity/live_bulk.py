@@ -5,6 +5,7 @@ import gzip
 import json
 import re
 from concurrent.futures import ThreadPoolExecutor
+from .request_scope import context_map
 from urllib.parse import quote, urlencode, urlsplit
 from .live_catalogs import cc_license, original, plain
 from .policy import LICENSES, acceptable, review_terms
@@ -153,7 +154,7 @@ def objaverse(http, source, filters, after, limit, key=None):
             return a, None
         except Exception as e: return None, {'key': shard + ':' + uid, 'reason': str(e)[:240]}
     with ThreadPoolExecutor(max_workers=3) as pool:
-        checked = list(pool.map(current, candidates))
+        checked = list(context_map(pool, current, candidates))
     rows = [a for a, error in checked if a]; errors = [e for a, e in checked if e]
     if key:
         if not rows: raise ValueError(errors[0]['reason'] if errors else 'Object lacks the configured curation/rights signal')

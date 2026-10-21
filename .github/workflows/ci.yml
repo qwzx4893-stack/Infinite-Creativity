@@ -4,16 +4,58 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.11'
+          - os: ubuntu-latest
+            python: '3.13'
+          - os: windows-latest
+            python: '3.13'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: '3.12'
-      - run: pip install -e ".[media,quality]"
-      - run: python -m unittest discover -s tests -v
-      - run: python -m infinite_creativity.cli stats
-      - uses: actions/setup-node@v4
+          python-version: ${{ matrix.python }}
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install -y libcairo2
+      - if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2
+        with:
+          msystem: UCRT64
+          install: mingw-w64-ucrt-x86_64-cairo
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: '"CAIROCFFI_DLL_DIRECTORIES=C:\msys64\ucrt64\bin" >> $env:GITHUB_ENV'
+      - run: python -m pip install uv==0.13.4
+      - run: uv sync --frozen --all-extras --python python
+      - run: uv run --frozen --all-extras python -B -m unittest discover -s tests -v
+      - run: uv run --frozen --all-extras python -m infinite_creativity.cli doctor
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: "22"
       - run: node tests/webmcp.test.mjs
+      - run: uv build --wheel
+  dependencies:
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.13']
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install uv==0.13.4 pip-audit==2.10.1
+      - run: uv lock --check
+      - run: uv export --frozen --all-extras --no-emit-project --format requirements-txt --output-file requirements.lock
+      - run: git diff --exit-code -- requirements.lock
+      - run: pip-audit --no-deps --disable-pip -r requirements.lock --progress-spinner off

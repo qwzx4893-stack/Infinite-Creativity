@@ -21,30 +21,35 @@ CONTENT_HOSTS.add('freshluts.com')
 # ports supplied by asset metadata or redirects.
 CONTENT_PORTS={('lazytextures.net',3000)}
 
-def validate_url(url,resolve_dns=True):
+class RangeUnsupported(ValueError):
+    pass
+
+def validate_url(url,resolve_dns=True,hosts=()):
     p=urlsplit(url)
     host=(p.hostname or '').lower()
     if p.scheme!='https' or p.username or p.password or (p.port not in (None,443) and (host,p.port) not in CONTENT_PORTS): raise ValueError('Only public HTTPS content is allowed')
-    if host not in CONTENT_HOSTS and not any(host.endswith(s) for s in HOST_SUFFIXES): raise ValueError('Content host is not approved')
+    if host not in CONTENT_HOSTS and host not in hosts and not any(host.endswith(s) for s in HOST_SUFFIXES): raise ValueError('Content host is not approved')
     if resolve_dns:
         for item in socket.getaddrinfo(host,p.port or 443,type=socket.SOCK_STREAM):
             if not ipaddress.ip_address(item[4][0]).is_global: raise ValueError('Private network content is prohibited')
     return url
 
 class ContentCache:
-    def __init__(self,root):
+    def __init__(self,root,hosts=()):
         self.root=Path(root)
         self.root.mkdir(parents=True,exist_ok=True)
-        self.opener=build_opener(NoRedirect())
+        from .public_transport import ContentOpener
+        self.hosts=hosts
+        self.opener=ContentOpener()
     def request_headers(self,url):
-        return {'User-Agent':'InfiniteCreativity/0.7','Accept':'*/*'}
+        return {'User-Agent':'InfiniteCreativity/0.12','Accept':'*/*','Accept-Encoding':'identity'}
 
     def range(self,url,start,length):
         """Read a verified HTTP byte range; never silently download a whole archive."""
         if start<0 or not 1<=length<=128*1024*1024: raise ValueError('Invalid HTTP range budget')
         current=url
         for _ in range(6):
-            validate_url(current)
+            validate_url(current,hosts=self.hosts)
             try:
                 response=self.opener.open(Request(current,headers={**self.request_headers(current),'Accept-Encoding':'identity','Range':f'bytes={start}-{start+length-1}'}),timeout=12)
             except HTTPError as e:
@@ -53,7 +58,8 @@ class ContentCache:
                 raise RuntimeError(f'Range HTTP {e.code} from {urlsplit(current).hostname}') from None
             with response:
                 match=re.fullmatch(r'bytes (\d+)-(\d+)/(\d+)',response.headers.get('Content-Range',''))
-                if response.status!=206 or not match: raise ValueError('Provider does not support bounded archive ranges')
+                if response.status==200:raise RangeUnsupported('Provider does not support bounded archive ranges or original ranges')
+                if response.status!=206 or not match: raise ValueError('Provider returned an invalid bounded original range')
                 first,last,total=map(int,match.groups())
                 if first!=start or last!=min(start+length,total)-1 or total<=last: raise ValueError('Invalid provider content range')
                 body=response.read(length+1)
@@ -79,7 +85,7 @@ class ContentCache:
 
     def fetch(self,url,filename='',max_bytes=128*1024*1024,expected_sha256=None,cache_revision=''):
         if not 1<=max_bytes<=512*1024*1024: raise ValueError('Content byte budget must be 1..512 MiB')
-        validate_url(url,resolve_dns=False)
+        validate_url(url,resolve_dns=False,hosts=self.hosts)
         key=hashlib.sha256((url+('|' +cache_revision if cache_revision else '')).encode()).hexdigest()
         info_path=self.root/(key+'.receipt.json')
         if info_path.exists():
@@ -92,7 +98,7 @@ class ContentCache:
         current=url
         response=None
         for _ in range(6):
-            validate_url(current)
+            validate_url(current,hosts=self.hosts)
             try:
                 response=self.opener.open(Request(current,headers=self.request_headers(current)),timeout=12)
                 break

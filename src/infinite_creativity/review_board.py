@@ -1,6 +1,7 @@
 """One temporary native MCP image for an agent's visual curation decision."""
 import base64,io,math
 from concurrent.futures import ThreadPoolExecutor
+from .request_scope import context_map
 from pathlib import Path
 from .live import unseal
 from .live_media_review import check_delivery,image_check
@@ -29,7 +30,7 @@ def board(library,asset_ids):
         except Exception as e:return None,None,{'asset_id':aid,'reason':str(e)[:250]}
         finally:
             if owned:local.close()
-    with ThreadPoolExecutor(max_workers=3) as pool:loaded=list(pool.map(load,asset_ids))
+    with ThreadPoolExecutor(max_workers=3) as pool:loaded=list(context_map(pool,load,asset_ids))
     for aid,(body,item,error) in zip(asset_ids,loaded):
         if error:failures.append(error);continue
         try:

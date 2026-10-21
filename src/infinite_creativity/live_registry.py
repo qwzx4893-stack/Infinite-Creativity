@@ -13,9 +13,17 @@ def safe_path(path):
     return str(PurePosixPath(path))
 
 def index(http,source):
-    data=http.json(source['registry_index']);rows=data.get('items',[])
-    if not isinstance(rows,list) or len(rows)>4000:raise ValueError('Registry index exceeds bounded navigation budget')
-    return {v['name']:v for v in rows if isinstance(v,dict) and re.fullmatch(r'[A-Za-z0-9_-]{1,150}',str(v.get('name','')))}
+    indexes=source.get('registry_indexes') or [{'url':source['registry_index']}]
+    if len(indexes)>8:raise ValueError('Too many registry index scopes')
+    result={}
+    for descriptor in indexes:
+        data=http.json(descriptor['url']);rows=data.get('items',[])
+        if not isinstance(rows,list) or len(rows)+len(result)>4000:raise ValueError('Registry index exceeds bounded navigation budget')
+        for v in rows:
+            if not isinstance(v,dict) or not re.fullmatch(r'[A-Za-z0-9_-]{1,150}',str(v.get('name',''))):continue
+            if v['name'] in result:raise ValueError('Ambiguous duplicate name across author registry indexes')
+            result[v['name']]={**v,**({'_source_root':safe_path(descriptor['root'])} if descriptor.get('root') else {})}
+    return result
 
 def rights(http,source):
     repo=source['repo'];meta=http.json('https://api.github.com/repos/'+repo)
@@ -64,6 +72,7 @@ def public_registry(http,source,filters,after,limit,key=None):
                 if not isinstance(dependency,str) or len(dependency)>500:raise ValueError('Invalid registry dependency')
                 if dependency.startswith('https://'):
                     for other in trusted.values():
+                        if not other.get('registry_item'):continue
                         before,after_name=other['registry_item'].split('{name}')
                         if dependency.startswith(before) and dependency.endswith(after_name):
                             dependency_name=dependency[len(before):len(dependency)-len(after_name)] if after_name else dependency[len(before):]
@@ -86,7 +95,14 @@ def public_registry(http,source,filters,after,limit,key=None):
                 visited.add(identity)
                 if s['id'] not in notices:notices[s['id']]=rights(http,s)
                 legal,legal_url=notices[s['id']];license_urls[s['id']]=legal_url
-                endpoint=s['registry_item'].replace('{name}',quote(n,safe=''));payload=http.json(endpoint)
+                repository_files=bool(s.get('registry_repository_files'))
+                if repository_files:
+                    # The author also publishes this registry's original code
+                    # in GitHub. Use its own pinned source, never marketplace
+                    # curation or an authenticated registry endpoint.
+                    payload=dict(catalog(s)[n]);endpoint=''
+                else:
+                    endpoint=s['registry_item'].replace('{name}',quote(n,safe=''));payload=http.json(endpoint)
                 if payload.get('name')!=n or payload.get('premium') or payload.get('requiresAuth') or payload.get('access') in {'paid','private'} or payload.get('license','MIT')!='MIT':raise ValueError('Public component rights/name/access contract changed')
                 payloads.append(payload);nodes.append({'source':s['id'],'name':n,'license_url':legal_url})
                 if n!='index' and catalog(s).get('index',{}).get('type')=='registry:style':collect(s,'index')
@@ -95,16 +111,23 @@ def public_registry(http,source,filters,after,limit,key=None):
                 dependencies.update(payload.get('dependencies',[]))
                 member_paths=set()
                 for f in payload.get('files',[]):
-                    path=safe_path(f.get('path',''));suffix=PurePosixPath(path).suffix.lower()
+                    path=safe_path(f.get('path',''))
+                    if repository_files:path=safe_path(str(PurePosixPath(payload['_source_root'])/path))
+                    suffix=PurePosixPath(path).suffix.lower()
                     if path in member_paths:raise ValueError('Duplicate member path in registry payload')
                     member_paths.add(path)
                     if suffix not in CODE or re.search(r'(^|/)(?:node_modules|vendor|\.github)(/|$)',path):raise ValueError('Non-code registry member requires separate original-media rights/review')
-                    text=f.get('content')
+                    original_url=None
+                    if repository_files:
+                        revision=legal['url'].split('/')[5]
+                        original_url='https://raw.githubusercontent.com/'+s['repo']+'/'+revision+'/'+quote(path,safe='/')
+                        text=http.read(original_url,2*1024*1024).decode('utf-8-sig')
+                    else:text=f.get('content')
                     if not isinstance(text,str) or not text.strip() or len(text.encode())>2*1024*1024:raise ValueError('Registry original is missing or exceeds the source-text budget')
                     if not acceptable(text) or review_terms(text):raise ValueError('Registry original source violates sexual/suggestive content policy')
                     body=text.encode();digest=hashlib.sha256(body).hexdigest()
                     if path in file_map and file_map[path]['sha256']!=digest:raise ValueError('Conflicting dependency destinations in registry bundle')
-                    file_map[path]={'url':endpoint,'filename':PurePosixPath(path).name,'relative_path':path,'json_content_path':f['path'],
+                    file_map[path]={'url':original_url or endpoint,'filename':PurePosixPath(path).name,'relative_path':path,**({} if repository_files else {'json_content_path':f['path']}),
                                     'role':'dependency','sha256':digest,'bytes':len(body),'_root':identity==(source['id'],name),'_registry_type':f.get('type'),'_text':text}
                     if len(file_map)>40 or sum(v['bytes'] for v in file_map.values())>8*1024*1024:raise ValueError('Registry source bundle exceeds bounded file/byte budget')
             collect(source,name)

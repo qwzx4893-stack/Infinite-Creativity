@@ -123,7 +123,7 @@ with patch('infinite_creativity.live_server.LiveLibrary',factory),patch.object(C
         async def check(td):
             async with stdio_client(StdioServerParameters(command=sys.executable,args=['-c',code],env={**os.environ,'TMP':td,'TEMP':td},cwd=td)) as (read,write):
                 async with ClientSession(read,write) as session:
-                    await session.initialize();view=await session.call_tool('open_library',{'source':'polyhaven','limit':1});self.assertFalse(view.isError,str(view.content));data=view.structuredContent or json.loads(view.content[0].text);aid=data['items'][0]['id'];image=await session.call_tool('preview_asset',{'asset_id':aid})
+                    await session.initialize();view=await session.call_tool('open_library',{'source':'polyhaven','limit':1});self.assertFalse(view.isError,str(view.content));data=view.structuredContent or json.loads(view.content[0].text);self.assertFalse(data['items']);self.assertTrue(data['quality_queue']);aid=data['quality_queue'][0]['id'];image=await session.call_tool('preview_asset',{'asset_id':aid})
                     self.assertFalse(image.isError);self.assertEqual(image.content[-1].type,'image');self.assertNotIn('path',image.structuredContent)
                     self.assertEqual(base64.b64decode(image.content[-1].data)[:8],b'\x89PNG\r\n\x1a\n')
             self.assertFalse(list(Path(td).glob('infinite-creativity-request-*')))

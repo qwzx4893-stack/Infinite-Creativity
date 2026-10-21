@@ -1,5 +1,5 @@
 """Automatic evidence, with separate technical, aesthetic and unknown states."""
-import io,json,re,time
+import ast,hashlib,io,json,re,time
 from functools import lru_cache
 from importlib.resources import files
 from pathlib import PurePosixPath,Path
@@ -11,7 +11,8 @@ def language(tsx):
     return Language(grammar.language_tsx() if tsx else grammar.language_typescript())
 
 def inspect_source_bundle(records,dependencies=()):
-    started=time.monotonic();checked=0;failures=[];unknown=[];imports=set()
+    started=time.monotonic();checked=0;failures=[];unknown=[];imports=set();fingerprints=[];render_nodes=0;empty_functions=0;functions=0;motion_signals=set()
+    scoped_roots=any('_root' in v for v in records.values())
     for name,record in records.items():
         text=record.get('_text');extension=PurePosixPath(name).suffix.lower()
         if not isinstance(text,str):unknown.append({'file':name,'reason':'Complete original text not supplied'});continue
@@ -22,13 +23,30 @@ def inspect_source_bundle(records,dependencies=()):
                 encoded=text.encode();tree=Parser(language(extension in {'.tsx','.jsx'})).parse(encoded)
                 if tree.root_node.has_error:failures.append({'file':name,'reason':'JavaScript/TypeScript syntax error or unsupported syntax'})
                 else:checked+=1
+                tokens=[];stack=[tree.root_node]
+                while stack:
+                    node=stack.pop()
+                    if node.type=='comment':continue
+                    if (not scoped_roots or record.get('_root')) and node.type in {'jsx_element','jsx_self_closing_element'}:render_nodes+=1
+                    if (not scoped_roots or record.get('_root')) and node.type in {'arrow_function','function_declaration','function_expression'}:
+                        functions+=1;body=node.child_by_field_name('body')
+                        if body and encoded[body.start_byte:body.end_byte].strip() in {b'null',b'undefined',b'false',b'{}',b'{ return null; }',b'{return null;}'}:empty_functions+=1
+                    if node.child_count:stack.extend(reversed(node.children))
+                    else:tokens.append((node.type,encoded[node.start_byte:node.end_byte].decode()))
+                fingerprints.append((extension,hashlib.sha256(json.dumps(tokens,separators=(',',':')).encode()).hexdigest()))
                 for node in tree.root_node.named_children:
                     if node.type!='import_statement':continue
                     literal=next((n for n in node.named_children if n.type=='string'),None)
                     if literal is None:continue
                     value=encoded[literal.start_byte:literal.end_byte].decode()[1:-1]
+                    if value in {'motion/react','framer-motion','gsap','@react-spring/web'}:motion_signals.add(value)
                     if not value.startswith(('.','/','@/','~/')):imports.add('/'.join(value.split('/')[:2]) if value.startswith('@') else value.split('/')[0])
             except ImportError:unknown.append({'file':name,'reason':'Local syntax parser unavailable; install the quality extra'})
+        elif extension=='.py':
+            try:
+                parsed=ast.parse(text);checked+=1
+                fingerprints.append((extension,hashlib.sha256(ast.dump(parsed,include_attributes=False).encode()).hexdigest()))
+            except SyntaxError:failures.append({'file':name,'reason':'Invalid original Python syntax'})
         elif extension=='.json':
             try:json.loads(text);checked+=1
             except ValueError:failures.append({'file':name,'reason':'Invalid original JSON'})
@@ -40,6 +58,10 @@ def inspect_source_bundle(records,dependencies=()):
     return {'state':'rejected' if failures else 'syntax-checked' if checked else 'unverified','parsed_source_files':checked,
             'syntax_failures':failures,'unparsed':unknown,'undeclared_package_imports':missing,
             'visual_design':'unverified-no-render','integration':'not-executed-not-installed',
+            'substance':{'jsx_nodes':render_nodes,'functions':functions,'empty_functions':empty_functions,
+                         'state':'empty-component' if functions and functions==empty_functions and not render_nodes else 'source-present'},
+            'motion_dependencies':sorted(motion_signals),
+            'normalized_source_sha256':hashlib.sha256(json.dumps(sorted(fingerprints),separators=(',',':')).encode()).hexdigest() if fingerprints and not failures and not unknown else None,
             'milliseconds':round((time.monotonic()-started)*1000,2),
             'limits':'Parses complete code without executing it. Syntax, declared imports and bundle completeness do not certify responsive behaviour, accessibility or visual design.'}
 
@@ -49,6 +71,8 @@ def image_vector(body):
     from .live_visual_rank import model,model_path
     vision,_,_=model(str(model_path()))
     with Image.open(io.BytesIO(body)) as im:
+        from .review_limits import limits
+        if im.width*im.height>limits()['pixels']:raise ValueError('Quality image exceeds decoded pixel budget')
         im=ImageOps.exif_transpose(im).convert('RGB');im=ImageOps.fit(im,(224,224),method=Image.Resampling.BICUBIC)
         pixels=np.asarray(im,dtype=np.float32)/255
     pixels=((pixels-np.array([.48145466,.4578275,.40821073]))/np.array([.26862954,.26130258,.27577711])).astype(np.float32).transpose(2,0,1)[None]
@@ -64,6 +88,13 @@ def aesthetic_head():
     return data,weights
 
 def score_raster(body):
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None:
+        import tempfile
+        from .media_process import execute
+        with tempfile.TemporaryDirectory(prefix='infinite-creativity-aesthetic-') as directory:
+            path=Path(directory)/'original.bin';path.write_bytes(body)
+            return execute('aesthetic',path,directory)
     import numpy as np
     from PIL import Image
     started=time.monotonic()
@@ -101,7 +132,7 @@ def assess_record(library,a,asset_id,min_aesthetic=5.5):
                 if f['format'] not in TEXT_FORMATS:continue
                 original=lib.file(local,f['id'],2*1024*1024);body=Path(original['path']).read_bytes();total+=len(body)
                 if len(records)>=40 or total>8*1024*1024:raise ValueError('Quality source inspection exceeds bundle budget')
-                records[f.get('relative_path') or f['filename']]={'_text':body.decode('utf-8-sig')}
+                records[f.get('relative_path') or f['filename']]={'_text':body.decode('utf-8-sig'),'_root':f.get('role','main') in {'main','variant'}}
         result['technical']=inspect_source_bundle(records,dependencies)
         result['aesthetics']={'state':'unverified','reason':'No licensed rendered UI in the inspected scope. Source code and repository popularity cannot establish design quality.'}
     elif safety.get('scope')=='original-raster' and 'photography' in a.get('tags',[]):
@@ -125,6 +156,8 @@ def collect_quality(library,a,card,filters,report):
     except (ValueError,ImportError,OSError,RuntimeError) as error:
         assessment={'selection':'visual-quality-unverified','professional_guarantee':False,'aesthetics':{'state':'unavailable','reason':str(error)[:240]}}
     card['quality_assessment']=assessment
+    if a['kind'] in {'ui-component','template'} and assessment.get('technical',{}).get('substance',{}).get('state')=='empty-component':
+        assessment['selection']='rejected';assessment['reason']='Empty component body'
     selection=assessment['selection']
     if selection in {'rejected','below-photo-aesthetic-threshold'}:
         report['excluded']+=1;return 'excluded'

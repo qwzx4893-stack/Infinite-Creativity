@@ -10,4 +10,6 @@ dist/
 state/
 snapshots/
 .cache/
+.cache-*.log
+.cache-*.json
 catalog/published/

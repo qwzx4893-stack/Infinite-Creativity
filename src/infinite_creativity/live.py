@@ -21,6 +21,7 @@ from .live_providers import Providers,ADAPTERS
 from .organization import LEAVES,ROOTS,classify
 from .policy import LICENSES,acceptable,review_terms
 from .live_admission import Admission
+from .request_scope import context_map,checkpoint
 
 _SECRET=secrets.token_bytes(32)
 
@@ -97,6 +98,7 @@ def repository_config(repo):
 
 class LiveLibrary:
     def __init__(self,http=None,configs=None):
+        self.curation_mode=None
         self.sources=configs or source_configs()
         hosts={urlsplit(s.get('url','')).hostname for s in self.sources.values()}
         hosts.update(h for s in self.sources.values() for h in s.get('content_hosts',[]))
@@ -168,6 +170,7 @@ class LiveLibrary:
             return 4
         return [s['id'] for s in sorted(supported,key=lambda s:(rank(s),s['id']))]
     def open(self,limit=30,**filters):
+        if self.curation_mode and '_curation_mode' not in filters:filters['_curation_mode']=self.curation_mode
         if any(isinstance(v,str) and len(v)>2048 for k,v in filters.items() if k!='pack'):raise ValueError('Filter text exceeds the live request budget')
         if filters.get('mode','usable') not in {'usable','reference','all'}:raise ValueError('Invalid access mode')
         if filters.get('section'):self.sections(filters['section'])
@@ -177,7 +180,7 @@ class LiveLibrary:
     def page(self,token,limit=30,retry_sources=None):
         if not 1<=limit<=100:raise ValueError('Page size must be 1..100')
         state=unseal(token,'view');f=state['filters'];ids=self.select(f)
-        if f.get('_quality_filter'):limit=min(limit,6)
+        if f.get('_quality_filter') or f.get('_curation_mode')=='useful':limit=min(limit,6)
         if retry_sources is not None and (not isinstance(retry_sources,list) or len(retry_sources)>8 or any(not isinstance(s,str) for s in retry_sources)):raise ValueError('Choose at most eight failed source IDs to retry')
         failures=state.setdefault('failures',{})
         for sid in retry_sources or []:
@@ -193,8 +196,10 @@ class LiveLibrary:
             except Exception as e:return sid,None,str(e)[:400]
         results=[];queue=[];quality_queue=[];statuses=[];admission=Admission(self.http,state.get('receipts',[]))
         quality={'evaluated':0,'selected':0,'excluded':0,'visually_unverified':0,'scope':'This fresh bounded page only; not the entire upstream catalog. Photo score is an estimate, not professional certification.'}
+        from .live_curation import report as curation_report,choose
+        curation=curation_report()
         with ThreadPoolExecutor(max_workers=8) as pool:
-            for sid,data,error in pool.map(fetch,zip(chosen,quotas)):
+            for sid,data,error in context_map(pool,fetch,zip(chosen,quotas)):
                 if error:
                     failures[sid]=failures.get(sid,0)+1
                     retryable=any(word in error.lower() for word in ('transport','timeout','rate limit','budget exhausted','http 50'))
@@ -211,6 +216,10 @@ class LiveLibrary:
                     admission.last_withhold=None
                     if admission.accept(a):
                         card=self.card(a)
+                        if f.get('_curation_mode')=='useful' and not f.get('_quality_filter'):
+                            decision=choose(self,a,card,f,curation,admission)
+                            if decision=='queue':quality_queue.append(card);continue
+                            if decision=='excluded':continue
                         if f.get('_quality_filter'):
                             from .live_quality import collect_quality
                             selection=collect_quality(self,a,card,f,quality)
@@ -236,7 +245,7 @@ class LiveLibrary:
             state['receipts']=state['receipts'][64:];current_token=seal('view',state)
         if len(current_token)>24000:raise ValueError('View position cursor exceeds bounded client transport; choose a narrower source/category')
         next_token=current_token if remaining else None
-        return {'items':results,'review_queue':queue,**({'quality_queue':quality_queue,'quality':quality} if f.get('_quality_filter') else {}),'session_id':current_token,'resume_cursor':current_token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor. Transient failures get one fresh-page retry; retry_sources with resume_cursor explicitly retries exhausted failures without losing source positions.'}
+        return {'items':results,'review_queue':queue,**({'quality_queue':quality_queue,'quality':quality,'curation':curation} if f.get('_quality_filter') or f.get('_curation_mode') else {}),'session_id':current_token,'resume_cursor':current_token,'next_cursor':next_token,'filters':f,'sources':statuses,'admission':admission.report,'remaining_sources':len(remaining),'records':None,'metadata_fetched_at':now(),'storage':'No asset index or metadata cache. Signed client cursors hold positions and bounded digest receipts, not item records.','completeness':'Traversal of implemented live source windows; unavailable and withheld content is explicit. Pending review_queue records are metadata only, never counted as admitted assets. Empty admitted page may still have next_cursor. Transient failures get one fresh-page retry; retry_sources with resume_cursor explicitly retries exhausted failures without losing source positions.'}
     def raw_get(self,aid):
         loc=unseal(aid,'asset')
         if loc['source'] not in self.sources:
@@ -252,6 +261,8 @@ class LiveLibrary:
         return a
     def get(self,aid):
         loc=unseal(aid,'asset');a=self.raw_get(aid)
+        if self.curation_mode=='useful' and a.get('features',{}).get('source_quality',{}).get('substance',{}).get('state')=='empty-component' and a['kind'] in {'ui-component','template'}:
+            raise ValueError('Empty component excluded by current source-quality policy')
         if loc.get('review'):
             receipt=loc['review']
             if metadata_fingerprint(a)!=receipt['metadata']:raise ValueError('Current rights, revision or file manifest changed; run review_asset_media again')
@@ -356,7 +367,7 @@ class LiveLibrary:
                     return url
                 def fetch(self,url,*args,**kwargs):return super().fetch(self.descriptor(url),*args,**kwargs)
                 def range(self,url,*args,**kwargs):return super().range(self.descriptor(url),*args,**kwargs)
-            library.cache=RequestContent(Path(directory)/'requested-bytes')
+            library.cache=RequestContent(Path(directory)/'requested-bytes',hosts=getattr(self.http,'hosts',()))
             class MemoryRuntime:
                 def __init__(self):self.db=sqlite3.connect(':memory:');self.db.row_factory=sqlite3.Row
                 def close(self):self.db.close()

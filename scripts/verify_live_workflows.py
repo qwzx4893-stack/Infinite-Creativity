@@ -13,6 +13,8 @@ CASES={'model':('polypizza','tree'),'material':('texturecan','wood'),'met':('met
        'millionth-art':('pd3m',''),'curated-model':('objaverse-curated','fisherman'),'instrument':('meta-open-sound','piano'),
        'transition':('gl-transitions','Bounce'),'motion-code':('manim-motion-examples','basic'),
        'agent-elements':('registry:agent-elements','tool-group'),'magicui':('registry:magicui','aurora-text'),'shadcn':('registry:shadcn','button'),'photo-quality':('pd3m','photo')}
+CASES.update({'corsair':('registry:corsair','signature'),'ui-layouts':('registry:ui-layouts','btn-bg-shine'),'uselayouts':('registry:uselayouts','accessible-action'),'21st-original':('registry:corsair','signature')})
+SOURCE_CASES={'agent-elements','magicui','shadcn','corsair','ui-layouts','uselayouts','21st-original'}
 
 async def verify(cases,probe_sources=False):
     params=StdioServerParameters(command=sys.executable,args=['-m','infinite_creativity.server'],env=dict(os.environ))
@@ -28,15 +30,19 @@ async def verify(cases,probe_sources=False):
             try:
                 source,query=CASES[name]
                 if name=='interface':source=next(s['id'] for s in source_configs().values() if s.get('repo','').lower()=='ibelick/motion-primitives')
-                view=(await call('browse_asset_catalog',{'source':source,'offset':2000000,'limit':1}) if name=='millionth-art' else await call('open_library',{'source':source,'query':query,'limit':1})).structuredContent
-                candidates=view['items']+view.get('review_queue',[])
+                if name=='21st-original':
+                    route=(await call('open_component_reference',{'reference':'https://21st.dev/@kevingirelli/components/signature'})).structuredContent
+                    if route['state']!='original-author-source-resolved' or route['author_repository']!='KevinGirelli/corsair-ui':raise ValueError('Selected component reference did not resolve its original author')
+                    view={'items':[route['item']]}
+                else:view=(await call('browse_asset_catalog',{'source':source,'offset':2000000,'limit':1}) if name=='millionth-art' else await call('open_library',{'source':source,'query':query,'limit':1})).structuredContent
+                candidates=view['items']+view.get('review_queue',[])+view.get('quality_queue',[])
                 for _ in range(2):
                     if candidates or not view.get('next_cursor'):break
-                    view=(await call('library_page',{'cursor':view['next_cursor'],'limit':1})).structuredContent;candidates=view['items']+view.get('review_queue',[])
+                    view=(await call('library_page',{'cursor':view['next_cursor'],'limit':1})).structuredContent;candidates=view['items']+view.get('review_queue',[])+view.get('quality_queue',[])
                 if not candidates:raise ValueError('No admitted/pending candidate: '+json.dumps({'withheld':view.get('admission',{}).get('withheld_reasons',{}),'source_errors':[s.get('reason') or s.get('item_errors') for s in view.get('sources',[]) if s.get('reason') or s.get('item_errors')]})[:350])
                 selected=candidates[0]
                 if name in {'material','instrument'}:
-                    pack=(await call('get_library_pack',{'pack_id':selected['pack_id'],'limit':2})).structuredContent['view'];members=pack['items']+pack.get('review_queue',[])
+                    pack=(await call('get_library_pack',{'pack_id':selected['pack_id'],'limit':2})).structuredContent['view'];members=pack['items']+pack.get('review_queue',[])+pack.get('quality_queue',[])
                     if not members:raise ValueError('Current pack has no reviewable map in this window')
                     if name=='instrument' and pack['sources'][0].get('catalog',{}).get('collections_in_scope')!=['meta-piano']:raise ValueError('Instrument pack includes unrelated collection members')
                     selected=members[0]
@@ -48,9 +54,12 @@ async def verify(cases,probe_sources=False):
                 if not body or full and hashlib.sha256(body).hexdigest()!=original['sha256']:raise ValueError('Inline original integrity/window failure')
                 if not all(a<b for a,b in zip(progress,progress[1:])):raise ValueError('Non-monotonic MCP review progress')
                 native=[block.type for block in result.content]
+                continuation=(await call('read_asset_file',{'asset_id':data['asset_id'],'file_id':data['selected_file_id'],'offset':0,'length':min(65536,original['file_bytes'])})).structuredContent
+                if base64.b64decode(continuation['data'])!=body[:min(65536,len(body))]:raise ValueError('Reviewed original window changed or was misdelivered')
+                print(json.dumps({'case':name+'-exact-window','status':'passed','transport':continuation.get('transport','complete-original-or-encoded-member'),'integrity_scope':continuation.get('integrity_scope'),'verified_block_bytes':continuation.get('verified_block_bytes')}),flush=True)
                 if name in {'audio','instrument'} and 'audio' not in native:raise ValueError('Listening excerpt missing from reviewed sound package')
-                if name not in {'audio','instrument','interface','transition','motion-code','agent-elements','magicui','shadcn'} and 'image' not in native:raise ValueError('Screened native preview missing')
-                if name in {'agent-elements','magicui','shadcn'}:
+                if name not in {'audio','instrument','interface','transition','motion-code'}|SOURCE_CASES and 'image' not in native:raise ValueError('Screened native preview missing')
+                if name in SOURCE_CASES:
                     bundle=(await call('fetch_asset_bundle',{'asset_id':selected['id']})).structuredContent
                     if not any(f['role']=='license' for f in bundle['files']):raise ValueError('Original author MIT notice missing')
                     for f in bundle['files']:

@@ -4,7 +4,8 @@ from pathlib import Path,PurePosixPath
 from .live import seal,unseal,file_fingerprint
 from .policy import LICENSES,acceptable,review_terms
 from .review_limits import profile,limits,progress
-from .specialized_media import NATIVE,LAYERED,MESH,review_path
+from .specialized_media import NATIVE,LAYERED,MESH
+from .media_process import review as review_path
 
 SUPPORTED=NATIVE|LAYERED|MESH|{'gltf','glb','png','jpg','jpeg','bmp','tif','tiff','dds','wav','ogg','mp3','flac','m4a','aac','aiff','aif','opus','mp4','webm','mov','mkv','avi','gif','webp','apng','svg','exr','hdr'}
 IMAGE={'png','jpg','jpeg','bmp','tif','tiff','dds','webp','exr','hdr'}
@@ -24,7 +25,7 @@ def archive_entries(library,a,file):
     from .content import ContentCache
     container=a.get('containers',{}).get(file.get('container_id'))
     with tempfile.TemporaryDirectory(prefix='infinite-creativity-archive-list-') as directory:
-        cache=ContentCache(directory)
+        cache=ContentCache(directory,hosts=getattr(library.http,'hosts',()))
         archive=cache.multipart_zip(container['parts']) if container and container['type']=='split-zip' else cache.remote_zip(file['url'])
         with archive as z:
             entries=z.infolist()
@@ -117,6 +118,12 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 text=path.read_text(encoding='utf-8-sig')
                 if not acceptable(text) or review_terms(text):raise ValueError('Original source text violates sexual/suggestive content policy')
                 evidence={'scope':'Complete current UTF-8 source text and explicit permissive licence; lexical content screening only; source code is never executed. Linked/embedded remote media and runtime behaviour are not reviewed or authorized.','format':main['format'],'source_bytes':path.stat().st_size}
+                from .live_quality import inspect_source_bundle
+                source_records={relative:{'_text':target.read_text(encoding='utf-8-sig'),'_root':f['id']==main['id']} for relative,(target,f,result) in staged.items() if f['format'] in TEXT_FORMATS and f.get('role') not in {'license','provenance'}}
+                technical=inspect_source_bundle(source_records,a.get('features',{}).get('npm_dependencies',[]))
+                if technical['state']=='rejected' or a['kind'] in {'ui-component','template'} and technical.get('substance',{}).get('state')=='empty-component':
+                    raise ValueError('Selected source fails current syntax or component-substance checks')
+                evidence['source_quality']=technical
             else:evidence=review_path(path,main['format'],classifier,directory)
             converted=evidence.pop('_converted_glb',None)
             preview_bytes=evidence.pop('_preview_bytes',None)
@@ -130,6 +137,8 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 elif f['id']!=main['id'] and f['format'] not in IMAGE|{'bin','mtl','txt','md'} and f.get('role') not in {'license','provenance'}:
                     raise ValueError('Declared dependency requires its own complete original reviewer')
             progress(1,1,'Selected original and scoped dependencies reviewed; request-only staging will be removed')
+            from .chunk_proofs import attach
+            attach(staged,receipts)
             locator=unseal(aid,'asset');locator['review']={'metadata':a['_source_metadata'],'files':receipts,'scope':evidence['scope']}
             reviewed_id=seal('asset',locator)
             if len(reviewed_id)>24000:raise ValueError('Selected bundle exceeds bounded client receipt budget')
@@ -159,7 +168,7 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 if a['kind']=='audio':
                     from .live_media_review import audio_excerpt
                     sound,notice=audio_excerpt(path);package['_preview_audio']=base64.b64encode(sound).decode();package['listening_preview']=notice
-            return {'asset_id':reviewed_id,'state':'selected-original-screened','selected_file_id':main['id'],'format':main['format'],'review':evidence,'reviewed_files':len(receipts),'reviewed_bytes':total,'license':a['license'],'license_url':a['license_url'],'actions':['get_library_item','asset_files','read_asset_file'],**preview,**package,'storage':'No original, metadata index or verdict retained. Client locator carries signed digests only. Every subsequent call fetches current metadata and verifies exact original bytes again.','limits':'Bounded automatic review, not a guarantee of perfect safety or artistic quality. Unreviewed variants are unavailable through this locator. Chunk delivery re-fetches the full reviewed file to verify its digest; there is no cross-call original cache.'}
+            return {'asset_id':reviewed_id,'state':'selected-original-screened','selected_file_id':main['id'],'format':main['format'],'review':evidence,'reviewed_files':len(receipts),'reviewed_bytes':total,'license':a['license'],'license_url':a['license_url'],'actions':['get_library_item','asset_files','read_asset_file'],**preview,**package,'storage':'No original, metadata index or verdict retained. Client locator carries signed complete-file and bounded chunk digests. Every subsequent call revalidates current rights and exact delivered bytes.','limits':'Bounded automatic review, not perfect safety or artistic certification. Raw original ranges use signed chunk proofs where supported; archives/encoded members and providers without ranges require complete-file revalidation. No cross-call original cache.'}
 
 def preview(library,aid):
     """A current exact-digest receipt can authorize a fresh static GLB view.

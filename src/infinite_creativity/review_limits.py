@@ -9,6 +9,8 @@ _progress=ContextVar('creative_review_progress',default=None)
 _deadline=ContextVar('creative_review_deadline',default=None)
 def limits():return _limits.get()
 def progress(value,total,message):
+    from .request_scope import checkpoint
+    checkpoint()
     deadline=_deadline.get()
     if deadline and time.monotonic()>deadline:raise ValueError('Selected complete review exceeded CPU/time budget')
     callback=_progress.get()

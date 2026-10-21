@@ -114,7 +114,8 @@ class RegistryTests(unittest.TestCase):
             with self.assertRaises(ValueError):public_registry(h,SOURCE,{},'',1,key='fancy-button')
     def test_registry_scope_is_current_public_author_projects_only(self):
         configs=source_configs();r={k:v for k,v in configs.items() if v.get('adapter')=='public-registry'}
-        self.assertEqual(len(r),3);self.assertNotIn('registry:react-bits',r);self.assertIn('21st-dev/agent-elements',[v['repo'] for v in r.values()])
+        self.assertEqual(len(r),6);self.assertNotIn('registry:react-bits',r);self.assertIn('21st-dev/agent-elements',[v['repo'] for v in r.values()])
+        self.assertTrue({'registry:corsair','registry:ui-layouts','registry:uselayouts'}<=r.keys())
 
 class QualityTests(unittest.TestCase):
     def test_ast_imports_ignore_comment_prose_but_report_undeclared_packages(self):
@@ -140,6 +141,7 @@ class QualityTests(unittest.TestCase):
             with self.assertRaises(ValueError):assess_record(None,{},'id',n)
     def test_collection_filters_and_cursor_continue_without_promoting_uncertainty(self):
         h=RegistryHTTP({'a':member('a'),'b':member('b','export const B = () => <p>Second component</p>;')});l=LiveLibrary(h,{SOURCE['id']:SOURCE})
+        l.curation_mode='useful'
         first=l.open(source=SOURCE['id'],limit=1,_quality_filter=True)
         self.assertEqual(first['items'],[]);self.assertEqual(len(first['quality_queue']),1);self.assertIsNotNone(first['next_cursor'])
         second=l.page(first['next_cursor'],100);self.assertEqual(second['quality_queue'][0]['title'],'B');self.assertIsNone(second['next_cursor'])
@@ -147,6 +149,7 @@ class QualityTests(unittest.TestCase):
         self.assertEqual(len(relaxed['items']),1);self.assertEqual(relaxed['items'][0]['quality_assessment']['aesthetics']['state'],'unverified')
     def test_low_photo_score_excluded_during_collection(self):
         h=RegistryHTTP();l=LiveLibrary(h,{SOURCE['id']:SOURCE})
+        l.curation_mode='useful'
         with patch('infinite_creativity.live_quality.assess_record',return_value={'selection':'below-photo-aesthetic-threshold'}):r=l.open(source=SOURCE['id'],limit=1,_quality_filter=True)
         self.assertFalse(r['items']);self.assertFalse(r['quality_queue']);self.assertEqual(r['quality']['excluded'],1)
 
