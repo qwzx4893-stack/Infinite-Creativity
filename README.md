@@ -41,7 +41,7 @@ infinite-creativity doctor
 
 The three preparation commands install approximately 617 MiB of pinned, hash-verified **model software**, not asset collections. They are explicit; starting MCP never downloads models, Blender or originals automatically. Missing media software leaves uncertain originals withheld. Software/source browsing can work without model preparation. `doctor --verify-models` checks installed software hashes without fetching assets.
 
-SVG rendering also requires a discoverable native Cairo library (`libcairo2` on Linux; an installed `libcairo-2.dll` on Windows). Native BLEND/FBX/USD/BVH inspection uses an existing Blender installation; optionally set `IC_BLENDER_PATH`. Local model paths may be selected through `IC_VISION_MODEL`, `IC_SPEECH_MODEL`, `IC_STYLE_MODEL`.
+SVG rendering also requires a discoverable native Cairo library (`libcairo2` on Linux; an installed `libcairo-2.dll` on Windows). On Windows set `CAIROCFFI_DLL_DIRECTORIES` to its folder and put that folder on `PATH` so transitive DLLs are found. `doctor` reports native SVG readiness; `python scripts/verify_svg_renderer.py` actually renders a small generated SVG. Native BLEND/FBX/USD/BVH inspection uses an existing Blender installation; optionally set `IC_BLENDER_PATH`. Local model paths may be selected through `IC_VISION_MODEL`, `IC_SPEECH_MODEL`, `IC_STYLE_MODEL`.
 
 Configure your MCP client with the absolute virtual-environment Python path:
 

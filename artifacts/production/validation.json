@@ -6,14 +6,14 @@
   "runtime": {
     "packaged_files": 78,
     "digest_algorithm": "SHA256 of compact sorted JSON [relative_src_path, file_sha256] records for packaged Python/JSON/TXT files",
-    "sha256": "b93d6df0ffc178ac08b8715de6654712bb00f2e5aef6b512e2eca9a799c11238",
+    "sha256": "5e764cf4a66532a3e18e9c7d111afeb60c2a085761a5756f70aa5eedb5f545f7",
     "mcp_tools": 44,
     "configured_connections": 405,
     "default_query_scopes": 338
   },
   "local_tests": [
-    {"platform": "Windows", "python": "3.13.15", "installation": "development", "passed": 218, "failed": 0, "skipped": 0, "seconds": 19.840},
-    {"platform": "Windows", "python": "3.12.14", "installation": "clean wheel", "passed": 218, "failed": 0, "skipped": 0, "seconds": 29.204}
+    {"platform": "Windows", "python": "3.13.15", "installation": "development", "passed": 218, "failed": 0, "skipped": 0, "seconds": 15.470},
+    {"platform": "Windows", "python": "3.12.14", "installation": "clean wheel", "passed": 218, "failed": 0, "skipped": 0, "seconds": 16.250}
   ],
   "webmcp": "passed",
   "dependency_audit": {"tool": "pip-audit 2.10.1", "active_marker_packages": 67, "known_vulnerabilities": 0, "skipped": 0, "requirements_sha256": "0e6a497d99d6c85c2ee28b1f6e82d9493c73f5b025a8af9777ea00804763e274"},
@@ -27,6 +27,7 @@
     "range_representation_fallback": "Met ranged bytes differed; complete signed whole-file verification succeeded instead",
     "scope": "Selected samples measured during development/clean installation, not all providers/items and not an exhaustive quality or learned-accuracy benchmark"
   },
-  "ci": {"status": "pending", "matrix": ["Linux Python 3.11", "Linux Python 3.13", "Windows Python 3.13"], "dependency_matrix": ["Python 3.11", "Python 3.13"]},
+  "wheel": {"filename": "infinite_creativity_mcp-0.12.0-py3-none-any.whl", "bytes": 266827, "sha256": "04aee4901a7148902cd985fce49f97f61ba8eaf1566f43e62ca9efb1498fa49d"},
+  "ci": {"status_source": "GitHub check runs", "checks_url": "https://github.com/qwzx4893-stack/Infinite-Creativity/pull/1/checks", "expected_jobs": 5, "matrix": ["Linux Python 3.11", "Linux Python 3.13", "Windows Python 3.13"], "dependency_matrix": ["Python 3.11", "Python 3.13"], "independent_live_source_run": "https://github.com/qwzx4893-stack/Infinite-Creativity/actions/runs/39591388349"},
   "limits": ["No claim of anonymous access to the main 21st marketplace", "No global permanent deduplication/index", "Technical source quality is not rendered UI aesthetics", "Worker OS resource limits are not an OS filesystem sandbox"]
 }

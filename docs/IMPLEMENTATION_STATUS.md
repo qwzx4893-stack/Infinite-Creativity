@@ -2,7 +2,7 @@
 
 Approved scope (2026-10-21): dependency security/reproducibility; request cancellation and aggregate budgets; media/network isolation; verified efficient chunk delivery; source readiness/search/quality; cross-platform validation and documentation. Additional priority: useful professional UI/motion sources and automatic quality/duplicate exclusion without a persistent asset index or exhaustive original downloads.
 
-Implementation and validation are in progress. This file records scope, not completed claims.
+The implementation is present on the review branch. Measured local/installed acceptance and limitations are recorded in [VALIDATION_V012.md](VALIDATION_V012.md) and [validation.json](../artifacts/production/validation.json). GitHub check runs are the authoritative current CI status; configuration alone is never reported as a passing job or healthy provider.
 
 ## Acceptance gates
 

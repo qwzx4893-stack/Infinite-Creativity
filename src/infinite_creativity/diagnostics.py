@@ -33,11 +33,18 @@ def readiness(verify_models=False):
         except importlib.metadata.PackageNotFoundError:packages[name]={'state':'not-installed'}
     try:blender={'state':'installed-not-runtime-probed' if blender_path() else 'not-installed'}
     except ValueError:blender={'state':'invalid-configured-executable'}
+    try:
+        import cairosvg
+        svg={'state':'native-library-loaded-not-runtime-probed'}
+    except (ImportError,OSError) as error:
+        svg={'state':'unavailable','reason':str(error)[:160],
+             'next_action':'Install native Cairo; on Windows configure CAIROCFFI_DLL_DIRECTORIES and put the DLL folder on PATH.'}
     return {'python':sys.version.split()[0],'packages':packages,
             'models':{'vision':model_status(model_path(),MODEL['files'],verify_models),
                       'speech':model_status(speech_path(),SPEECH_MODEL['files'],verify_models),
                       'style':model_status(style_path(),STYLE['files'],verify_models)},
             'native_blender':blender,
+            'native_svg':svg,
             'runtime':runtime_status(),'provider_health':'Not inferred from local readiness. Use probe_library_sources for bounded live evidence.',
             'next_actions':['Install .[media,quality] for local readers and source parsing',
                             'prepare-live-vision / prepare-live-media / prepare-live-style for missing pinned software',

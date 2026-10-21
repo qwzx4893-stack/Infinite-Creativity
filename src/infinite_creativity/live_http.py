@@ -9,6 +9,7 @@ import httpx
 from .content import validate_url, CONTENT_HOSTS
 from .request_scope import checkpoint
 from .public_transport import PublicTransport
+from . import __version__
 
 class LiveHTTP:
     def __init__(self, hosts=(), max_requests=48):
@@ -64,7 +65,7 @@ class LiveHTTP:
             validate_url(current,hosts=self.hosts)
             checkpoint(requests=1)
             if self.requests>=self.max_requests or time.monotonic()-self.started>55:raise ValueError('Live request budget exhausted; continue with a narrower source or pack')
-            headers={'User-Agent':'InfiniteCreativity/0.10 (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
+            headers={'User-Agent':'InfiniteCreativity/'+__version__+' (+https://github.com/qwzx4893-stack/Infinite-Creativity)','Accept':accept,'Cache-Control':'no-cache','Pragma':'no-cache'}
             if host=='api.github.com' and os.environ.get('GITHUB_TOKEN'):headers['Authorization']='Bearer '+os.environ['GITHUB_TOKEN']
             if host in {'www.blendkit.com','www.blenderkit.com'} and os.environ.get('BLENDERKIT_TOKEN'):headers['Authorization']='Bearer '+os.environ['BLENDERKIT_TOKEN']
             with self.lock:

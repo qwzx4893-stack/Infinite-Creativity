@@ -39,4 +39,4 @@ uv run python scripts/verify_live_workflows.py --case 21st-original --case ui-la
 uv run python scripts/verify_local_media.py
 ```
 
-Prepare the three pinned model-software folders and an existing Blender installation for the actual media acceptance script. GitHub/source capacity and content availability can change. CI status is recorded separately in the machine-readable artifact; local success does not stand in for remote CI completion.
+Prepare the three pinned model-software folders and an existing Blender installation for the actual media acceptance script. GitHub/source capacity and content availability can change. The machine-readable artifact links the authoritative [current CI checks](https://github.com/qwzx4893-stack/Infinite-Creativity/pull/1/checks) and the [independent original-author acceptance run](https://github.com/qwzx4893-stack/Infinite-Creativity/actions/runs/39591388349); local success does not stand in for remote CI completion.
