@@ -121,11 +121,12 @@ def public_registry(http,source,filters,after,limit,key=None):
                     if repository_files:
                         revision=legal['url'].split('/')[5]
                         original_url='https://raw.githubusercontent.com/'+s['repo']+'/'+revision+'/'+quote(path,safe='/')
-                        text=http.read(original_url,2*1024*1024).decode('utf-8-sig')
-                    else:text=f.get('content')
-                    if not isinstance(text,str) or not text.strip() or len(text.encode())>2*1024*1024:raise ValueError('Registry original is missing or exceeds the source-text budget')
+                        body=http.read(original_url,2*1024*1024);text=body.decode('utf-8-sig')
+                    else:
+                        text=f.get('content');body=text.encode() if isinstance(text,str) else b''
+                    if not isinstance(text,str) or not text.strip() or len(body)>2*1024*1024:raise ValueError('Registry original is missing or exceeds the source-text budget')
                     if not acceptable(text) or review_terms(text):raise ValueError('Registry original source violates sexual/suggestive content policy')
-                    body=text.encode();digest=hashlib.sha256(body).hexdigest()
+                    digest=hashlib.sha256(body).hexdigest()
                     if path in file_map and file_map[path]['sha256']!=digest:raise ValueError('Conflicting dependency destinations in registry bundle')
                     file_map[path]={'url':original_url or endpoint,'filename':PurePosixPath(path).name,'relative_path':path,**({} if repository_files else {'json_content_path':f['path']}),
                                     'role':'dependency','sha256':digest,'bytes':len(body),'_root':identity==(source['id'],name),'_registry_type':f.get('type'),'_text':text}

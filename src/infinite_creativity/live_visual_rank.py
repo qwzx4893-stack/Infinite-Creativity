@@ -24,6 +24,10 @@ def model(path):
     options=ort.SessionOptions();options.intra_op_num_threads=2
     return (ort.InferenceSession(str(path/'vision_model_quantized.onnx'),sess_options=options,providers=['CPUExecutionProvider']),ort.InferenceSession(str(path/'text_model_quantized.onnx'),sess_options=options,providers=['CPUExecutionProvider']),Tokenizer.from_file(str(path/'tokenizer.json')))
 def scores(direction,images):
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None:
+        from .media_process import visual_scores
+        return visual_scores(direction,images)
     import numpy as np
     from PIL import Image
     vision,text,tokenizer=model(str(model_path()));tokenizer.enable_truncation(max_length=77)
@@ -31,6 +35,9 @@ def scores(direction,images):
     vector=text.run(None,{i.name:inputs[i.name] for i in text.get_inputs()})[0][0];vector/=max(float(np.linalg.norm(vector)),1e-9)
     result=[]
     for body in images:
+        if body.lstrip().startswith((b'<svg',b'<?xml')):
+            import cairosvg
+            body=cairosvg.svg2png(bytestring=body,output_width=512,output_height=512)
         with Image.open(io.BytesIO(body)) as im:
             im=im.convert('RGB');w,h=im.size;side=min(w,h)
             im=im.crop(((w-side)//2,(h-side)//2,(w+side)//2,(h+side)//2)).resize((224,224),Image.Resampling.BICUBIC)
@@ -50,9 +57,6 @@ def rank(l,direction,asset_ids):
                 preview=library.preview(local);body=Path(preview['path']).read_bytes()
                 is_svg=body.lstrip().startswith((b'<svg',b'<?xml'))
                 check_delivery({**a,'software_only':False},{'filename':'preview.svg' if is_svg else 'preview.png','role':'main','url':'current-preview'},preview['path'])
-                if is_svg:
-                    import cairosvg
-                    body=cairosvg.svg2png(bytestring=body,output_width=512,output_height=512)
                 images.append(body);rows.append(l.card(a))
         except Exception as e:failures.append({'asset_id':aid,'reason':str(e)[:250]})
     similarities=scores(normalize_query(direction),images) if images else []

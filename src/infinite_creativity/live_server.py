@@ -307,7 +307,7 @@ async def preview_audio_asset(asset_id:str,file_id:str='',start_seconds:float=0,
     def read(l,i,a):
         r=l.file(i,file_id,512*1024*1024 if a.get('_review_files') else 32*1024*1024)
         if not r['mime'].startswith('audio/') and Path(r['filename']).suffix.lower() not in {'.mp3','.wav','.ogg','.flac','.m4a','.aac','.aiff','.aif','.opus'}:raise ValueError('Not an audio file')
-        from .live_media_review import audio_excerpt
+        from .media_process import audio_excerpt
         body,notice=audio_excerpt(r['path'],start_seconds,duration_seconds);public=clean(r,i,asset_id)|{'listening_preview':notice}
         return CallToolResult(content=[TextContent(type='text',text=json.dumps(public)),AudioContent(type='audio',data=base64.b64encode(body).decode(),mimeType='audio/wav')],structuredContent=public)
     return await run_blocking(lambda:_media_call(asset_id,read),heavy=True)

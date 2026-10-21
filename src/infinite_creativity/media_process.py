@@ -59,13 +59,14 @@ def _execute(action,path,directory,**extra):
                         first=False
                         progress(time.monotonic()-started,seconds,'Isolated original-media review')
             finally:
+                if os.name!='nt':
+                    # Popen created a new session whose group ID is this PID.
+                    # The leader may have hit RLIMIT_CPU/exited while native
+                    # descendants remain, so do not gate group cleanup on poll().
+                    try:os.killpg(process.pid,signal.SIGKILL)
+                    except ProcessLookupError:pass
+                elif process.poll() is None:process.kill()
                 if process.poll() is None:
-                    if os.name!='nt':
-                        try:
-                            if os.getpgid(process.pid)==process.pid:os.killpg(process.pid,signal.SIGKILL)
-                            else:process.kill()
-                        except ProcessLookupError:pass
-                    else:process.kill()
                     process.wait(timeout=5)
         output.seek(0);body=output.read(8*1024*1024+1)
     if len(body)>8*1024*1024:raise ValueError('Decoder result exceeds bounded output')
@@ -84,6 +85,63 @@ def _execute(action,path,directory,**extra):
 class RemoteScreener:
     def __init__(self,path):self.path=path
     def image(self,path):return execute('image',path,Path(path).parent)
+
+
+def preview(path,directory,classifier,allowed_paths=()):
+    """Render and screen a staged GLB without parsing it in the MCP process."""
+    from .request_scope import CURRENT
+    root=Path(directory).resolve();path=Path(path).resolve()
+    allowed={Path(value).resolve() for value in allowed_paths}
+    if not path.is_relative_to(root) or any(not value.is_relative_to(root) for value in allowed):
+        raise ValueError('Preview dependency leaves request staging')
+    if CURRENT.get() is not None:
+        return execute('preview',path,root,allowed_paths=[str(value) for value in sorted(allowed)])
+    import struct
+    from .selected_review import member_path
+    from .live_media_review import render_glb_preview,image_check
+    from PIL import Image
+    import io
+    if path.stat().st_size>limits()['bytes']:raise ValueError('Preview original exceeds byte budget')
+    body=path.read_bytes()
+    if len(body)<20 or body[:4]!=b'glTF':raise ValueError('Invalid current GLB')
+    length=struct.unpack_from('<I',body,12)[0]
+    if length>16*1024*1024 or 20+length>len(body):raise ValueError('Invalid current GLB JSON extent')
+    document=json.loads(body[20:20+length]);external=False
+    for group in ('buffers','images'):
+        for entry in document.get(group,[]):
+            uri=entry.get('uri','')
+            if not uri or uri.startswith('data:'):continue
+            member_path(uri);target=(path.parent/uri).resolve()
+            if target not in allowed:raise ValueError('Preview dependency is outside the exact approved manifest')
+            external=True
+    if external:
+        import trimesh
+        body=trimesh.load(path,force='scene',process=False).export(file_type='glb')
+    pixels=render_glb_preview(body)
+    with Image.open(io.BytesIO(pixels)) as image:image_check(image,classifier,directory,'selected-preview')
+    return {'_preview_bytes':pixels,'scope':'Current scoped GLB and exact declared dependencies; newly rendered pixels screened'}
+
+
+def audio_excerpt(path,start=0,seconds=12):
+    """Keep listening-preview codec work inside the same bounded worker path."""
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None:
+        result=execute('excerpt',path,Path(path).parent,start=start,seconds=seconds)
+        return result['_preview_bytes'],result['listening_preview']
+    from .live_media_review import audio_excerpt as decode
+    return decode(path,start,seconds)
+
+
+def visual_scores(direction,images):
+    """Stage ranking inputs so native image/model work stays in the worker."""
+    if not isinstance(direction,str) or not direction.strip() or len(direction)>2048 or not 1<=len(images)<=12:
+        raise ValueError('Supply an art direction and 1..12 ranking images')
+    if sum(map(len,images))>limits()['bytes']:raise ValueError('Ranking images exceed request byte budget')
+    with tempfile.TemporaryDirectory(prefix='infinite-creativity-rank-') as directory:
+        paths=[]
+        for number,body in enumerate(images):
+            path=Path(directory)/f'image-{number}.bin';path.write_bytes(body);paths.append(str(path))
+        return execute('rank',paths[0],directory,direction=direction,images=paths)['scores']
 
 
 def review(path,extension,classifier,directory):

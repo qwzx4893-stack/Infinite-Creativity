@@ -4,6 +4,8 @@ The machine-readable record is [validation.json](../artifacts/production/validat
 
 ## Local acceptance
 
+- Final pre-merge review: 234 tests ran on Windows Python 3.13.15; 233 passed and the POSIX-only process-group regression was skipped on Windows. Linux CI runs that regression. The earlier 218-test runs below describe the initial acceptance baseline.
+- The rebuilt final wheel independently ran the same 234 tests on Windows Python 3.12.14: 233 passed, with the same one POSIX-only skip.
 - 218/218 tests passed on Windows Python 3.13.15, including actual SDK stdio cancellation, aggregate resource limits, original-author routing, source curation, DNS pinning and chunk contracts.
 - 218/218 passed against a clean installed wheel on Python 3.12.14. No optional tests were skipped. WebMCP tests passed.
 - Both installations actually ran the pinned image/speech readers and native Blender against generated PNG/WAV/GLB/BLEND fixtures. No fake classifier was used in those local media acceptance scripts. Unit tests elsewhere do use controlled classifiers/transports.
@@ -19,6 +21,12 @@ Other sample workflows exercised original motion/shader code, Met/Cleveland imag
 GitHub's anonymous API allowance was exhausted during an early multi-source run. Rechecking with the existing optional GitHub session succeeded; no 21st key was requested or used. UI Layouts initially exposed a missing configured `www` redirect and was successfully rechecked after correction. Those failures were not substituted with saved results.
 
 Met served different bytes/extent for a ranged representation. Chunk verification rejected those bytes. Complete-file revalidation against the prior signed digest then succeeded; the transport reports that fallback. Incompetech transport timed out in the final sample; its configured connector is retained but no successful final delivery is claimed. The instrument source separately passed real audio delivery/revalidation.
+
+## Pre-merge corrections
+
+The independent review reproduced and corrected incomplete HTTP body acceptance, slow-drip HTTP reads bypassing cancellation/deadline checks (including status/header/chunk lines), source fingerprints omitting JSON configuration or file layout/root roles, and BOM-prefixed author files having incorrect original checksums. Sixteen new regression cases cover these contracts and the media fixes below.
+
+GLB preview rendering, audio excerpt decoding and CLIP/SVG ranking now run inside the bounded decoder workers during MCP requests, including receipt-preview paths. POSIX cleanup also terminates owned native descendants after a worker leader has already exited. Actual generated GLB preview, WAV excerpt and PNG/SVG ranking succeeded after the changes; the original-author, UI Layouts and useLayouts delivery workflows also passed again with complete notices/dependencies.
 
 ## Quality coverage and boundaries
 

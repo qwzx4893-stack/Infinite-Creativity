@@ -77,12 +77,27 @@ def main():
             from .live_admission import screener,model_path
             action=config['action'];extension=config.get('extension',path.suffix.lstrip('.'))
             audio=extension in {'wav','ogg','mp3','flac','m4a','aac','aiff','aif','opus'}
-            classifier=None if audio or action in {'probe','aesthetic'} else screener(str(model_path()))
+            classifier=None if audio or action in {'probe','aesthetic','excerpt','rank'} else screener(str(model_path()))
             if action=='probe':result={'state':'resource-limits-ready','network_guard':True}
             elif action=='aesthetic':
                 from .live_quality import score_raster
                 result=score_raster(path.read_bytes())
             elif action=='image':result=classifier.image(path)
+            elif action=='preview':
+                from .media_process import preview
+                result=preview(path,root,classifier,config.get('allowed_paths',()))
+            elif action=='excerpt':
+                from .media_process import audio_excerpt
+                sound,notice=audio_excerpt(path,config.get('start',0),config.get('seconds',12))
+                result={'_preview_bytes':sound,'listening_preview':notice}
+            elif action=='rank':
+                from .live_visual_rank import scores
+                paths=[Path(value).resolve() for value in config['images']]
+                if not 1<=len(paths)<=12 or any(not value.is_relative_to(root) or not value.is_file() for value in paths):
+                    raise ValueError('Ranking image is outside staged inputs')
+                if sum(value.stat().st_size for value in paths)>config['limits']['bytes']:
+                    raise ValueError('Ranking images exceed request byte budget')
+                result={'scores':scores(config['direction'],[value.read_bytes() for value in paths])}
             elif action=='review':
                 from .specialized_media import review_path
                 result=review_path(path,extension,classifier,str(root))

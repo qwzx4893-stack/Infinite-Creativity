@@ -6,12 +6,14 @@
   "runtime": {
     "packaged_files": 78,
     "digest_algorithm": "SHA256 of compact sorted JSON [relative_src_path, file_sha256] records for packaged Python/JSON/TXT files",
-    "sha256": "5e764cf4a66532a3e18e9c7d111afeb60c2a085761a5756f70aa5eedb5f545f7",
+    "sha256": "2edbfed8f4eaad48c551e1169cdef1e79ad5d4572744fb4f33fd9e6334375ddf",
     "mcp_tools": 44,
     "configured_connections": 405,
     "default_query_scopes": 338
   },
   "local_tests": [
+    {"platform": "Windows", "python": "3.12.14", "installation": "final pre-merge clean wheel", "ran": 234, "passed": 233, "failed": 0, "skipped": 1, "skip_reason": "POSIX-owned process-group regression executes on Linux CI", "seconds": 31.005},
+    {"platform": "Windows", "python": "3.13.15", "installation": "final pre-merge development", "ran": 234, "passed": 233, "failed": 0, "skipped": 1, "skip_reason": "POSIX-owned process-group regression executes on Linux CI", "seconds": 18.973},
     {"platform": "Windows", "python": "3.13.15", "installation": "development", "passed": 218, "failed": 0, "skipped": 0, "seconds": 15.470},
     {"platform": "Windows", "python": "3.12.14", "installation": "clean wheel", "passed": 218, "failed": 0, "skipped": 0, "seconds": 16.250}
   ],
@@ -27,7 +29,7 @@
     "range_representation_fallback": "Met ranged bytes differed; complete signed whole-file verification succeeded instead",
     "scope": "Selected samples measured during development/clean installation, not all providers/items and not an exhaustive quality or learned-accuracy benchmark"
   },
-  "wheel": {"filename": "infinite_creativity_mcp-0.12.0-py3-none-any.whl", "bytes": 266827, "sha256": "04aee4901a7148902cd985fce49f97f61ba8eaf1566f43e62ca9efb1498fa49d"},
+  "wheel": {"filename": "infinite_creativity_mcp-0.12.0-py3-none-any.whl", "bytes": 268472, "sha256": "857d9495a94ae56770436b4e1c450c2deb0003c91c25375b2731d4b3db5e94ac"},
   "ci": {"status_source": "GitHub check runs", "checks_url": "https://github.com/qwzx4893-stack/Infinite-Creativity/pull/1/checks", "expected_jobs": 5, "matrix": ["Linux Python 3.11", "Linux Python 3.13", "Windows Python 3.13"], "dependency_matrix": ["Python 3.11", "Python 3.13"], "independent_live_source_run": "https://github.com/qwzx4893-stack/Infinite-Creativity/actions/runs/39591388349"},
   "limits": ["No claim of anonymous access to the main 21st marketplace", "No global permanent deduplication/index", "Technical source quality is not rendered UI aesthetics", "Worker OS resource limits are not an OS filesystem sandbox"]
 }

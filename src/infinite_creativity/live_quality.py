@@ -33,7 +33,7 @@ def inspect_source_bundle(records,dependencies=()):
                         if body and encoded[body.start_byte:body.end_byte].strip() in {b'null',b'undefined',b'false',b'{}',b'{ return null; }',b'{return null;}'}:empty_functions+=1
                     if node.child_count:stack.extend(reversed(node.children))
                     else:tokens.append((node.type,encoded[node.start_byte:node.end_byte].decode()))
-                fingerprints.append((extension,hashlib.sha256(json.dumps(tokens,separators=(',',':')).encode()).hexdigest()))
+                fingerprints.append((name,record.get('_root'),extension,hashlib.sha256(json.dumps(tokens,separators=(',',':')).encode()).hexdigest()))
                 for node in tree.root_node.named_children:
                     if node.type!='import_statement':continue
                     literal=next((n for n in node.named_children if n.type=='string'),None)
@@ -45,10 +45,12 @@ def inspect_source_bundle(records,dependencies=()):
         elif extension=='.py':
             try:
                 parsed=ast.parse(text);checked+=1
-                fingerprints.append((extension,hashlib.sha256(ast.dump(parsed,include_attributes=False).encode()).hexdigest()))
+                fingerprints.append((name,record.get('_root'),extension,hashlib.sha256(ast.dump(parsed,include_attributes=False).encode()).hexdigest()))
             except SyntaxError:failures.append({'file':name,'reason':'Invalid original Python syntax'})
         elif extension=='.json':
-            try:json.loads(text);checked+=1
+            try:
+                parsed=json.loads(text);checked+=1
+                fingerprints.append((name,record.get('_root'),extension,hashlib.sha256(json.dumps(parsed,sort_keys=True,separators=(',',':')).encode()).hexdigest()))
             except ValueError:failures.append({'file':name,'reason':'Invalid original JSON'})
         else:unknown.append({'file':name,'reason':'No structural parser for this format; presence/content policy checked only'})
     declared={re.sub(r'(?<!^)@[^/]*$','',str(v)) for v in dependencies}

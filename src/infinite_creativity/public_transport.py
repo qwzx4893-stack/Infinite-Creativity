@@ -5,6 +5,7 @@ lookup, automatic redirect, or source-provided connection address is used.
 """
 import email.message
 import http.client
+import io
 import ipaddress
 import socket
 import ssl
@@ -23,7 +24,38 @@ def public_addresses(host, port):
     return addresses
 
 
+class CheckpointReader(io.RawIOBase):
+    """Check every socket read, including buffered HTTP header/chunk lines."""
+    def __init__(self, raw):
+        self.raw = raw
+
+    def readable(self):
+        return True
+
+    def readinto(self, buffer):
+        checkpoint()
+        received = self.raw.readinto(buffer)
+        checkpoint()
+        return received
+
+    def close(self):
+        try:
+            self.raw.close()
+        finally:
+            super().close()
+
+
+class ScopedHTTPResponse(http.client.HTTPResponse):
+    def __init__(self, sock, *args, **kwargs):
+        class ScopedSocket:
+            def makefile(self, mode):
+                return io.BufferedReader(CheckpointReader(sock.makefile(mode, buffering=0)))
+        super().__init__(ScopedSocket(), *args, **kwargs)
+
+
 class PinnedHTTPSConnection(http.client.HTTPSConnection):
+    response_class = ScopedHTTPResponse
+
     def connect(self):
         addresses = public_addresses(self.host, self.port)
         last = None
@@ -49,8 +81,17 @@ class ResponseStream(httpx.SyncByteStream):
     def __iter__(self):
         while True:
             checkpoint()
-            body = self.response.read(64 * 1024)
+            try:
+                # read() waits for the entire buffer and lets a slow-drip peer
+                # postpone cancellation indefinitely. read1() yields available
+                # bytes after at most one socket read.
+                body = self.response.read1(64 * 1024)
+            except http.client.IncompleteRead as error:
+                raise httpx.RemoteProtocolError('Provider closed an incomplete response body') from error
+            checkpoint()
             if not body:
+                if self.response.length:
+                    raise httpx.RemoteProtocolError('Provider closed before the declared Content-Length was received')
                 self.complete=True
                 break
             yield body
