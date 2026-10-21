@@ -1,6 +1,11 @@
-name: Check live source integration
+name: Manual source acceptance
 on:
   workflow_dispatch:
+    inputs:
+      online:
+        description: Run bounded public UI/motion original-delivery samples
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -8,11 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
-      - run: pip install -e .
-      - run: python -m unittest discover -s tests -v
-      - name: Verify default live configuration without building an index
-        run: python -m infinite_creativity.cli stats
+      - run: python -m pip install uv==0.13.4
+      - run: uv sync --frozen --all-extras
+      - run: uv run --frozen --all-extras python -m unittest discover -s tests -v
+      - name: Verify local readiness without building an index
+        run: uv run --frozen --all-extras infinite-creativity doctor
+      - name: Verify selected public original-author routes
+        if: inputs.online
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: uv run --frozen --all-extras python scripts/verify_live_workflows.py --case 21st-original --case ui-layouts --case uselayouts --case motion-code

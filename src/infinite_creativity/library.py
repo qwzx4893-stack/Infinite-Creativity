@@ -290,8 +290,10 @@ class Library:
             file=next((f for f in self.files(aid)['files'] if f['format']=='glb'),None)
             if not file:raise ValueError('Original model has no locally renderable GLB variant')
             original=self.file(aid,file['id'],32*1024*1024)
-            from .live_media_review import render_glb_preview
-            result=self.cache.store(render_glb_preview(Path(original['path']).read_bytes()),'model-preview.png','image/png')
+            from .media_process import preview as render_preview
+            from .live_admission import screener,model_path
+            rendered=render_preview(original['path'],Path(original['path']).parent,screener(str(model_path())))
+            result=self.cache.store(rendered['_preview_bytes'],'model-preview.png','image/png')
             return {**result,'asset_id':aid,'license':a['license'],'credit':a['author'],'preview_only':True,'preview_notice':'Local isometric view of current reviewed geometry; material face colours, not a photorealistic render.'}
         else: raise ValueError('No licensed preview is indexed for this item; inspect its files or 3D data inside MCP')
         result=self.cache.fetch(url,'preview'+(Path(urlsplit(url).path).suffix or '.png'),2*1024*1024 if study else 10*1024*1024,cache_revision=a['revision'])

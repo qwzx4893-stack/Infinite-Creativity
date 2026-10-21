@@ -16,6 +16,7 @@ def main():
     s.add_argument("--max-icon-sets",type=int,default=0)
     s.add_argument("--discovery-pages",type=int,default=2,choices=range(1,11))
     sub.add_parser("stats")
+    doctor=sub.add_parser('doctor');doctor.add_argument('--verify-models',action='store_true')
     q=sub.add_parser("search")
     q.add_argument("query",nargs="?",default="")
     q.add_argument("--kind",default="")
@@ -34,6 +35,9 @@ def main():
     v=sub.add_parser('screen-vision');v.add_argument('--limit',type=int,default=500);v.add_argument('--source',default='')
     v=sub.add_parser('apply-reviews');v.add_argument('file')
     a=p.parse_args()
+    if a.command=='doctor':
+        from .diagnostics import readiness
+        print(json.dumps(readiness(a.verify_models),ensure_ascii=False,indent=2));return
     if a.command=='prepare-live-style':
         from .live_visual_rank import prepare,model_path
         target=Path(a.model_dir) if a.model_dir else model_path();prepare(target)

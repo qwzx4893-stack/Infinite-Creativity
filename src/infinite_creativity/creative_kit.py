@@ -1,6 +1,7 @@
 """Request-only curation: diverse ranked selections and honest compatibility."""
 import math,re
 from concurrent.futures import ThreadPoolExecutor
+from .request_scope import context_map
 from .policy import normalize_query,styles_for
 
 ALLOWED={'query','kind','style','platform','format','source','section','pack'}
@@ -91,6 +92,7 @@ def build(library,brief,needs,limit_per_need=4,max_per_source=2):
     def query(need):
         # Independent per-slot live reads; no earlier result set or cache reused.
         local=type(library)(configs=library.sources);filters={k:v for k,v in need.items() if k in ALLOWED};views=[]
+        local.curation_mode=getattr(library,'curation_mode',None)
         try:
             view=local.open(limit=min(16,max(4,limit_per_need*2)),**filters);views.append(view)
             if not view.get('items') and view.get('next_cursor'):views.append(local.page(view['next_cursor'],min(16,max(4,limit_per_need*2))))
@@ -101,11 +103,11 @@ def build(library,brief,needs,limit_per_need=4,max_per_source=2):
                 decision=fit(original,need['requirements']) if original else None
                 if decision and decision['state']=='incompatible':continue
                 fitted.append(a|({'fit':decision} if decision else {}))
-            return {'label':need['label'],'filters':filters,'items':fitted,'review_queue':[a for v in views for a in v.get('review_queue',[])],'next_cursor':views[-1].get('next_cursor'),'sources':[s for v in views for s in v.get('sources',[])],'duplicates_removed':duplicates,'state':'candidates' if fitted else 'no-admitted-match-in-this-window'}
+            return {'label':need['label'],'filters':filters,'items':fitted,'review_queue':[a for v in views for a in v.get('review_queue',[])],'quality_queue':[a for v in views for a in v.get('quality_queue',[])],'next_cursor':views[-1].get('next_cursor'),'sources':[s for v in views for s in v.get('sources',[])],'duplicates_removed':duplicates,'state':'candidates' if fitted else 'no-admitted-match-in-this-window'}
         except Exception as e:return {'label':need['label'],'items':[],'state':'unavailable','reason':str(e)[:300]}
         finally:
             if hasattr(local,'close'):local.close()
-    with ThreadPoolExecutor(max_workers=3) as pool:groups=list(pool.map(query,needs))
+    with ThreadPoolExecutor(max_workers=3) as pool:groups=list(context_map(pool,query,needs))
     encountered=set()
     for group in groups:
         unique=[]

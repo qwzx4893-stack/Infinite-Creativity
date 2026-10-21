@@ -1,0 +1,35 @@
+{
+  "version": "0.12.0",
+  "date_local": "2026-10-21",
+  "timezone": "Asia/Baghdad",
+  "base_commit": "e3766f98ee578037ca26e0691cf60178f10bf339",
+  "runtime": {
+    "packaged_files": 78,
+    "digest_algorithm": "SHA256 of compact sorted JSON [relative_src_path, file_sha256] records for packaged Python/JSON/TXT files",
+    "sha256": "2edbfed8f4eaad48c551e1169cdef1e79ad5d4572744fb4f33fd9e6334375ddf",
+    "mcp_tools": 44,
+    "configured_connections": 405,
+    "default_query_scopes": 338
+  },
+  "local_tests": [
+    {"platform": "Windows", "python": "3.12.14", "installation": "final pre-merge clean wheel", "ran": 234, "passed": 233, "failed": 0, "skipped": 1, "skip_reason": "POSIX-owned process-group regression executes on Linux CI", "seconds": 31.005},
+    {"platform": "Windows", "python": "3.13.15", "installation": "final pre-merge development", "ran": 234, "passed": 233, "failed": 0, "skipped": 1, "skip_reason": "POSIX-owned process-group regression executes on Linux CI", "seconds": 18.973},
+    {"platform": "Windows", "python": "3.13.15", "installation": "development", "passed": 218, "failed": 0, "skipped": 0, "seconds": 15.470},
+    {"platform": "Windows", "python": "3.12.14", "installation": "clean wheel", "passed": 218, "failed": 0, "skipped": 0, "seconds": 16.250}
+  ],
+  "webmcp": "passed",
+  "dependency_audit": {"tool": "pip-audit 2.10.1", "active_marker_packages": 67, "known_vulnerabilities": 0, "skipped": 0, "requirements_sha256": "0e6a497d99d6c85c2ee28b1f6e82d9493c73f5b025a8af9777ea00804763e274"},
+  "model_software": {"verified_files": 10, "vision": "verified", "speech": "verified", "style": "verified"},
+  "real_local_media": {"development": ["PNG", "WAV", "GLB", "BLEND"], "clean_wheel": ["PNG", "WAV", "GLB", "BLEND"], "classifier_substitution": false, "windows_resource_job": true, "original_fixture_retention": false},
+  "clean_original_author_reference": {"reference": "selected 21st Signature reference", "actual_source": "KevinGirelli/corsair-ui", "status": "passed", "files_with_notices": 4, "seconds": 19.641, "range_transport": "verified-original-range", "requires_21st_key": false},
+  "live_sample_observations": {
+    "passed_source_routes": ["registry:corsair", "registry:ui-layouts", "registry:uselayouts", "registry:magicui", "registry:shadcn", "gl-transitions", "manim-motion-examples", "met-open-access", "cleveland-open-access", "polypizza", "meta-open-sound", "pd3m"],
+    "photographic_thresholds": {"minimum_0_selected": true, "minimum_10_excluded": true, "observed_raw_score": 6.332, "professional_guarantee": false},
+    "temporarily_unavailable": [{"source": "incompetech", "reason": "Transport timeouts during the final live sample; not reported as a successful original delivery"}],
+    "range_representation_fallback": "Met ranged bytes differed; complete signed whole-file verification succeeded instead",
+    "scope": "Selected samples measured during development/clean installation, not all providers/items and not an exhaustive quality or learned-accuracy benchmark"
+  },
+  "wheel": {"filename": "infinite_creativity_mcp-0.12.0-py3-none-any.whl", "bytes": 268472, "sha256": "857d9495a94ae56770436b4e1c450c2deb0003c91c25375b2731d4b3db5e94ac"},
+  "ci": {"status_source": "GitHub check runs", "checks_url": "https://github.com/qwzx4893-stack/Infinite-Creativity/pull/1/checks", "expected_jobs": 5, "matrix": ["Linux Python 3.11", "Linux Python 3.13", "Windows Python 3.13"], "dependency_matrix": ["Python 3.11", "Python 3.13"], "independent_live_source_run": "https://github.com/qwzx4893-stack/Infinite-Creativity/actions/runs/39591388349"},
+  "limits": ["No claim of anonymous access to the main 21st marketplace", "No global permanent deduplication/index", "Technical source quality is not rendered UI aesthetics", "Worker OS resource limits are not an OS filesystem sandbox"]
+}

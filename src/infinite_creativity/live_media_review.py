@@ -43,7 +43,7 @@ def original_bytes(http,a,f,max_bytes=32*1024*1024):
     if f.get('archive_entry'):
         from .content import ContentCache
         with tempfile.TemporaryDirectory(prefix='infinite-creativity-review-member-') as directory:
-            cache=ContentCache(directory)
+            cache=ContentCache(directory,hosts=getattr(http,'hosts',()))
             container=a.get('containers',{}).get(f.get('container_id'))
             archive=cache.multipart_zip(container['parts']) if container and container['type']=='split-zip' else cache.remote_zip(f['url'])
             with archive as z:
@@ -276,6 +276,12 @@ def review_original(http,a,classifier):
     # receive only files whose bytes are re-reviewed at delivery.
     f=min(files,key=lambda v:v.get('bytes') or 12*1024*1024);ext=Path(f['filename']).suffix.lstrip('.').lower()
     body=original_bytes(http,a,f)
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None:
+        from .media_process import execute
+        with tempfile.TemporaryDirectory(prefix='infinite-creativity-original-worker-') as directory:
+            path=Path(directory)/('original.'+ext);path.write_bytes(body)
+            return execute('original',path,directory,extension=ext,asset=a)
     with tempfile.TemporaryDirectory(prefix='infinite-creativity-original-review-') as directory,profile('fast'):
         if ext in {'wav','ogg','mp3','flac','m4a'}:result=review_audio(body)
         elif ext=='svg':result=review_vector(body,classifier,directory)
@@ -303,6 +309,11 @@ def check_delivery(a,file,path):
     if receipt:
         with Path(path).open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
         if digest!=receipt['sha256'] or Path(path).stat().st_size!=receipt['bytes']:raise ValueError('Original changed since selected review; run review_asset_media again')
+        return
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None and not a.get('software_only') and file.get('role') not in {'license','provenance'}:
+        from .media_process import execute
+        execute('delivery',path,Path(path).parent,asset=a,file=file)
         return
     body=Path(path).read_bytes();ext=Path(file['filename']).suffix.lstrip('.').lower()
     if file.get('role') in {'license','provenance'} or a.get('software_only') or ext in TEXT_FORMATS-{'svg','obj','gltf'}:return

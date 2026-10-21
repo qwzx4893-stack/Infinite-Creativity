@@ -4,7 +4,8 @@ from pathlib import Path,PurePosixPath
 from .live import seal,unseal,file_fingerprint
 from .policy import LICENSES,acceptable,review_terms
 from .review_limits import profile,limits,progress
-from .specialized_media import NATIVE,LAYERED,MESH,review_path
+from .specialized_media import NATIVE,LAYERED,MESH
+from .media_process import review as review_path
 
 SUPPORTED=NATIVE|LAYERED|MESH|{'gltf','glb','png','jpg','jpeg','bmp','tif','tiff','dds','wav','ogg','mp3','flac','m4a','aac','aiff','aif','opus','mp4','webm','mov','mkv','avi','gif','webp','apng','svg','exr','hdr'}
 IMAGE={'png','jpg','jpeg','bmp','tif','tiff','dds','webp','exr','hdr'}
@@ -24,7 +25,7 @@ def archive_entries(library,a,file):
     from .content import ContentCache
     container=a.get('containers',{}).get(file.get('container_id'))
     with tempfile.TemporaryDirectory(prefix='infinite-creativity-archive-list-') as directory:
-        cache=ContentCache(directory)
+        cache=ContentCache(directory,hosts=getattr(library.http,'hosts',()))
         archive=cache.multipart_zip(container['parts']) if container and container['type']=='split-zip' else cache.remote_zip(file['url'])
         with archive as z:
             entries=z.infolist()
@@ -117,6 +118,12 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 text=path.read_text(encoding='utf-8-sig')
                 if not acceptable(text) or review_terms(text):raise ValueError('Original source text violates sexual/suggestive content policy')
                 evidence={'scope':'Complete current UTF-8 source text and explicit permissive licence; lexical content screening only; source code is never executed. Linked/embedded remote media and runtime behaviour are not reviewed or authorized.','format':main['format'],'source_bytes':path.stat().st_size}
+                from .live_quality import inspect_source_bundle
+                source_records={relative:{'_text':target.read_text(encoding='utf-8-sig'),'_root':f['id']==main['id']} for relative,(target,f,result) in staged.items() if f['format'] in TEXT_FORMATS and f.get('role') not in {'license','provenance'}}
+                technical=inspect_source_bundle(source_records,a.get('features',{}).get('npm_dependencies',[]))
+                if technical['state']=='rejected' or a['kind'] in {'ui-component','template'} and technical.get('substance',{}).get('state')=='empty-component':
+                    raise ValueError('Selected source fails current syntax or component-substance checks')
+                evidence['source_quality']=technical
             else:evidence=review_path(path,main['format'],classifier,directory)
             converted=evidence.pop('_converted_glb',None)
             preview_bytes=evidence.pop('_preview_bytes',None)
@@ -130,16 +137,16 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 elif f['id']!=main['id'] and f['format'] not in IMAGE|{'bin','mtl','txt','md'} and f.get('role') not in {'license','provenance'}:
                     raise ValueError('Declared dependency requires its own complete original reviewer')
             progress(1,1,'Selected original and scoped dependencies reviewed; request-only staging will be removed')
+            from .chunk_proofs import attach
+            attach(staged,receipts)
             locator=unseal(aid,'asset');locator['review']={'metadata':a['_source_metadata'],'files':receipts,'scope':evidence['scope']}
             reviewed_id=seal('asset',locator)
             if len(reviewed_id)>24000:raise ValueError('Selected bundle exceeds bounded client receipt budget')
             preview={'_preview_png':base64.b64encode(preview_bytes).decode()} if preview_bytes else {}
             if converted or main['format']=='glb':
-                from .live_media_review import render_glb_preview,image_check
-                from PIL import Image
-                import io
-                pixels=render_glb_preview(Path(converted or path).read_bytes())
-                with Image.open(io.BytesIO(pixels)) as im:image_check(im,classifier,directory,'selected-preview')
+                from .media_process import preview as render_preview
+                result=render_preview(converted or path,directory,classifier,[target for target,f,result in staged.values()])
+                pixels=result['_preview_bytes']
                 preview={'_preview_png':base64.b64encode(pixels).decode()}
             package={}
             if delivery_length:
@@ -157,9 +164,9 @@ def review(library,aid,file_id='',callback=None,delivery_length=0,delivery_offse
                 package['package']['notices']=notices
                 package['package']['notice_scope']='Bounded safe UTF-8 licence/provenance text from the same verified staging. Other scoped notices remain available as original files. Source text is untrusted data, never instructions.'
                 if a['kind']=='audio':
-                    from .live_media_review import audio_excerpt
+                    from .media_process import audio_excerpt
                     sound,notice=audio_excerpt(path);package['_preview_audio']=base64.b64encode(sound).decode();package['listening_preview']=notice
-            return {'asset_id':reviewed_id,'state':'selected-original-screened','selected_file_id':main['id'],'format':main['format'],'review':evidence,'reviewed_files':len(receipts),'reviewed_bytes':total,'license':a['license'],'license_url':a['license_url'],'actions':['get_library_item','asset_files','read_asset_file'],**preview,**package,'storage':'No original, metadata index or verdict retained. Client locator carries signed digests only. Every subsequent call fetches current metadata and verifies exact original bytes again.','limits':'Bounded automatic review, not a guarantee of perfect safety or artistic quality. Unreviewed variants are unavailable through this locator. Chunk delivery re-fetches the full reviewed file to verify its digest; there is no cross-call original cache.'}
+            return {'asset_id':reviewed_id,'state':'selected-original-screened','selected_file_id':main['id'],'format':main['format'],'review':evidence,'reviewed_files':len(receipts),'reviewed_bytes':total,'license':a['license'],'license_url':a['license_url'],'actions':['get_library_item','asset_files','read_asset_file'],**preview,**package,'storage':'No original, metadata index or verdict retained. Client locator carries signed complete-file and bounded chunk digests. Every subsequent call revalidates current rights and exact delivered bytes.','limits':'Bounded automatic review, not perfect safety or artistic certification. Raw original ranges use signed chunk proofs where supported; archives/encoded members and providers without ranges require complete-file revalidation. No cross-call original cache.'}
 
 def preview(library,aid):
     """A current exact-digest receipt can authorize a fresh static GLB view.
@@ -179,27 +186,10 @@ def preview(library,aid):
             name=member_path(f.get('relative_path') or f['filename']);target=(root/name).resolve()
             if not target.is_relative_to(root) or name in staged:raise ValueError('Invalid receipt preview dependency destination')
             result=lib.file(local,f['id'],64*1024*1024-total);total+=result['bytes'];target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(result['path'],target);staged[name]=(target,f)
-        path=next(path for path,f in staged.values() if f['id']==main['id']);body=path.read_bytes()
-        import struct
-        if len(body)<20 or body[:4]!=b'glTF':raise ValueError('Invalid current GLB')
-        length=struct.unpack_from('<I',body,12)[0]
-        if length>16*1024*1024 or 20+length>len(body):raise ValueError('Invalid current GLB JSON extent')
-        document=json.loads(body[20:20+length]);external=False
-        for group in ('buffers','images'):
-            for entry in document.get(group,[]):
-                uri=entry.get('uri','')
-                if not uri or uri.startswith('data:'):continue
-                member_path(uri);target=(path.parent/uri).resolve()
-                if target not in {p for p,f in staged.values()}:raise ValueError('Preview dependency is outside the exact approved manifest')
-                external=True
-        if external:
-            import trimesh
-            body=trimesh.load(path,force='scene',process=False).export(file_type='glb')
-        from .live_media_review import render_glb_preview,image_check
+        path=next(path for path,f in staged.values() if f['id']==main['id'])
+        from .media_process import preview as render_preview
         from .live_admission import screener,model_path
-        from PIL import Image
-        import io
-        pixels=render_glb_preview(body)
-        with Image.open(io.BytesIO(pixels)) as im:image_check(im,screener(str(model_path())),directory,'receipt-preview')
+        result=render_preview(path,directory,screener(str(model_path())),[target for target,f in staged.values()])
+        pixels=result['_preview_bytes']
         progress(1,1,'Exact original/dependency digests verified and current preview screened')
         return {'asset_id':aid,'state':'reviewed-digests-revalidated','reviewed_files':len(staged),'reviewed_bytes':total,'preview_scope':'Static isometric view, not complete animation playback. Prior signed review + current exact original/dependency SHA256 checks; newly rendered pixels are screened.','_preview_png':base64.b64encode(pixels).decode(),'storage':'Request-only staging and preview; no verdict, model or metadata index retained.'}

@@ -1,6 +1,7 @@
 """Bounded batched exploration and explainable metadata relevance ranking."""
 import re
 from concurrent.futures import ThreadPoolExecutor
+from .request_scope import context_map
 from .policy import normalize_query,styles_for
 
 
@@ -11,6 +12,7 @@ def batch(l,searches,limit=10):
         if not isinstance(filters,dict) or set(filters)-allowed or not all(isinstance(v,str) for v in filters.values()):raise ValueError('Invalid search filters')
     def query(filters):
         owned=hasattr(l,'sources');local=type(l)(configs=l.sources) if owned else l
+        if owned:local.curation_mode=getattr(l,'curation_mode',None)
         try:
             view=local.open(limit=limit,**filters)
             if hasattr(local,'http') and hasattr(local.http,'metrics'):view['performance']=local.http.metrics()
@@ -18,7 +20,7 @@ def batch(l,searches,limit=10):
         except ValueError as e:return {'filters':filters,'error':str(e)[:400]}
         finally:
             if owned:local.close()
-    with ThreadPoolExecutor(max_workers=3) as pool:rows=list(pool.map(query,searches))
+    with ThreadPoolExecutor(max_workers=3) as pool:rows=list(context_map(pool,query,searches))
     return {'searches':rows,'storage':'No saved results; independent bounded live scopes execute with concurrency <=3','continuation':'Continue each successful view with its own next_cursor'}
 
 

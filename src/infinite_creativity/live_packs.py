@@ -66,7 +66,8 @@ def kenney(http,s,f,after,limit,key=None):
         if not archives:raise ValueError('No direct official free ZIP exposed; paid All-in-1 files are excluded')
         archive=archives[0];rows=[]
         with TemporaryDirectory(prefix='infinite-creativity-zip-request-') as folder:
-            cache=ContentCache(folder)
+            if hasattr(http,'approve_content'):http.approve_content(archive)
+            cache=ContentCache(folder,hosts=getattr(http,'hosts',()))
             with cache.remote_zip(archive) as z:
                 infos=z.infolist()
                 atlases=[v for v in infos if not v.is_dir() and '/textures/' in ('/'+v.filename.lower()) and PurePosixPath(v.filename).suffix.lower() in {'.png','.jpg','.jpeg','.webp','.dds'}]

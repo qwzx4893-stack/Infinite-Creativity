@@ -16,10 +16,17 @@ def model_path():
 
 
 @lru_cache(maxsize=2)
-def screener(path):
+def _screener(path):
     # Only pinned model software stays loaded; no item data or verdict survives.
     from .vision import Screener
     return Screener(path)
+
+def screener(path):
+    from .request_scope import CURRENT
+    if CURRENT.get() is not None:
+        from .media_process import RemoteScreener
+        return RemoteScreener(path)
+    return _screener(path)
 
 
 def identities(a):
@@ -125,7 +132,7 @@ class Admission:
                     if raster and a['files'][0].get('archive_entry'):
                         from .content import ContentCache
                         with tempfile.TemporaryDirectory(prefix='infinite-creativity-member-screen-') as directory:
-                            cache=ContentCache(directory)
+                            cache=ContentCache(directory,hosts=getattr(self.http,'hosts',()))
                             with cache.remote_zip(url) as archive:
                                 selected=archive.getinfo(a['files'][0]['archive_entry'])
                                 if selected.file_size>5*1024*1024 or selected.file_size>max(1,selected.compress_size)*500:raise ValueError('Original raster member exceeds review budget')
@@ -143,9 +150,9 @@ class Admission:
                         if evidence['state']!='preview-screened':return self.withhold('image-sexual-or-suggestive-risk')
                         # Validate original visible pixels without rejecting small
                         # deliberate pixel art, simple icons, or low-poly styles.
-                        from PIL import Image
-                        with Image.open(io.BytesIO(data)) as image:
-                            image.verify()
+                        if not evidence.get('decoder_isolation'):
+                            from PIL import Image
+                            with Image.open(io.BytesIO(data)) as image:image.verify()
                         if a['kind'] in {'illustration','image','texture','sprite','decal','atlas','terrain','brush','ui-asset'} and a.get('files') and url==a['files'][0]['url']:
                             pixel_key='original-raster:'+evidence['sha256']
                             if pixel_key in self.seen:self.report['duplicates']+=1;return False

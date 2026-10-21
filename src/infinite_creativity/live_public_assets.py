@@ -127,7 +127,7 @@ def zip_members(http,s,parent,archive,filters,after,limit,key=None):
     from .content import ContentCache
     rows=[]
     with tempfile.TemporaryDirectory(prefix='infinite-creativity-public-pack-') as directory:
-        with ContentCache(directory).remote_zip(archive['url']) as z:
+        with ContentCache(directory,hosts=getattr(http,'hosts',())).remote_zip(archive['url']) as z:
             entries=z.infolist()
             if len(entries)>20000:raise ValueError('Archive listing exceeds request budget; narrow the selected pack')
             for v in entries:
